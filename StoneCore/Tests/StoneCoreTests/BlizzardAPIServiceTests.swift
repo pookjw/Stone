@@ -5,12 +5,15 @@ import Testing
 actor BlizzardAPIServiceTests {
     private let service: BlizzardAPIService = .init()
     
-    init() {
-        // setup...
+    init() async {
+        await clearValues()
     }
     
-    deinit {
-        // teardown...
+    @Test func accessToken() async throws {
+        let accessToken_1: String = try await service.accessToken
+        let accessToken_2: String = try await service.accessToken
+        
+        #expect(accessToken_1 == accessToken_2)
     }
     
     @Test func requestAccessToken() async throws {
@@ -18,5 +21,11 @@ actor BlizzardAPIServiceTests {
         
         #expect(!accessToken.isEmpty)
         #expect(expirationDate > .now)
+    }
+    
+    private func clearValues() async {
+        let userDefaults: UserDefaults = await service.userDefaults
+        await userDefaults.removeObject(forKey: service.accessTokenExpirationDateKey)
+        await userDefaults.removeObject(forKey: service.accessTokenKey)
     }
 }

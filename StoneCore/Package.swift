@@ -20,17 +20,13 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-testing.git", branch: "main"),
-        .package(url: "https://github.com/apple/swift-foundation.git", branch: "main"),
+        .package(url: "https://github.com/apple/swift-testing.git", branch: "main")
     ],
     targets: [
         .target(
             name: "StoneCore",
-            dependencies: [
-                .product(name: "FoundationEssentials", package: "swift-foundation", condition: .when(platforms: [.macOS, .macCatalyst, .iOS, .tvOS, .watchOS]))
-            ],
             swiftSettings: [
-              .unsafeFlags(["-strict-concurrency=complete", "-enable-private-imports"])
+              .unsafeFlags(["-strict-concurrency=complete", "-enable-private-imports", "-cxx-interoperability-mode=default"])
             ]
         ),
         .testTarget(
@@ -40,7 +36,7 @@ let package = Package(
                 .product(name: "Testing", package: "swift-testing"),
             ],
             swiftSettings: [
-              .unsafeFlags(["-strict-concurrency=complete"])
+              .unsafeFlags(["-strict-concurrency=complete", "-cxx-interoperability-mode=default"])
             ]
         )
     ]

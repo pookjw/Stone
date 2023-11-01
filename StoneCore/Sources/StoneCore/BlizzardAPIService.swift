@@ -1,22 +1,18 @@
-import Foundation
-#if !os(visionOS)
-#endif
+@preconcurrency import Foundation
 
 actor BlizzardAPIService {
     var accessToken: String {
         get async throws {
-            let userDefaults: UserDefaults = .standard
-            
             if
-                let accessToken: String = userDefaults.string(forKey: "accessToken"),
-                let accessTokenExpirationDate: Date = userDefaults.object(forKey: "accessTokenExpirationDate") as? Date,
+                let accessToken: String = userDefaults.string(forKey: accessTokenKey),
+                let accessTokenExpirationDate: Date = userDefaults.object(forKey: accessTokenExpirationDateKey) as? Date,
                 accessTokenExpirationDate > .now
             {
                 return accessToken
             } else {
                 let (accessToken, expirationDate): (String, Date) = try await requestAccessToken()
-                userDefaults.set(accessToken, forKey: "accessToken")
-                userDefaults.set(expirationDate, forKey: "accessTokenExpirationDate")
+                userDefaults.set(accessToken, forKey: accessTokenKey)
+                userDefaults.set(expirationDate, forKey: accessTokenExpirationDateKey)
                 
                 return accessToken
             }
@@ -26,7 +22,12 @@ actor BlizzardAPIService {
     private(set) var apiBaseURLSubject: CurrentValueAsyncSubject<URL>
     private var oAuthBaseURL: CurrentValueAsyncSubject<URL>
     
+    private let userDefaults: UserDefaults = .standard
+    
     private let currentLocaleDidChangeTask: Task<Void, Never>
+    
+    private let accessTokenExpirationDateKey: String = "accessTokenExpirationDate"
+    private let accessTokenKey: String = "accessToken"
     
     init() {
         let region: Locale.Region = Locale.current.region ?? .unitedStates
@@ -48,7 +49,7 @@ actor BlizzardAPIService {
     
     private func requestAccessToken() async throws -> (accessToken: String, expirationDate: Date) {
         let oAuthBaseURL: URL = await oAuthBaseURL.value
-        var urlComponents: URLComponents = .init(url: oAuthBaseURL, resolvingAgainstBaseURL: false)!
+        var urlComponents: URLComponents = .init(url: oAuthBaseURL as Foundation.URL, resolvingAgainstBaseURL: false)!
         urlComponents.path = "/oauth/token"
         urlComponents.queryItems = [
             .init(name: "grant_type", value: "client_credentials")
@@ -64,6 +65,7 @@ actor BlizzardAPIService {
         let session: URLSession = .init(configuration: configuration)
         
         let (data, response): (Data, URLResponse) = try await session.data(for: request)
+//        print(String(data: data, encoding: .utf8)!)
         
         let decoder: JSONDecoder = .init()
         let tokenResponse: BlizzardAPITokenResponse = try decoder.decode(BlizzardAPITokenResponse.self, from: data)
@@ -71,11 +73,12 @@ actor BlizzardAPIService {
         let accessToken: String = tokenResponse.accessToken
         
         let expirationDate: Date
-        if let expirationDateString: String = (response as? HTTPURLResponse)?.value(forHTTPHeaderField: "Date") as? String {
+        if let timestampString: String = (response as? HTTPURLResponse)?.value(forHTTPHeaderField: "Date") as? String {
             let dateFormatter: DateFormatter = .init()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss zzz"
             dateFormatter.locale = .init(identifier: "en_US_POSIX")
-            expirationDate = dateFormatter.date(from: expirationDateString) ?? .now
+            let timestamp = dateFormatter.date(from: timestampString) ?? .now
+            expirationDate = timestamp.addingTimeInterval(.init(tokenResponse.expiresIn))
         } else {
             expirationDate = .now
         }
