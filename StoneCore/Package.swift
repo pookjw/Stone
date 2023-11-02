@@ -35,6 +35,7 @@ let package = Package(
                 "StoneCore",
                 .product(name: "Testing", package: "swift-testing"),
             ],
+            resources: [.process("Resources")],
             swiftSettings: [
               .unsafeFlags(["-strict-concurrency=complete", "-cxx-interoperability-mode=default"])
             ]
