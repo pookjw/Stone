@@ -1,27 +1,25 @@
 //
-//  CardsViewController.mm
+//  CardBacksViewController.mm
 //  SurfStone
 //
-//  Created by Jinwoo Kim on 10/29/23.
+//  Created by Jinwoo Kim on 11/4/23.
 //
 
-#import "CardsViewController.hpp"
-#import "CardOptionsViewController.hpp"
+#import "CardBacksViewController.hpp"
+#import "CardBacksOptionsViewController.hpp"
 
 __attribute__((objc_direct_members))
-@interface CardsViewController () {
+@interface CardBacksViewController () {
     UISplitViewController *_childSplitViewController;
-    CardOptionsViewController *_cardOptionsViewController;
+    CardBacksOptionsViewController *_cardBacksOptionsViewController;
 }
-@property (retain, nonatomic) UISplitViewController *childSplitViewController;
-@property (retain, nonatomic) CardOptionsViewController *cardOptionsViewController;
 @end
 
-@implementation CardsViewController
+@implementation CardBacksViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self commonInit_CardsViewController];
+        [self commonInit_CardBacksViewController];
     }
     
     return self;
@@ -29,7 +27,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
-        [self commonInit_CardsViewController];
+        [self commonInit_CardBacksViewController];
     }
     
     return self;
@@ -37,18 +35,18 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_childSplitViewController release];
-    [_cardOptionsViewController release];
+    [_cardBacksOptionsViewController release];
     [super dealloc];
 }
 
-- (void)commonInit_CardsViewController __attribute__((objc_direct)) {
+- (void)commonInit_CardBacksViewController __attribute__((objc_direct)) {
     [self setupTabBarItem];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupChildSplitViewController];
-    [self setupCardOptionsViewController];
+    [self setupCardBacksOptionsViewController];
 }
 
 - (UIContainerBackgroundStyle)preferredContainerBackgroundStyle {
@@ -57,8 +55,8 @@ __attribute__((objc_direct_members))
 
 - (void)setupTabBarItem __attribute__((objc_direct)) {
     UITabBarItem *tabBarItem = self.tabBarItem;
-    tabBarItem.title = @"Cards";
-    tabBarItem.image = [UIImage systemImageNamed:@"books.vertical"];
+    tabBarItem.title = @"Card Backs";
+    tabBarItem.image = [UIImage systemImageNamed:@"book.closed"];
 }
 
 - (void)setupChildSplitViewController __attribute__((objc_direct)) {
@@ -79,8 +77,8 @@ __attribute__((objc_direct_members))
     [childSplitViewController didMoveToParentViewController:self];
 }
 
-- (void)setupCardOptionsViewController __attribute__((objc_direct)) {
-    [self.childSplitViewController setViewController:self.cardOptionsViewController forColumn:UISplitViewControllerColumnPrimary];
+- (void)setupCardBacksOptionsViewController __attribute__((objc_direct)) {
+    [self.childSplitViewController setViewController:self.cardBacksOptionsViewController forColumn:UISplitViewControllerColumnPrimary];
 }
 
 - (UISplitViewController *)childSplitViewController __attribute__((objc_direct)) {
@@ -96,14 +94,14 @@ __attribute__((objc_direct_members))
     return [childSplitViewController autorelease];
 }
 
-- (CardOptionsViewController *)cardOptionsViewController __attribute__((objc_direct)) {
-    if (_cardOptionsViewController) return _cardOptionsViewController;
+- (CardBacksOptionsViewController *)cardBacksOptionsViewController __attribute__((objc_direct)) {
+    if (_cardBacksOptionsViewController) return _cardBacksOptionsViewController;
     
-    CardOptionsViewController *cardOptionsViewController = [CardOptionsViewController new];
+    CardBacksOptionsViewController *cardBacksOptionsViewController = [CardBacksOptionsViewController new];
     
-    [_cardOptionsViewController release];
-    _cardOptionsViewController = [cardOptionsViewController retain];
-    return [cardOptionsViewController autorelease];
+    [_cardBacksOptionsViewController release];
+    _cardBacksOptionsViewController = [cardBacksOptionsViewController retain];
+    return [cardBacksOptionsViewController autorelease];
 }
 
 @end

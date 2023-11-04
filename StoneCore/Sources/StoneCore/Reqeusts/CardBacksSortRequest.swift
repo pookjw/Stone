@@ -1,6 +1,6 @@
 extension HearthstoneAPIService {
     @objc(HSCardBacksSortRequest)
-    public enum HSCardBacksSortRequest: Int, Sendable {
+    public enum CardBacksSortRequest: Int, CaseIterable, Hashable, Sendable {
         case none
         case ascendingName
         case descendingName

@@ -7,17 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */; };
+		4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */; };
+		4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */; };
 		4FD59A632AF2A3EE00EEEFD8 /* StoneCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FD59A622AF2A3EE00EEEFD8 /* StoneCore */; };
 		4FEF15F02AEBFC810059D1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */; };
 		4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF15F82AEBFCC10059D1FB /* main.mm */; };
 		4FEF15FC2AEBFD0F0059D1FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEF15FB2AEBFD0F0059D1FB /* UIKit.framework */; };
 		4FEF16012AEBFD360059D1FB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16002AEBFD360059D1FB /* AppDelegate.mm */; };
 		4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16032AEBFDA10059D1FB /* SceneDelegate.mm */; };
-		4FEF16072AEBFE3B0059D1FB /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16062AEBFE3B0059D1FB /* RootViewController.mm */; };
-		4FEF162C2AED41470059D1FB /* CompactRootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF162B2AED41470059D1FB /* CompactRootViewController.mm */; };
-		4FEF16362AED44730059D1FB /* NSObject+KeyValueObservation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16312AED44730059D1FB /* NSObject+KeyValueObservation.mm */; };
-		4FEF16372AED44730059D1FB /* KeyValueObservation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16352AED44730059D1FB /* KeyValueObservation.mm */; };
-		4FEF163A2AED47A80059D1FB /* RegularRootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16392AED47A80059D1FB /* RegularRootViewController.mm */; };
 		4FEF163D2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF163C2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm */; };
 		4FEF16432AED75150059D1FB /* CardsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16422AED75150059D1FB /* CardsViewController.mm */; };
 		4FEF16462AED75FD0059D1FB /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16452AED75FD0059D1FB /* SettingsViewController.mm */; };
@@ -25,6 +23,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4FB186D72AF6746E00A87403 /* CardBacksViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksViewController.hpp; sourceTree = "<group>"; };
+		4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksViewController.mm; sourceTree = "<group>"; };
+		4FB186DB2AF68A8E00A87403 /* CardBacksOptionsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsViewController.hpp; sourceTree = "<group>"; };
+		4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsViewController.mm; sourceTree = "<group>"; };
+		4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsViewModel.mm; sourceTree = "<group>"; };
+		4FB186DF2AF68C2500A87403 /* CardBacksOptionsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsViewModel.hpp; sourceTree = "<group>"; };
 		4FEF15E52AEBFC800059D1FB /* SurfStone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfStone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FEF15F42AEBFC810059D1FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -34,17 +38,6 @@
 		4FEF16002AEBFD360059D1FB /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		4FEF16022AEBFDA10059D1FB /* SceneDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneDelegate.hpp; sourceTree = "<group>"; };
 		4FEF16032AEBFDA10059D1FB /* SceneDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneDelegate.mm; sourceTree = "<group>"; };
-		4FEF16052AEBFE3B0059D1FB /* RootViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RootViewController.hpp; sourceTree = "<group>"; };
-		4FEF16062AEBFE3B0059D1FB /* RootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RootViewController.mm; sourceTree = "<group>"; };
-		4FEF162A2AED41470059D1FB /* CompactRootViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CompactRootViewController.hpp; sourceTree = "<group>"; };
-		4FEF162B2AED41470059D1FB /* CompactRootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CompactRootViewController.mm; sourceTree = "<group>"; };
-		4FEF16312AED44730059D1FB /* NSObject+KeyValueObservation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+KeyValueObservation.mm"; sourceTree = "<group>"; };
-		4FEF16322AED44730059D1FB /* KeyValueObservation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = KeyValueObservation.hpp; sourceTree = "<group>"; };
-		4FEF16332AED44730059D1FB /* KeyValueObservation+Private.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "KeyValueObservation+Private.hpp"; sourceTree = "<group>"; };
-		4FEF16342AED44730059D1FB /* NSObject+KeyValueObservation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "NSObject+KeyValueObservation.hpp"; sourceTree = "<group>"; };
-		4FEF16352AED44730059D1FB /* KeyValueObservation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KeyValueObservation.mm; sourceTree = "<group>"; };
-		4FEF16382AED47A80059D1FB /* RegularRootViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RegularRootViewController.hpp; sourceTree = "<group>"; };
-		4FEF16392AED47A80059D1FB /* RegularRootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RegularRootViewController.mm; sourceTree = "<group>"; };
 		4FEF163B2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Foundation_IvarDescription.h"; sourceTree = "<group>"; };
 		4FEF163C2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+Foundation_IvarDescription.mm"; sourceTree = "<group>"; };
 		4FEF16412AED75150059D1FB /* CardsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardsViewController.hpp; sourceTree = "<group>"; };
@@ -69,6 +62,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4FB186D62AF6744200A87403 /* CardBacks */ = {
+			isa = PBXGroup;
+			children = (
+				4FB186D72AF6746E00A87403 /* CardBacksViewController.hpp */,
+				4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */,
+				4FB186DA2AF68A7C00A87403 /* CardBacksOptionsViewController */,
+			);
+			path = CardBacks;
+			sourceTree = "<group>";
+		};
+		4FB186DA2AF68A7C00A87403 /* CardBacksOptionsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4FB186DB2AF68A8E00A87403 /* CardBacksOptionsViewController.hpp */,
+				4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */,
+				4FB186DF2AF68C2500A87403 /* CardBacksOptionsViewModel.hpp */,
+				4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */,
+			);
+			path = CardBacksOptionsViewController;
+			sourceTree = "<group>";
+		};
 		4FEF15C22AEBFB4A0059D1FB = {
 			isa = PBXGroup;
 			children = (
@@ -100,11 +114,8 @@
 				4FEF163B2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.h */,
 				4FEF163C2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm */,
 				4FEF163F2AED74D40059D1FB /* Cards */,
+				4FB186D62AF6744200A87403 /* CardBacks */,
 				4FEF16402AED74E80059D1FB /* Settings */,
-				4FEF16302AED44730059D1FB /* KeyValueObservation */,
-				4FEF163E2AED74C80059D1FB /* Root */,
-				4FEF16282AED411E0059D1FB /* Compact */,
-				4FEF16292AED412D0059D1FB /* Regular */,
 			);
 			path = SurfStone;
 			sourceTree = "<group>";
@@ -115,45 +126,6 @@
 				4FEF15FB2AEBFD0F0059D1FB /* UIKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		4FEF16282AED411E0059D1FB /* Compact */ = {
-			isa = PBXGroup;
-			children = (
-				4FEF162A2AED41470059D1FB /* CompactRootViewController.hpp */,
-				4FEF162B2AED41470059D1FB /* CompactRootViewController.mm */,
-			);
-			path = Compact;
-			sourceTree = "<group>";
-		};
-		4FEF16292AED412D0059D1FB /* Regular */ = {
-			isa = PBXGroup;
-			children = (
-				4FEF16382AED47A80059D1FB /* RegularRootViewController.hpp */,
-				4FEF16392AED47A80059D1FB /* RegularRootViewController.mm */,
-			);
-			path = Regular;
-			sourceTree = "<group>";
-		};
-		4FEF16302AED44730059D1FB /* KeyValueObservation */ = {
-			isa = PBXGroup;
-			children = (
-				4FEF16322AED44730059D1FB /* KeyValueObservation.hpp */,
-				4FEF16332AED44730059D1FB /* KeyValueObservation+Private.hpp */,
-				4FEF16352AED44730059D1FB /* KeyValueObservation.mm */,
-				4FEF16342AED44730059D1FB /* NSObject+KeyValueObservation.hpp */,
-				4FEF16312AED44730059D1FB /* NSObject+KeyValueObservation.mm */,
-			);
-			path = KeyValueObservation;
-			sourceTree = "<group>";
-		};
-		4FEF163E2AED74C80059D1FB /* Root */ = {
-			isa = PBXGroup;
-			children = (
-				4FEF16052AEBFE3B0059D1FB /* RootViewController.hpp */,
-				4FEF16062AEBFE3B0059D1FB /* RootViewController.mm */,
-			);
-			path = Root;
 			sourceTree = "<group>";
 		};
 		4FEF163F2AED74D40059D1FB /* Cards */ = {
@@ -256,18 +228,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FEF16362AED44730059D1FB /* NSObject+KeyValueObservation.mm in Sources */,
+				4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */,
 				4FEF163D2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm in Sources */,
+				4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */,
 				4FEF16012AEBFD360059D1FB /* AppDelegate.mm in Sources */,
-				4FEF16372AED44730059D1FB /* KeyValueObservation.mm in Sources */,
 				4FEF16432AED75150059D1FB /* CardsViewController.mm in Sources */,
-				4FEF163A2AED47A80059D1FB /* RegularRootViewController.mm in Sources */,
 				4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */,
-				4FEF16072AEBFE3B0059D1FB /* RootViewController.mm in Sources */,
 				4FEF16462AED75FD0059D1FB /* SettingsViewController.mm in Sources */,
-				4FEF162C2AED41470059D1FB /* CompactRootViewController.mm in Sources */,
 				4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */,
 				4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */,
+				4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

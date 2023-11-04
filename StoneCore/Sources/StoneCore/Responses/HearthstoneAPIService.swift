@@ -12,7 +12,7 @@ public actor HearthstoneAPIService: NSObject {
         locale: Locale = .current,
         cardBackCategory: String? = nil,
         textFilter: String? = nil,
-        sort: HSCardBacksSortRequest = .none,
+        sort: CardBacksSortRequest = .none,
         page: Int? = nil,
         pageSize: Int? = nil
     ) async throws -> CardBacksResponse {
@@ -34,7 +34,7 @@ public actor HearthstoneAPIService: NSObject {
         locale: Locale = .current,
         cardBackCategory: String? = nil,
         textFilter: String? = nil,
-        sort: HSCardBacksSortRequest = .none,
+        sort: CardBacksSortRequest = .none,
         page: NSNumber? = nil,
         pageSize: NSNumber? = nil,
         completionHandler: @escaping(@Sendable (CardBacksResponse?, Error?) -> Void)
@@ -66,6 +66,10 @@ public actor HearthstoneAPIService: NSObject {
     
     public nonisolated func metadata(locale: Locale = .current) async throws -> MetadataResponse {
         try await request(locale: locale, pathComponents: ["hearthstone", "metadata"], queryItems: [])
+    }
+    
+    public nonisolated func metadata(locale: Locale = .current, metadataType: MetadataTypeRequest) async throws -> MetadataResponse {
+        try await request(locale: locale, pathComponents: ["hearthstone", "metadata", metadataType.name], queryItems: [])
     }
     
     private nonisolated func request<T: Decodable>(locale: Locale, pathComponents: [String], queryItems: [URLQueryItem], type: T.Type = T.self) async throws -> T {

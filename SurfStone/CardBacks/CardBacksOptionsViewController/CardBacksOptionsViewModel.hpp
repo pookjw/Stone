@@ -1,16 +1,16 @@
 //
-//  CompactRootViewController.hpp
+//  CardBacksOptionsViewModel.hpp
 //  SurfStone
 //
-//  Created by Jinwoo Kim on 10/28/23.
+//  Created by Jinwoo Kim on 11/4/23.
 //
 
 #import <UIKit/UIKit.h>
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-@interface CompactRootViewController : UISplitViewController
-
-@end
+class CardBacksOptionsViewModel {
+//    CardBacksOptionsViewModel
+};
 
 NS_HEADER_AUDIT_END(nullability, sendability)

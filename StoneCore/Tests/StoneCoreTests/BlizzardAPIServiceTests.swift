@@ -12,6 +12,7 @@ actor BlizzardAPIServiceTests {
     @Test func accessToken() async throws {
         let accessToken_1: String = try await service.accessToken
         let accessToken_2: String = try await service.accessToken
+        print(accessToken_1)
         
         #expect(accessToken_1 == accessToken_2)
     }
