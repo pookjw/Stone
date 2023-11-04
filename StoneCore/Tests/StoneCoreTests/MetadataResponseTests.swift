@@ -3,12 +3,12 @@ import UniformTypeIdentifiers
 import Testing
 @testable import StoneCore
 
-actor HSMetadataResponseTests {
+actor MetadataResponseTests {
     @Test func decode() async throws {
         let url: URL = try #require(Bundle.module.url(forResource: "hs_metadata_response_sample", withExtension: UTType.json.preferredFilenameExtension))
         let data: Data = try .init(contentsOf: url)
         let decoder: JSONDecoder = .init()
-        let response: HSMetadataResponse = try decoder.decode(HSMetadataResponse.self, from: data)
+        let response: HearthstoneAPIService.MetadataResponse = try decoder.decode(HearthstoneAPIService.MetadataResponse.self, from: data)
         
         #expect(!response.sets.isEmpty)
         #expect(!response.setGroups.isEmpty)

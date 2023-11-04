@@ -6,8 +6,7 @@ actor HearthstoneAPIServiceTests {
     private let service: HearthstoneAPIService = .init()
     
     @Test func metadata() async throws {
-        let response: HSMetadataResponse = try await service.metadata()
-        let _: HSMetadataResponse = try await service.metadata()
+        let response: HearthstoneAPIService.MetadataResponse = try await service.metadata()
         
         #expect(!response.sets.isEmpty)
         #expect(!response.setGroups.isEmpty)
@@ -24,5 +23,12 @@ actor HearthstoneAPIServiceTests {
         #expect(!response.filterableFields.isEmpty)
         #expect(!response.numericFields.isEmpty)
         #expect(!response.cardBackCategories.isEmpty)
+    }
+    
+    @Test func cardBacks() async throws {
+        let response: HearthstoneAPIService.CardBacksResponse = try await service
+            .cardBacks()
+        
+        #expect(!response.cardBacks.isEmpty)
     }
 }

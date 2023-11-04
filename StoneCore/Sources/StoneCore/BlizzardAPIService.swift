@@ -19,8 +19,8 @@ actor BlizzardAPIService {
         }
     }
     
-    private(set) var apiBaseURLSubject: CurrentValueAsyncSubject<URL>
-    private var oAuthBaseURL: CurrentValueAsyncSubject<URL>
+    let apiBaseURLSubject: CurrentValueAsyncSubject<URL>
+    private let oAuthBaseURLSubject: CurrentValueAsyncSubject<URL>
     
     private let userDefaults: UserDefaults = .standard
     
@@ -32,13 +32,13 @@ actor BlizzardAPIService {
     init() {
         let region: Locale.Region = Locale.current.region ?? .unitedStates
         apiBaseURLSubject = .init(value: region.apiBaseURL)
-        oAuthBaseURL = .init(value: region.oAuthBaseURL)
+        oAuthBaseURLSubject = .init(value: region.oAuthBaseURL)
         
-        currentLocaleDidChangeTask = .init { [apiBaseURLSubject, oAuthBaseURL] in
+        currentLocaleDidChangeTask = .init { [apiBaseURLSubject, oAuthBaseURLSubject] in
             for await notification in NotificationCenter.default.notifications(named: NSLocale.currentLocaleDidChangeNotification) {
                 let region: Locale.Region = Locale.current.region ?? .unitedStates
                 await apiBaseURLSubject.yield(region.apiBaseURL)
-                await oAuthBaseURL.yield(region.oAuthBaseURL)
+                await oAuthBaseURLSubject.yield(region.oAuthBaseURL)
             }
         }
     }
@@ -48,9 +48,13 @@ actor BlizzardAPIService {
     }
     
     private func requestAccessToken() async throws -> (accessToken: String, expirationDate: Date) {
-        let oAuthBaseURL: URL = await oAuthBaseURL.value
+        let oAuthBaseURL: URL = await oAuthBaseURLSubject
+            .value
+            .appending(path: "oauth")
+            .appending(path: "token")
+        
         var urlComponents: URLComponents = .init(url: oAuthBaseURL as Foundation.URL, resolvingAgainstBaseURL: false)!
-        urlComponents.path = "/oauth/token"
+        
         urlComponents.queryItems = [
             .init(name: "grant_type", value: "client_credentials")
         ]
