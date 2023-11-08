@@ -23,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F93F4802AFA82A800688504 /* HearthstoneAPIService+Macro.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "HearthstoneAPIService+Macro.hpp"; sourceTree = "<group>"; };
 		4FB186D72AF6746E00A87403 /* CardBacksViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksViewController.hpp; sourceTree = "<group>"; };
 		4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksViewController.mm; sourceTree = "<group>"; };
 		4FB186DB2AF68A8E00A87403 /* CardBacksOptionsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsViewController.hpp; sourceTree = "<group>"; };
@@ -62,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F93F47F2AFA829100688504 /* StoneCoreHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				4F93F4802AFA82A800688504 /* HearthstoneAPIService+Macro.hpp */,
+			);
+			path = StoneCoreHeaders;
+			sourceTree = "<group>";
+		};
 		4FB186D62AF6744200A87403 /* CardBacks */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +113,7 @@
 		4FEF15E62AEBFC800059D1FB /* SurfStone */ = {
 			isa = PBXGroup;
 			children = (
+				4F93F47F2AFA829100688504 /* StoneCoreHeaders */,
 				4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */,
 				4FEF15F42AEBFC810059D1FB /* Info.plist */,
 				4FEF15F82AEBFCC10059D1FB /* main.mm */,

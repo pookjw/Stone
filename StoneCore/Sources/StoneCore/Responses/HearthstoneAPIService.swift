@@ -1,4 +1,5 @@
 @preconcurrency import Foundation
+import HandyMacros
 
 @objc(HearthstoneAPIService)
 public actor HearthstoneAPIService: NSObject {
@@ -8,6 +9,7 @@ public actor HearthstoneAPIService: NSObject {
         super.init()
     }
     
+    @AddObjCCompletionHandler
     public nonisolated func cardBacks(
         locale: Locale = .current,
         cardBackCategory: String? = nil,
@@ -29,45 +31,12 @@ public actor HearthstoneAPIService: NSObject {
         )
     }
     
-    @objc
-    public nonisolated func cardBacks(
-        locale: Locale = .current,
-        cardBackCategory: String? = nil,
-        textFilter: String? = nil,
-        sort: CardBacksSortRequest = .none,
-        page: NSNumber? = nil,
-        pageSize: NSNumber? = nil,
-        completionHandler: @escaping(@Sendable (CardBacksResponse?, Error?) -> Void)
-    ) -> Progress {
-        let progress: Progress = .init(totalUnitCount: 1)
-        
-        let task: Task<Void, Never> = .init {
-            let cardBacksResponse: CardBacksResponse?
-            let error: Error?
-            
-            do {
-                cardBacksResponse = try await cardBacks(locale: locale, cardBackCategory: cardBackCategory, textFilter: textFilter, sort: sort, page: page?.intValue, pageSize: pageSize?.intValue)
-                error = nil
-            } catch let _error {
-                cardBacksResponse = nil
-                error = _error
-            }
-            
-            progress.completedUnitCount = 1
-            completionHandler(cardBacksResponse, error)
-        }
-        
-        progress.cancellationHandler = {
-            task.cancel()
-        }
-        
-        return progress
-    }
-    
+    @AddObjCCompletionHandler
     public nonisolated func metadata(locale: Locale = .current) async throws -> MetadataResponse {
         try await request(locale: locale, pathComponents: ["hearthstone", "metadata"], queryItems: [])
     }
     
+    // TODO
     public nonisolated func metadata(locale: Locale = .current, metadataType: MetadataTypeRequest) async throws -> MetadataResponse {
         try await request(locale: locale, pathComponents: ["hearthstone", "metadata", metadataType.name], queryItems: [])
     }

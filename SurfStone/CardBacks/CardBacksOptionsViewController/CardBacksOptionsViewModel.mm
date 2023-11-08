@@ -6,3 +6,9 @@
 //
 
 #import "CardBacksOptionsViewModel.hpp"
+
+CardBacksOptionsViewModel::CardBacksOptionsViewModel() {
+    
+}
+
+

@@ -6,11 +6,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HearthstoneAPIService+Macro.hpp"
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 class CardBacksOptionsViewModel {
-//    CardBacksOptionsViewModel
+    CardBacksOptionsViewModel();
+    ~CardBacksOptionsViewModel();
+private:
+    HearthstoneAPIService *apiService;
 };
 
 NS_HEADER_AUDIT_END(nullability, sendability)

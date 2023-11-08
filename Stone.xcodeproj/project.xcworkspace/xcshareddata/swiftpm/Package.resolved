@@ -1,12 +1,30 @@
 {
   "pins" : [
     {
+      "identity" : "handymacros",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pookjw/HandyMacros.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "06db57f34d276b4a9f3595da177687a5180b51d0"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-atomics.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "cd142fd2f64be2100422d658e7411e39489da985"
+      }
+    },
+    {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "ffa3cd6fc2aa62adbedd31d3efaf7c0d86a9f029",
-        "version" : "509.0.1"
+        "revision" : "6ad4ea24b01559dde0773e3d091f1b9e36175036",
+        "version" : "509.0.2"
       }
     },
     {
@@ -15,7 +33,7 @@
       "location" : "https://github.com/apple/swift-testing.git",
       "state" : {
         "branch" : "main",
-        "revision" : "8d4a79d2e974690cf106d8676116b15ac3f0657c"
+        "revision" : "5f74763894ea55199c94e0058c21c1200a4019c8"
       }
     }
   ],
