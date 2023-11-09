@@ -21,15 +21,13 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-testing.git", branch: "main"),
-        .package(url: "https://github.com/apple/swift-atomics.git", branch: "main"),
         .package(url: "https://github.com/pookjw/HandyMacros.git", branch: "main")
     ],
     targets: [
         .target(
             name: "StoneCore",
             dependencies: [
-                .product(name: "HandyMacros", package: "HandyMacros"),
-                .product(name: "Atomics", package: "swift-atomics")
+                .product(name: "HandyMacros", package: "HandyMacros")
             ],
             swiftSettings: [
                 .unsafeFlags(["-strict-concurrency=complete", "-enable-private-imports", "-cxx-interoperability-mode=default"])
