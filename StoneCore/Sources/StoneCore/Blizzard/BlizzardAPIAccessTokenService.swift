@@ -14,11 +14,14 @@ actor BlizzardAPIAccessTokenService {
     }()
     
     func accessToken(region: Locale.Region) async throws -> String {
+        let (cachedAccessToken, cachedExpirationDate, fetchedObjects): (String?, Date?, [BlizzardAPIAccessToken]) = try await fetchAccessTokenCache(region: region)
+        
         if
-            let (accessToken, expirationDate): (String, Date) = try await fetchAccessTokenCache(region: region),
-            expirationDate > .now
+            let cachedAccessToken: String,
+            let cachedExpirationDate: Date,
+            cachedExpirationDate > .now
         {
-            return accessToken
+            return cachedAccessToken
         }
         //
         
@@ -26,6 +29,10 @@ actor BlizzardAPIAccessTokenService {
         let context: NSManagedObjectContext = try await coreDataStack.context
         
         try await context.perform {
+            for fetchedObject in fetchedObjects {
+                context.delete(fetchedObject)
+            }
+            
             let accessTokenObject: BlizzardAPIAccessToken = .init(context: context)
             accessTokenObject.regionCode = region.identifier
             accessTokenObject.expirationDate = expirationDate
@@ -37,7 +44,7 @@ actor BlizzardAPIAccessTokenService {
         return accessToken
     }
     
-    private func fetchAccessTokenCache(region: Locale.Region) async throws -> (accessToken: String, expirationDate: Date)? {
+    private func fetchAccessTokenCache(region: Locale.Region) async throws -> (accessToken: String?, expirationDate: Date?, fetchedObjects: [BlizzardAPIAccessToken]) {
         let regionCode: String = region.identifier
         
         let predicate: Predicate<BlizzardAPIAccessToken> = #Predicate<BlizzardAPIAccessToken> { token in
@@ -46,27 +53,24 @@ actor BlizzardAPIAccessTokenService {
         
         let fetchRequest: NSFetchRequest<BlizzardAPIAccessToken> = BlizzardAPIAccessToken.fetchRequest() as! NSFetchRequest<BlizzardAPIAccessToken>
         fetchRequest.predicate = .init(predicate)
-        fetchRequest.fetchLimit = 1
         
         let context: NSManagedObjectContext = try await coreDataStack.context
         
-        guard
-            let (accessToken, expirationDate): (String, Date) = try await context.perform({
-                guard
-                    let accessTokenObject: BlizzardAPIAccessToken = try context.fetch(fetchRequest).first,
-                    let expirationDate: Date = accessTokenObject.expirationDate
-                else {
-                    return nil
-                }
-                
-                let accessToken: String = accessTokenObject.accessToken
-                return (accessToken, expirationDate)
-            })
-        else {
-            return nil
+        let result: (String?, Date?, [BlizzardAPIAccessToken]) = try await context.perform {
+            let objects: [BlizzardAPIAccessToken] = try context.fetch(fetchRequest)
+            
+            guard let firstObject: BlizzardAPIAccessToken = objects.first else {
+                return (nil, nil, objects)
+            }
+            
+            let expirationDate: Date? = firstObject.expirationDate
+            let accessToken: String = firstObject.accessToken
+            
+            return (accessToken, expirationDate, objects)
         }
         
-        return (accessToken, expirationDate)
+        
+        return result
     }
     
     private func requestAccessToken(region: Locale.Region) async throws -> (accessToken: String, expirationDate: Date) {

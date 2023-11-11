@@ -1,8 +1,7 @@
-@_exported @preconcurrency import CoreData
+@preconcurrency import CoreData
 
-@objc(CoreDataStack)
-public actor CoreDataStack: NSObject {
-    public var container: NSPersistentContainer {
+actor CoreDataStack {
+    var container: NSPersistentContainer {
         get async throws {
             if let _container: NSPersistentContainer {
                 return _container
@@ -24,7 +23,7 @@ public actor CoreDataStack: NSObject {
         }
     }
     
-    public var context: NSManagedObjectContext {
+    var context: NSManagedObjectContext {
         get async throws {
             if let _context: NSManagedObjectContext {
                 return _context
@@ -61,19 +60,16 @@ public actor CoreDataStack: NSObject {
             .appendingPathExtension("sqlite")
     }
     
-    @objc
-    public init(name: String, managedObjectModel: NSManagedObjectModel) {
+    init(name: String, managedObjectModel: NSManagedObjectModel) {
         self.name = name
         self.managedObjectModel = managedObjectModel
     }
     
-    @objc
-    public func container() async throws -> NSPersistentContainer {
+    func container() async throws -> NSPersistentContainer {
         try await container
     }
     
-    @objc
-    public func context() async throws -> NSManagedObjectContext {
+    func context() async throws -> NSManagedObjectContext {
         try await context
     }
     
