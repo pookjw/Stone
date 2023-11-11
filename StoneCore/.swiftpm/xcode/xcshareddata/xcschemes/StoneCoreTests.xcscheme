@@ -38,7 +38,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "SWT_SELECTED_TAGS"
-            value = "test_StackMap"
+            value = "test_accessToken"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
