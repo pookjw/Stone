@@ -1,9 +1,12 @@
 import Foundation
+@preconcurrency import CoreData
 import Testing
-@testable @_private(sourceFile: "CoreDataStack.swift") @preconcurrency import StoneCore
+@testable @_private(sourceFile: "CoreDataStack.swift") import StoneCore
 
 actor CoreDataStackTests {
-    private let stack: CoreDataStack = {
+    private lazy var stack: CoreDataStack = createStack()
+    
+    private let entity: NSEntityDescription = {
         let entity: NSEntityDescription = .init()
         entity.name = "TestModel"
         
@@ -13,23 +16,78 @@ actor CoreDataStackTests {
         numberAttribute.attributeType = .integer64AttributeType
         
         entity.properties = [numberAttribute]
-        
-        let model: NSManagedObjectModel = .init()
-        model.entities = [entity]
-        
-        let stack: CoreDataStack = .init(name: "Test", managedObjectModel: model)
-        return stack
+        return entity
     }()
     
     init() async throws {
         try await stack.destory()
     }
     
-    @Test func test_container() async throws {
+    @Test(.tags(["test_container"])) func test_container() async throws {
         let _: NSPersistentContainer = try await stack.container
     }
     
-    @Test(.tags([Tag(stringLiteral: "test_context")])) func test_context() async throws {
+    @Test(.tags(["test_context"])) func test_context() async throws {
         let _: NSManagedObjectContext = try await stack.context
+    }
+    
+    @Test(.tags(["test_saveAndFetch"]), arguments: 0..<100) func test_saveAndFetch(number: Int) async throws {
+        let context: NSManagedObjectContext = try await stack.context
+        
+        try await context.perform { [entity] in
+            let model_1: NSManagedObject = .init(entity: entity, insertInto: context)
+            model_1.setValue(number, forKey: "number")
+            
+            try context.save()
+            
+            let fetchRequest: NSFetchRequest<NSManagedObject> = try .init(entityName: #require(entity.name))
+            let fetchedObjects: [NSManagedObject] = try context.fetch(fetchRequest)
+            #expect(fetchedObjects.count == 1)
+            let model_2: NSManagedObject = try #require(fetchedObjects.first)
+            
+            let number_2: Int = try #require(model_2.value(forKey: "number") as? Int)
+            #expect(number_2 == number)
+        }
+    }
+    
+    @Test(.tags(["test_destory"])) func test_destory() async throws {
+        weak var container: NSPersistentContainer? = try await stack.container
+        weak var context: NSManagedObjectContext? = try await stack.context
+        
+        try await stack.destory()
+        
+        #expect(container == nil)
+        #expect(context == nil)
+    }
+    
+    @Test(.tags(["test_StackMap"])) func test_StackMap() async throws {
+        var stack_1: CoreDataStack? = createStack()
+        var stack_2: CoreDataStack? = createStack()
+        
+        weak var container_1: NSPersistentContainer? = try await stack_1?.container
+        weak var container_2: NSPersistentContainer? = try await stack_2?.container
+        
+        #expect(container_1 == container_2)
+        
+        weak var context_1: NSManagedObjectContext? = try await stack_1?.context
+        weak var context_2: NSManagedObjectContext? = try await stack_2?.context
+        
+        #expect(context_1 == context_2)
+        
+        stack_1 = nil
+        stack_2 = nil
+        
+        #expect(container_1 == nil)
+        #expect(container_2 == nil)
+        #expect(context_1 == nil)
+        #expect(context_2 == nil)
+    }
+    
+    private func createStack() -> CoreDataStack {
+        let model: NSManagedObjectModel = .init()
+        let entity: NSEntityDescription = entity.copy() as! NSEntityDescription
+        model.entities = [entity]
+        
+        return .init(name: "Test", managedObjectModel: model)
     }
 }

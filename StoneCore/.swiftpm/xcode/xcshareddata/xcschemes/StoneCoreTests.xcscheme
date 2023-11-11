@@ -38,8 +38,8 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "SWT_SELECTED_TAGS"
-            value = "test_context"
-            isEnabled = "NO">
+            value = "test_StackMap"
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>

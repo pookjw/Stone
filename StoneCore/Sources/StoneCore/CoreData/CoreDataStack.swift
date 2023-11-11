@@ -6,15 +6,21 @@ public actor CoreDataStack: NSObject {
         get async throws {
             if let _container: NSPersistentContainer {
                 return _container
-            } else if let container: NSPersistentContainer = await _CoreDataStackMap.shared.load(key: name) {
-                _container = container
-                return container
-            } else {
-                let container: NSPersistentContainer = try await createContainer()
-                _container = container
-                await _CoreDataStackMap.shared.store(key: name, container: container)
-                return container
             }
+            
+            let task: Task<NSPersistentContainer, Error> = .init { @_CoreDataStackMap in
+                if let container: NSPersistentContainer = await _CoreDataStackMap.shared.load(key: name) {
+                    await _set(_container: container)
+                    return container
+                } else {
+                    let container: NSPersistentContainer = try await createContainer()
+                    await _set(_container: container)
+                    await _CoreDataStackMap.shared.store(key: name, container: container)
+                    return container
+                }
+            }
+            
+            return try await task.value
         }
     }
     
@@ -22,15 +28,21 @@ public actor CoreDataStack: NSObject {
         get async throws {
             if let _context: NSManagedObjectContext {
                 return _context
-            } else if let context: NSManagedObjectContext = await _CoreDataStackMap.shared.load(key: name) {
-                _context = context
-                return context
-            } else {
-                let context: NSManagedObjectContext = try await createContext()
-                _context = context
-                await _CoreDataStackMap.shared.store(key: name, context: context)
-                return context
             }
+            
+            let task: Task<NSManagedObjectContext, Error> = .init { @_CoreDataStackMap in
+                if let context: NSManagedObjectContext = await _CoreDataStackMap.shared.load(key: name) {
+                    await _set(_context: context)
+                    return context
+                } else {
+                    let context: NSManagedObjectContext = try await createContext()
+                    await _set(_context: context)
+                    await _CoreDataStackMap.shared.store(key: name, context: context)
+                    return context
+                }
+            }
+            
+            return try await task.value
         }
     }
     
@@ -108,14 +120,30 @@ public actor CoreDataStack: NSObject {
         assert(oldContainer == nil)
         assert(oldContext == nil)
     }
+    
+    private func _set(_container: NSPersistentContainer) {
+        self._container = _container
+    }
+    
+    private func _set(_context: NSManagedObjectContext) {
+        self._context = _context
+    }
 }
 
 @globalActor
 fileprivate actor _CoreDataStackMap {
     static let shared: _CoreDataStackMap = .init()
     
+    static func run<T: Sendable>(resultType: T.Type = T.self, body: @_CoreDataStackMap @Sendable () throws -> T) async rethrows -> T {
+        return try await body()
+    }
+    
     private let containerMap: NSMapTable<NSString, NSPersistentContainer> = .strongToWeakObjects()
     private let contextMap: NSMapTable<NSString, NSManagedObjectContext> = .strongToWeakObjects()
+    
+    private init() {
+        
+    }
     
     func store(key: String, container: NSPersistentContainer?) {
         containerMap.setObject(container, forKey: key as NSString)
