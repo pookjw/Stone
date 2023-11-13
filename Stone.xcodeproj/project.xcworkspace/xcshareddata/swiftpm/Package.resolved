@@ -15,16 +15,7 @@
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
         "branch" : "main",
-        "revision" : "39e732e277b47a19b4f057cec971892d4c757156"
-      }
-    },
-    {
-      "identity" : "swift-testing",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-testing.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "11f376433d80544ec5560d67217dfc1beb0f8c6f"
+        "revision" : "23d207d0b9057f02fcbdb2813f6ec832514c457c"
       }
     }
   ],

@@ -35,13 +35,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "SWT_SELECTED_TAGS"
-            value = "test_saveAndFetch"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

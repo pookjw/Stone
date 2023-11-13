@@ -3,14 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */; };
 		4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */; };
 		4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */; };
-		4FD59A632AF2A3EE00EEEFD8 /* StoneCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FD59A622AF2A3EE00EEEFD8 /* StoneCore */; };
 		4FEF15F02AEBFC810059D1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */; };
 		4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF15F82AEBFCC10059D1FB /* main.mm */; };
 		4FEF15FC2AEBFD0F0059D1FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEF15FB2AEBFD0F0059D1FB /* UIKit.framework */; };
@@ -20,6 +19,7 @@
 		4FEF16432AED75150059D1FB /* CardsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16422AED75150059D1FB /* CardsViewController.mm */; };
 		4FEF16462AED75FD0059D1FB /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16452AED75FD0059D1FB /* SettingsViewController.mm */; };
 		4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF168E2AEDFF4A0059D1FB /* CardOptionsViewController.mm */; };
+		4FF6B22F2B0277CA008E911E /* StoneCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FF6B22E2B0277CA008E911E /* StoneCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +47,6 @@
 		4FEF16452AED75FD0059D1FB /* SettingsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
 		4FEF168D2AEDFF4A0059D1FB /* CardOptionsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardOptionsViewController.hpp; sourceTree = "<group>"; };
 		4FEF168E2AEDFF4A0059D1FB /* CardOptionsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardOptionsViewController.mm; sourceTree = "<group>"; };
-		4FEF16902AEE00630059D1FB /* StoneCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = StoneCore; sourceTree = "<group>"; };
-		4FF6B2192B0241CB008E911E /* StoneCore.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoneCore.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FEF15FC2AEBFD0F0059D1FB /* UIKit.framework in Frameworks */,
-				4FD59A632AF2A3EE00EEEFD8 /* StoneCore in Frameworks */,
+				4FF6B22F2B0277CA008E911E /* StoneCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,8 +94,6 @@
 		4FEF15C22AEBFB4A0059D1FB = {
 			isa = PBXGroup;
 			children = (
-				4FF6B2192B0241CB008E911E /* StoneCore.xctestplan */,
-				4FEF16902AEE00630059D1FB /* StoneCore */,
 				4FEF15E62AEBFC800059D1FB /* SurfStone */,
 				4FEF15CC2AEBFB4A0059D1FB /* Products */,
 				4FEF15FA2AEBFD0F0059D1FB /* Frameworks */,
@@ -185,7 +181,7 @@
 			);
 			name = SurfStone;
 			packageProductDependencies = (
-				4FD59A622AF2A3EE00EEEFD8 /* StoneCore */,
+				4FF6B22E2B0277CA008E911E /* StoneCore */,
 			);
 			productName = SurfStone;
 			productReference = 4FEF15E52AEBFC800059D1FB /* SurfStone.app */;
@@ -215,6 +211,9 @@
 				Base,
 			);
 			mainGroup = 4FEF15C22AEBFB4A0059D1FB;
+			packageReferences = (
+				4FF6B22D2B0277CA008E911E /* XCLocalSwiftPackageReference "StoneCore" */,
+			);
 			productRefGroup = 4FEF15CC2AEBFB4A0059D1FB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -458,8 +457,15 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		4FF6B22D2B0277CA008E911E /* XCLocalSwiftPackageReference "StoneCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = StoneCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		4FD59A622AF2A3EE00EEEFD8 /* StoneCore */ = {
+		4FF6B22E2B0277CA008E911E /* StoneCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StoneCore;
 		};
