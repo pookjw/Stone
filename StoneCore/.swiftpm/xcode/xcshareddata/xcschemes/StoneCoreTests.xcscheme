@@ -38,8 +38,8 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "SWT_SELECTED_TAGS"
-            value = "test_accessToken"
-            isEnabled = "YES">
+            value = "test_saveAndFetch"
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>

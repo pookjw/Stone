@@ -30,7 +30,8 @@ let package = Package(
                 .product(name: "HandyMacros", package: "HandyMacros")
             ],
             swiftSettings: [
-                .unsafeFlags(["-strict-concurrency=complete", "-enable-private-imports", "-cxx-interoperability-mode=default"])
+                // "-cxx-interoperability-mode=default"
+                .unsafeFlags(["-strict-concurrency=complete", "-enable-private-imports"])
             ]
         ),
         .testTarget(
@@ -41,7 +42,8 @@ let package = Package(
             ],
             resources: [.process("Resources")],
             swiftSettings: [
-                .unsafeFlags(["-strict-concurrency=complete", "-cxx-interoperability-mode=default"])
+                // "-cxx-interoperability-mode=default"
+                .unsafeFlags(["-strict-concurrency=complete"])
             ]
         )
     ]

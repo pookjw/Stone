@@ -6,19 +6,6 @@ import Testing
 actor CoreDataStackTests {
     private lazy var stack: CoreDataStack = createStack()
     
-    private let entity: NSEntityDescription = {
-        let entity: NSEntityDescription = .init()
-        entity.name = "TestModel"
-        
-        let numberAttribute: NSAttributeDescription = .init()
-        numberAttribute.name = "number"
-        numberAttribute.isOptional = false
-        numberAttribute.attributeType = .integer64AttributeType
-        
-        entity.properties = [numberAttribute]
-        return entity
-    }()
-    
     init() async throws {
         try await stack.destory()
     }
@@ -34,7 +21,8 @@ actor CoreDataStackTests {
     @Test(.tags(["test_saveAndFetch"]), arguments: 0..<100) func test_saveAndFetch(number: Int) async throws {
         let context: NSManagedObjectContext = try await stack.context
         
-        try await context.perform { [entity] in
+        try await context.perform {
+            let entity: NSEntityDescription = try #require(NSEntityDescription.entity(forEntityName: "TestModel", in: context))
             let model_1: NSManagedObject = .init(entity: entity, insertInto: context)
             model_1.setValue(number, forKey: "number")
             
@@ -85,7 +73,16 @@ actor CoreDataStackTests {
     
     private func createStack() -> CoreDataStack {
         let model: NSManagedObjectModel = .init()
-        let entity: NSEntityDescription = entity.copy() as! NSEntityDescription
+        let entity: NSEntityDescription = .init()
+        entity.name = "TestModel"
+        
+        let numberAttribute: NSAttributeDescription = .init()
+        numberAttribute.name = "number"
+        numberAttribute.isOptional = false
+        numberAttribute.attributeType = .integer64AttributeType
+        
+        entity.properties = [numberAttribute]
+        
         model.entities = [entity]
         
         return .init(name: "Test", managedObjectModel: model)
