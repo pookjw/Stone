@@ -180,19 +180,3 @@ fileprivate struct BlizzardAPITokenResponse: Hashable, Decodable {
         sub = try container.decode(String.self, forKey: BlizzardAPITokenResponse.CodingKeys.sub)
     }
 }
-
-extension Locale.Region {
-    fileprivate var oAuthBaseURL: URL! {
-        var urlComponents: URLComponents = .init()
-        urlComponents.scheme = "https"
-        
-        switch self {
-        case .chinaMainland:
-            urlComponents.host = "oauth.battlenet.com.cn"
-        default:
-            urlComponents.host = "oauth.battle.net"
-        }
-        
-        return urlComponents.url
-    }
-}

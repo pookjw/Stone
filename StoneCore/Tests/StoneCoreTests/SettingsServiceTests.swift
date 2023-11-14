@@ -12,7 +12,7 @@ actor SettingsServiceTests {
     @Test(.tags(["test_regionForAPI"])) func test_regionForAPI() async {
         await #expect(service.regionForAPI == nil)
         
-        let expectedRegion: Locale.Region = .unitedStates
+        let expectedRegion: Locale.Region = .northAmerica
         
         let stream: AsyncStream<Locale.Region?> = await service.regionForAPIDidChangeStream
         let streamTask: Task<Void, Never> = .init {
@@ -47,40 +47,39 @@ actor SettingsServiceTests {
         #expect(expectedRegion == newRegion)
     }
     
-    @Test(.tags(["test_lauguaceCodeForAPI"])) func test_lauguaceCodeForAPI() async {
-        await #expect(service.lauguaceCodeForAPI == nil)
+    @Test(.tags(["test_localeForAPI"])) func test_localeForAPI() async {
+        await #expect(service.localeForAPI == nil)
         
-        let expectedLanguageCode: Locale.LanguageCode = .korean
+        let expectedLocale: Locale = .init(languageCode: .korean, languageRegion: .southKorea)
         
-        let stream: AsyncStream<Locale.LanguageCode?> = await service.lauguaceCodeForAPIDidChangeStream
+        let stream: AsyncStream<Locale?> = await service.localeAPIDidChangeStream
         let streamTask: Task<Void, Never> = .init {
             for await newValue in stream {
-                if expectedLanguageCode == newValue {
+                if expectedLocale == newValue {
                     return
                 }
             }
         }
         
-        let notifications: NotificationCenter.Notifications = NotificationCenter.default.notifications(named: .SettingsServiceLanguageCodeIdentifierForAPIForAPIDidChangeNotification, object: service)
+        let notifications: NotificationCenter.Notifications = NotificationCenter.default.notifications(named: .SettingsServiceLocaleForAPIForAPIDidChangeNotification, object: service)
         let notificationTask: Task<Void, Never> = .init {
             for await notification in notifications {
-                guard let rawValue: String = notification.userInfo?[SettingsService.changedObjectKey] as? String else {
+                guard let newValue: Locale = notification.userInfo?[SettingsService.changedObjectKey] as? Locale else {
                     continue
                 }
                 
-                let newValue: Locale.LanguageCode = .init(rawValue)
-                if expectedLanguageCode == newValue {
+                if expectedLocale == newValue {
                     return
                 }
             }
         }
         
         await Task.yield()
-        await service.set(lauguaceCodeForAPI: expectedLanguageCode)
+        await service.set(localeForAPI: expectedLocale)
         await streamTask.value
         await notificationTask.value
         
-        let newLanguageCode: Locale.LanguageCode? = await service.lauguaceCodeForAPI
-        #expect(expectedLanguageCode == newLanguageCode)
+        let newLocale: Locale? = await service.localeForAPI
+        #expect(expectedLocale == newLocale)
     }
 }
