@@ -12,7 +12,7 @@ actor CoreDataStack {
                     await _set(_container: container)
                     return container
                 } else {
-                    let container: NSPersistentContainer = try await createContainer()
+                    let container: NSPersistentContainer = try await makeContainer()
                     await _set(_container: container)
                     await _CoreDataStackMap.shared.store(key: name, container: container)
                     return container
@@ -34,7 +34,7 @@ actor CoreDataStack {
                     await _set(_context: context)
                     return context
                 } else {
-                    let context: NSManagedObjectContext = try await createContext()
+                    let context: NSManagedObjectContext = try await makeContext()
                     await _set(_context: context)
                     await _CoreDataStackMap.shared.store(key: name, context: context)
                     return context
@@ -73,7 +73,7 @@ actor CoreDataStack {
         try await context
     }
     
-    private func createContainer() async throws -> NSPersistentContainer {
+    private func makeContainer() async throws -> NSPersistentContainer {
         let container: NSPersistentContainer = .init(name: name, managedObjectModel: managedObjectModel)
         let description: NSPersistentStoreDescription = .init(url: containerURL)
         description.shouldAddStoreAsynchronously = true
@@ -91,7 +91,7 @@ actor CoreDataStack {
         return container
     }
     
-    private func createContext() async throws -> NSManagedObjectContext {
+    private func makeContext() async throws -> NSManagedObjectContext {
         let container: NSPersistentContainer = try await container
         let context: NSManagedObjectContext = container.newBackgroundContext()
         

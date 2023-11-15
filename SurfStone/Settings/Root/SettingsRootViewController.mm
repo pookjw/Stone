@@ -1,27 +1,27 @@
 //
-//  CardBacksViewController.mm
+//  SettingsRootViewController.mm
 //  SurfStone
 //
-//  Created by Jinwoo Kim on 11/4/23.
+//  Created by Jinwoo Kim on 10/29/23.
 //
 
-#import "CardBacksViewController.hpp"
-#import "CardBacksOptionsViewController.hpp"
+#import "SettingsRootViewController.hpp"
+#import "SettingsViewController.hpp"
 
 __attribute__((objc_direct_members))
-@interface CardBacksViewController () {
+@interface SettingsRootViewController () {
     UISplitViewController *_childSplitViewController;
-    CardBacksOptionsViewController *_cardBacksOptionsViewController;
+    SettingsViewController *_settingsViewController;
 }
 @property (retain, nonatomic) UISplitViewController *childSplitViewController;
-@property (retain, nonatomic) CardBacksOptionsViewController *cardBacksOptionsViewController;
+@property (retain, nonatomic) SettingsViewController *settingsViewController;
 @end
 
-@implementation CardBacksViewController
+@implementation SettingsRootViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self commonInit_CardBacksViewController];
+        [self commonInit_SettingsRootViewController];
     }
     
     return self;
@@ -29,7 +29,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
-        [self commonInit_CardBacksViewController];
+        [self commonInit_SettingsRootViewController];
     }
     
     return self;
@@ -37,28 +37,24 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_childSplitViewController release];
-    [_cardBacksOptionsViewController release];
+    [_settingsViewController release];
     [super dealloc];
 }
 
-- (void)commonInit_CardBacksViewController __attribute__((objc_direct)) {
+- (void)commonInit_SettingsRootViewController __attribute__((objc_direct)) {
     [self setupTabBarItem];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupChildSplitViewController];
-    [self setupCardBacksOptionsViewController];
-}
-
-- (UIContainerBackgroundStyle)preferredContainerBackgroundStyle {
-    return UIContainerBackgroundStyleHidden;
+    [self setupSettingsViewController];
 }
 
 - (void)setupTabBarItem __attribute__((objc_direct)) {
     UITabBarItem *tabBarItem = self.tabBarItem;
-    tabBarItem.title = @"Card Backs";
-    tabBarItem.image = [UIImage systemImageNamed:@"book.closed"];
+    tabBarItem.title = @"Settings";
+    tabBarItem.image = [UIImage systemImageNamed:@"gearshape"];
 }
 
 - (void)setupChildSplitViewController __attribute__((objc_direct)) {
@@ -79,8 +75,8 @@ __attribute__((objc_direct_members))
     [childSplitViewController didMoveToParentViewController:self];
 }
 
-- (void)setupCardBacksOptionsViewController __attribute__((objc_direct)) {
-    [self.childSplitViewController setViewController:self.cardBacksOptionsViewController forColumn:UISplitViewControllerColumnPrimary];
+- (void)setupSettingsViewController __attribute__((objc_direct)) {
+    [self.childSplitViewController setViewController:self.settingsViewController forColumn:UISplitViewControllerColumnPrimary];
 }
 
 - (UISplitViewController *)childSplitViewController __attribute__((objc_direct)) {
@@ -96,14 +92,15 @@ __attribute__((objc_direct_members))
     return [childSplitViewController autorelease];
 }
 
-- (CardBacksOptionsViewController *)cardBacksOptionsViewController __attribute__((objc_direct)) {
-    if (_cardBacksOptionsViewController) return _cardBacksOptionsViewController;
+- (SettingsViewController *)settingsViewController __attribute__((objc_direct)) {
+    if (_settingsViewController) return _settingsViewController;
     
-    CardBacksOptionsViewController *cardBacksOptionsViewController = [CardBacksOptionsViewController new];
+    SettingsViewController *settingsViewController = [SettingsViewController new];
     
-    [_cardBacksOptionsViewController release];
-    _cardBacksOptionsViewController = [cardBacksOptionsViewController retain];
-    return [cardBacksOptionsViewController autorelease];
+    [_settingsViewController release];
+    _settingsViewController = [settingsViewController retain];
+    return [settingsViewController autorelease];
 }
+
 
 @end

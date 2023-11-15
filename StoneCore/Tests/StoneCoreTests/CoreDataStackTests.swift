@@ -4,7 +4,7 @@ import Testing
 @testable @_private(sourceFile: "CoreDataStack.swift") import StoneCore
 
 actor CoreDataStackTests {
-    private lazy var stack: CoreDataStack = createStack()
+    private lazy var stack: CoreDataStack = makeStack()
     
     init() async throws {
         try await stack.destory()
@@ -49,8 +49,8 @@ actor CoreDataStackTests {
     }
     
     @Test(.tags(["test_StackMap"])) func test_StackMap() async throws {
-        var stack_1: CoreDataStack? = createStack()
-        var stack_2: CoreDataStack? = createStack()
+        var stack_1: CoreDataStack? = makeStack()
+        var stack_2: CoreDataStack? = makeStack()
         
         weak var container_1: NSPersistentContainer? = try await stack_1?.container
         weak var container_2: NSPersistentContainer? = try await stack_2?.container
@@ -71,7 +71,7 @@ actor CoreDataStackTests {
         #expect(context_2 == nil)
     }
     
-    private func createStack() -> CoreDataStack {
+    private func makeStack() -> CoreDataStack {
         let model: NSManagedObjectModel = .init()
         let entity: NSEntityDescription = .init()
         entity.name = "TestModel"
