@@ -8,12 +8,14 @@
 #import "SettingsViewModel.hpp"
 @import StoneCore;
 
-SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource) : _dataSource([dataSource retain]) {
+SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource) : _dataSource([dataSource retain]), _isLoaded(std::make_shared<BOOL>(NO)) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, QOS_MIN_RELATIVE_PRIORITY);
     _queue = dispatch_queue_create("SettingsViewModel", attr);
 }
 
 SettingsViewModel::~SettingsViewModel() {
+    [_regionIdentifierForAPIObserver release];
+    [_localeForAPIObserver release];
     dispatch_release(_queue);
     [_dataSource release];
 }
@@ -22,70 +24,76 @@ void SettingsViewModel::load(std::function<void ()> completion) {
     auto settingsService = SettingsService.sharedInstance;
     auto dataSource = _dataSource;
     auto queue = _queue;
+    auto isLoaded = _isLoaded;
+    
+    // TODO: seperate with static methods
     
     dispatch_async(queue, ^{
-        NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> new];
+        if (*isLoaded.get()) return;
         
-        SettingsSectionModel *apiSectionModel = [[SettingsSectionModel alloc] initWithType:SettingsSectionModelTypeAPI];
-        
-        [snapshot appendSectionsWithIdentifiers:@[apiSectionModel]];
-        [dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
-            
+        [settingsService regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
+            dispatch_async(queue, ^{
+                NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
+                
+                SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot);
+                
+                SettingsItemModel *itemModel = [[SettingsItemModel alloc] initWithType:SettingsItemModelTypeRegion];
+                
+                id value;
+                if (result) {
+                    value = result;
+                } else {
+                    value = [NSNull null];
+                }
+                
+                itemModel.userInfo = @{SettingsItemModelSelectedRegionIdentifierKey: value};
+                
+                [snapshot appendItemsWithIdentifiers:@[itemModel] intoSectionWithIdentifier:sectionModel];
+                [itemModel release];
+                
+                [dataSource applySnapshot:snapshot animatingDifferences:YES];
+                [snapshot release];
+            });
         }];
         
-        [apiSectionModel release];
-        [snapshot release];
+        [settingsService localeForAPIWithCompletionHandler:^(NSLocale * _Nullable result) {
+            dispatch_async(queue, ^{
+                NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
+                
+                SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot);
+                
+                SettingsItemModel *itemModel = [[SettingsItemModel alloc] initWithType:SettingsItemModelTypeLocale];
+                
+                id value;
+                if (result) {
+                    value = result;
+                } else {
+                    value = [NSNull null];
+                }
+                
+                itemModel.userInfo = @{SettingsItemModelSelectedLocaleKey: value};
+                
+                [snapshot appendItemsWithIdentifiers:@[itemModel] intoSectionWithIdentifier:sectionModel];
+                [itemModel release];
+                
+                [dataSource applySnapshot:snapshot animatingDifferences:YES];
+                [snapshot release];
+            });
+        }];
+        
+        NSOperationQueue *operationQueue = [NSOperationQueue new];
+        operationQueue.underlyingQueue = queue;
+        
+        _regionIdentifierForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
+            // TODO
+        }] retain];
+        
+        _localeForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
+            // TODO
+        }] retain];
+        
+        *isLoaded.get() = YES;
     });
-    
-    [settingsService regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
-        dispatch_async(queue, ^{
-            NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
-            
-            SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot);
-            
-            SettingsItemModel *itemModel = [[SettingsItemModel alloc] initWithType:SettingsItemModelTypeRegion];
-            
-            id value;
-            if (result) {
-                value = result;
-            } else {
-                value = [NSNull null];
-            }
-            
-            itemModel.userInfo = @{SettingsItemModelSelectedRegionIdentifierKey: value};
-            
-            [snapshot appendItemsWithIdentifiers:@[itemModel] intoSectionWithIdentifier:sectionModel];
-            [itemModel release];
-            
-            [dataSource applySnapshot:snapshot animatingDifferences:YES];
-            [snapshot release];
-        });
-    }];
-    
-    [settingsService localeForAPIWithCompletionHandler:^(NSLocale * _Nullable result) {
-        dispatch_async(queue, ^{
-            NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
-            
-            SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot);
-            
-            SettingsItemModel *itemModel = [[SettingsItemModel alloc] initWithType:SettingsItemModelTypeLocale];
-            
-            id value;
-            if (result) {
-                value = result;
-            } else {
-                value = [NSNull null];
-            }
-            
-            itemModel.userInfo = @{SettingsItemModelSelectedLocaleKey: value};
-            
-            [snapshot appendItemsWithIdentifiers:@[itemModel] intoSectionWithIdentifier:sectionModel];
-            [itemModel release];
-            
-            [dataSource applySnapshot:snapshot animatingDifferences:YES];
-            [snapshot release];
-        });
-    }];
 }
 
 SettingsSectionModel * SettingsViewModel::appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *,SettingsItemModel *> * _Nonnull snapshot) {

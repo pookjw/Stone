@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
+#import <memory>
 #import "SettingsSectionModel.hpp"
 #import "SettingsItemModel.hpp"
 
@@ -23,6 +24,9 @@ public:
 private:
     UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
+    id<NSObject> _regionIdentifierForAPIObserver;
+    id<NSObject> _localeForAPIObserver;
+    std::shared_ptr<BOOL> const _isLoaded;
     
     SettingsSectionModel * appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type,  NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
 };
