@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <functional>
 #import <memory>
+#import <utility>
 #import "SettingsSectionModel.hpp"
 #import "SettingsItemModel.hpp"
 
@@ -28,7 +29,8 @@ private:
     id<NSObject> _localeForAPIObserver;
     std::shared_ptr<BOOL> const _isLoaded;
     
-    SettingsSectionModel * appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type,  NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
+    static std::pair<SettingsSectionModel *, BOOL> appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type,  NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
+    static SettingsItemModel * _Nullable itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
 };
 
 NS_HEADER_AUDIT_END(nullability, sendability)

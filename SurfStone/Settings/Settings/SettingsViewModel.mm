@@ -35,7 +35,7 @@ void SettingsViewModel::load(std::function<void ()> completion) {
             dispatch_async(queue, ^{
                 NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
                 
-                SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot);
+                SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot).first;
                 
                 SettingsItemModel *itemModel = [[SettingsItemModel alloc] initWithType:SettingsItemModelTypeRegion];
                 
@@ -60,7 +60,7 @@ void SettingsViewModel::load(std::function<void ()> completion) {
             dispatch_async(queue, ^{
                 NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
                 
-                SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot);
+                SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot).first;
                 
                 SettingsItemModel *itemModel = [[SettingsItemModel alloc] initWithType:SettingsItemModelTypeLocale];
                 
@@ -85,7 +85,24 @@ void SettingsViewModel::load(std::function<void ()> completion) {
         operationQueue.underlyingQueue = queue;
         
         _regionIdentifierForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
-            // TODO
+            NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
+            auto itemModel = itemFromSnapshotUsingType(SettingsItemModelTypeRegion, snapshot);
+            
+            if (!itemModel) {
+                [snapshot release];
+                return;
+            }
+            
+            id value = notification.userInfo[SettingsService.changedObjectKey];
+            if (!value) {
+                value = [NSNull null];
+            }
+            
+            itemModel.userInfo = @{SettingsItemModelSelectedRegionIdentifierKey: value};
+            [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
+            
+            [dataSource applySnapshot:snapshot animatingDifferences:YES];
+            [snapshot release];
         }] retain];
         
         _localeForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
@@ -96,8 +113,8 @@ void SettingsViewModel::load(std::function<void ()> completion) {
     });
 }
 
-SettingsSectionModel * SettingsViewModel::appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *,SettingsItemModel *> * _Nonnull snapshot) {
-    __block SettingsSectionModel *existing = nil;
+std::pair<SettingsSectionModel *, BOOL> SettingsViewModel::appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *,SettingsItemModel *> * _Nonnull snapshot) {
+    __block SettingsSectionModel * _Nullable existing = nil;
     [snapshot.sectionIdentifiers enumerateObjectsUsingBlock:^(SettingsSectionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.type == type) {
             existing = obj;
@@ -106,10 +123,23 @@ SettingsSectionModel * SettingsViewModel::appendSectionIntoSnapshotIfNeeded(Sett
     }];
     
     if (existing) {
-        return [[existing retain] autorelease];
+        return {[[existing retain] autorelease], NO};
     }
     
     SettingsSectionModel *sectionModel = [[SettingsSectionModel alloc] initWithType:type];
     [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
-    return [sectionModel autorelease];
+    
+    return {[sectionModel autorelease], YES};
+}
+
+SettingsItemModel * _Nullable SettingsViewModel::itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *,SettingsItemModel *> * _Nonnull snapshot) {
+    __block SettingsItemModel * _Nullable existing = nil;
+    [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(SettingsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.type == type) {
+            existing = obj;
+            *stop = YES;
+        }
+    }];
+    
+    return [[existing retain] autorelease];
 }
