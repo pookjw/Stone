@@ -89,7 +89,7 @@ __attribute__((objc_direct_members))
     settingsViewController.navigationController.navigationBar.prefersLargeTitles = YES;
 }
 
-- (UISplitViewController *)childSplitViewController __attribute__((objc_direct)) {
+- (UISplitViewController *)childSplitViewController {
     if (_childSplitViewController) return _childSplitViewController;
     
     UISplitViewController *childSplitViewController = [[UISplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
@@ -102,7 +102,7 @@ __attribute__((objc_direct_members))
     return [childSplitViewController autorelease];
 }
 
-- (SettingsViewController *)settingsViewController __attribute__((objc_direct)) {
+- (SettingsViewController *)settingsViewController {
     if (_settingsViewController) return _settingsViewController;
     
     SettingsViewController *settingsViewController = [SettingsViewController new];
@@ -113,7 +113,7 @@ __attribute__((objc_direct_members))
     return [settingsViewController autorelease];
 }
 
-- (SettingsLocaleViewController *)settingsLocaleViewController __attribute__((objc_direct)) {
+- (SettingsLocaleViewController *)settingsLocaleViewController {
     if (_settingsLocaleViewController) return _settingsLocaleViewController;
     
     SettingsLocaleViewController *settingsLocaleViewController = [SettingsLocaleViewController new];
@@ -123,7 +123,7 @@ __attribute__((objc_direct_members))
     return [settingsLocaleViewController autorelease];
 }
 
-- (SettingsRegionViewController *)settingsRegionViewController __attribute__((objc_direct)) {
+- (SettingsRegionViewController *)settingsRegionViewController {
     if (_settingsRegionViewController) return _settingsRegionViewController;
     
     SettingsRegionViewController *settingsRegionViewController = [SettingsRegionViewController new];

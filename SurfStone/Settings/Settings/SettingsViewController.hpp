@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "SettingsItemModel.hpp"
 
-NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+NS_ASSUME_NONNULL_BEGIN
 
 @class SettingsViewController;
 @protocol SettingsViewControllerDelegate <NSObject>
@@ -19,4 +19,4 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 @property (weak, nonatomic) id<SettingsViewControllerDelegate> _Nullable delegate;
 @end
 
-NS_HEADER_AUDIT_END(nullability, sendability)
+NS_ASSUME_NONNULL_END

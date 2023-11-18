@@ -39,7 +39,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)commonInit_SettingsRegionViewController __attribute__((objc_direct)) {
-    self.title = @"Card Language";
+    self.title = @"Server Location";
 }
 
 - (void)viewDidLoad {
@@ -114,7 +114,7 @@ __attribute__((objc_direct_members))
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    _viewModel.get()->handleSelectionForIndexPath(indexPath, ^(){});
 }
 
 @end

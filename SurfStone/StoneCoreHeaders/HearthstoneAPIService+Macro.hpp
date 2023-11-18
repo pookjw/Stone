@@ -8,10 +8,10 @@
 #import <Foundation/Foundation.h>
 @import StoneCore;
 
-NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+NS_ASSUME_NONNULL_BEGIN
 
 @interface HearthstoneAPIService (Macro)
 - (NSProgress *)cardBacksWithLocale:(NSLocale *)arg1 cardBackCategory:(NSString * _Nullable)arg2 textFilter:(NSString * _Nullable)arg3 sort:(HSCardBacksSortRequest)arg4 page:(NSNumber * _Nullable)arg5 pageSize:(NSNumber * _Nullable)arg6 completion:(void (^)(HSCardBacksResponse * _Nullable response, NSError * _Nullable error))arg7;
 @end
 
-NS_HEADER_AUDIT_END(nullability, sendability)
+NS_ASSUME_NONNULL_END

@@ -138,6 +138,8 @@ void SettingsViewModel::load(std::function<void ()> completionHandler) {
             [snapshot release];
         }] retain];
         
+        [operationQueue release];
+        
         *isLoaded.get() = YES;
     });
 }

@@ -83,7 +83,7 @@ __attribute__((objc_direct_members))
     [self.childSplitViewController setViewController:self.cardBacksOptionsViewController forColumn:UISplitViewControllerColumnPrimary];
 }
 
-- (UISplitViewController *)childSplitViewController __attribute__((objc_direct)) {
+- (UISplitViewController *)childSplitViewController {
     if (_childSplitViewController) return _childSplitViewController;
     
     UISplitViewController *childSplitViewController = [[UISplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
@@ -96,7 +96,7 @@ __attribute__((objc_direct_members))
     return [childSplitViewController autorelease];
 }
 
-- (CardBacksOptionsViewController *)cardBacksOptionsViewController __attribute__((objc_direct)) {
+- (CardBacksOptionsViewController *)cardBacksOptionsViewController {
     if (_cardBacksOptionsViewController) return _cardBacksOptionsViewController;
     
     CardBacksOptionsViewController *cardBacksOptionsViewController = [CardBacksOptionsViewController new];

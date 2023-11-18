@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, SettingsRegionSectionModelType) {
     SettingsRegionSectionModelTypeRegions
@@ -21,4 +21,4 @@ __attribute__((objc_direct_members))
 - (instancetype)initWithType:(SettingsRegionSectionModelType)type NS_DESIGNATED_INITIALIZER;
 @end
 
-NS_HEADER_AUDIT_END(nullability, sendability)
+NS_ASSUME_NONNULL_END

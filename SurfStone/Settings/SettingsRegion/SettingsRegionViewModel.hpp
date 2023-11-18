@@ -11,7 +11,7 @@
 #import "SettingsRegionSectionModel.hpp"
 #import "SettingsRegionItemModel.hpp"
 
-NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+NS_ASSUME_NONNULL_BEGIN
 
 class SettingsRegionViewModel {
 public:
@@ -21,11 +21,14 @@ public:
     SettingsRegionViewModel& operator=(const SettingsRegionViewModel&) = delete;
     
     void load(std::function<void ()> completionHandler);
+    void handleSelectionForIndexPath(NSIndexPath *indexPath, std::function<void ()> completionHandler);
 private:
     UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
     id<NSObject> _regionIdentifierForAPIObserver;
     std::shared_ptr<BOOL> const _isLoaded;
+    
+    static void reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource);
 };
 
-NS_HEADER_AUDIT_END(nullability, sendability)
+NS_ASSUME_NONNULL_END

@@ -12,7 +12,7 @@
 #import "SettingsSectionModel.hpp"
 #import "SettingsItemModel.hpp"
 
-NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+NS_ASSUME_NONNULL_BEGIN
 
 class SettingsViewModel {
 public:
@@ -35,4 +35,4 @@ private:
     static SettingsItemModel * _Nullable itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
 };
 
-NS_HEADER_AUDIT_END(nullability, sendability)
+NS_ASSUME_NONNULL_END
