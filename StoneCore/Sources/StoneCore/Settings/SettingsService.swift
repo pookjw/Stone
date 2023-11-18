@@ -66,7 +66,7 @@ public actor SettingsService: NSObject {
         ]
     }
     
-    @objc nonisolated var availableRegionIdentifiersForAPI: Set<String> {
+    @objc public nonisolated var availableRegionIdentifiersForAPI: Set<String> {
         .init(availableRegionsForAPI.map { $0.identifier })
     }
     
@@ -129,7 +129,14 @@ public actor SettingsService: NSObject {
     }
     
     @objc public func set(regionIdentifierForAPI: String?) async {
-        userDefaults.set(regionIdentifierForAPI, forKey: #keyPath(UserDefaults.regionIdentifierForAPI))
+        let regionForAPI: Locale.Region?
+        if let regionIdentifierForAPI: String {
+            regionForAPI = .init(regionIdentifierForAPI)
+        } else {
+            regionForAPI = nil
+        }
+        
+        set(regionForAPI: regionForAPI)
     }
     
     // MARK: - localeForAPI
@@ -170,8 +177,8 @@ public actor SettingsService: NSObject {
         localeForAPI
     }
     
-    @objc public func objc_set(localeForAPI: Locale?) async {
-        userDefaults.set(localeForAPI?.identifier, forKey: #keyPath(UserDefaults.localeIdentifierForAPI))
+    @objc(setLocaleForAPI:completionHandler:) public func objc_set(localeForAPI: Locale?) async {
+        set(localeForAPI: localeForAPI)
     }
     
     //

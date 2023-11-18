@@ -7,14 +7,20 @@
 
 #import "SettingsRootViewController.hpp"
 #import "SettingsViewController.hpp"
+#import "SettingsLocaleViewController.hpp"
+#import "SettingsRegionViewController.hpp"
 
 __attribute__((objc_direct_members))
-@interface SettingsRootViewController () {
+@interface SettingsRootViewController () <SettingsViewControllerDelegate> {
     UISplitViewController *_childSplitViewController;
     SettingsViewController *_settingsViewController;
+    SettingsLocaleViewController *_settingsLocaleViewController;
+    SettingsRegionViewController *_settingsRegionViewController;
 }
-@property (retain, nonatomic) UISplitViewController *childSplitViewController;
-@property (retain, nonatomic) SettingsViewController *settingsViewController;
+@property (retain, readonly, nonatomic) UISplitViewController *childSplitViewController;
+@property (retain, readonly, nonatomic) SettingsViewController *settingsViewController;
+@property (retain, readonly, nonatomic) SettingsLocaleViewController *settingsLocaleViewController;
+@property (retain, readonly, nonatomic) SettingsRegionViewController *settingsRegionViewController;
 @end
 
 @implementation SettingsRootViewController
@@ -38,6 +44,8 @@ __attribute__((objc_direct_members))
 - (void)dealloc {
     [_childSplitViewController release];
     [_settingsViewController release];
+    [_settingsLocaleViewController release];
+    [_settingsRegionViewController release];
     [super dealloc];
 }
 
@@ -76,7 +84,9 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupSettingsViewController __attribute__((objc_direct)) {
-    [self.childSplitViewController setViewController:self.settingsViewController forColumn:UISplitViewControllerColumnPrimary];
+    SettingsViewController *settingsViewController = self.settingsViewController;
+    [self.childSplitViewController setViewController:settingsViewController forColumn:UISplitViewControllerColumnPrimary];
+    settingsViewController.navigationController.navigationBar.prefersLargeTitles = YES;
 }
 
 - (UISplitViewController *)childSplitViewController __attribute__((objc_direct)) {
@@ -96,11 +106,56 @@ __attribute__((objc_direct_members))
     if (_settingsViewController) return _settingsViewController;
     
     SettingsViewController *settingsViewController = [SettingsViewController new];
+    settingsViewController.delegate = self;
     
     [_settingsViewController release];
     _settingsViewController = [settingsViewController retain];
     return [settingsViewController autorelease];
 }
 
+- (SettingsLocaleViewController *)settingsLocaleViewController __attribute__((objc_direct)) {
+    if (_settingsLocaleViewController) return _settingsLocaleViewController;
+    
+    SettingsLocaleViewController *settingsLocaleViewController = [SettingsLocaleViewController new];
+    
+    [_settingsLocaleViewController release];
+    _settingsLocaleViewController = [settingsLocaleViewController retain];
+    return [settingsLocaleViewController autorelease];
+}
+
+- (SettingsRegionViewController *)settingsRegionViewController __attribute__((objc_direct)) {
+    if (_settingsRegionViewController) return _settingsRegionViewController;
+    
+    SettingsRegionViewController *settingsRegionViewController = [SettingsRegionViewController new];
+    
+    [_settingsRegionViewController release];
+    _settingsRegionViewController = [settingsRegionViewController retain];
+    return [settingsRegionViewController autorelease];
+}
+
+#pragma mark - SettingsViewControllerDelegate
+
+- (void)settingsViewController:(SettingsViewController *)viewController didSelectItemModel:(SettingsItemModel *)itemModel {
+    switch (itemModel.type) {
+        case SettingsItemModelTypeLocale: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                SettingsLocaleViewController *settingsLocaleViewController = self.settingsLocaleViewController;
+                [self.childSplitViewController setViewController:settingsLocaleViewController forColumn:UISplitViewControllerColumnSecondary];
+                [settingsLocaleViewController.navigationController setViewControllers:@[settingsLocaleViewController] animated:NO];
+            });
+            break;
+        }
+        case SettingsItemModelTypeRegion: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                SettingsRegionViewController *settingsRegionViewController = self.settingsRegionViewController;
+                [self.childSplitViewController setViewController:settingsRegionViewController forColumn:UISplitViewControllerColumnSecondary];
+                [settingsRegionViewController.navigationController setViewControllers:@[settingsRegionViewController] animated:NO];
+            });
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 @end

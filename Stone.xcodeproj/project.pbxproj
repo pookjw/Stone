@@ -14,6 +14,12 @@
 		4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */; };
 		4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */; };
 		4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */; };
+		4FD6A1C92B08DFEC00B3511A /* SettingsLocaleViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1C82B08DFEC00B3511A /* SettingsLocaleViewController.mm */; };
+		4FD6A1CD2B08E0FB00B3511A /* SettingsRegionViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1CC2B08E0FB00B3511A /* SettingsRegionViewController.mm */; };
+		4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1CE2B08E31E00B3511A /* SettingsLocaleViewModel.mm */; };
+		4FD6A1D32B08E37000B3511A /* SettingsRegionSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1D22B08E37000B3511A /* SettingsRegionSectionModel.mm */; };
+		4FD6A1D62B08E37A00B3511A /* SettingsRegionItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1D52B08E37A00B3511A /* SettingsRegionItemModel.mm */; };
+		4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1D72B08E86C00B3511A /* SettingsRegionViewModel.mm */; };
 		4FEF15F02AEBFC810059D1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */; };
 		4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF15F82AEBFCC10059D1FB /* main.mm */; };
 		4FEF15FC2AEBFD0F0059D1FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEF15FB2AEBFD0F0059D1FB /* UIKit.framework */; };
@@ -43,6 +49,18 @@
 		4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsViewController.mm; sourceTree = "<group>"; };
 		4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsViewModel.mm; sourceTree = "<group>"; };
 		4FB186DF2AF68C2500A87403 /* CardBacksOptionsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsViewModel.hpp; sourceTree = "<group>"; };
+		4FD6A1C72B08DFEC00B3511A /* SettingsLocaleViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsLocaleViewController.hpp; sourceTree = "<group>"; };
+		4FD6A1C82B08DFEC00B3511A /* SettingsLocaleViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleViewController.mm; sourceTree = "<group>"; };
+		4FD6A1CB2B08E0FB00B3511A /* SettingsRegionViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsRegionViewController.hpp; sourceTree = "<group>"; };
+		4FD6A1CC2B08E0FB00B3511A /* SettingsRegionViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsRegionViewController.mm; sourceTree = "<group>"; };
+		4FD6A1CE2B08E31E00B3511A /* SettingsLocaleViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleViewModel.mm; sourceTree = "<group>"; };
+		4FD6A1CF2B08E31E00B3511A /* SettingsLocaleViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsLocaleViewModel.hpp; sourceTree = "<group>"; };
+		4FD6A1D12B08E37000B3511A /* SettingsRegionSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsRegionSectionModel.hpp; sourceTree = "<group>"; };
+		4FD6A1D22B08E37000B3511A /* SettingsRegionSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsRegionSectionModel.mm; sourceTree = "<group>"; };
+		4FD6A1D42B08E37A00B3511A /* SettingsRegionItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsRegionItemModel.hpp; sourceTree = "<group>"; };
+		4FD6A1D52B08E37A00B3511A /* SettingsRegionItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsRegionItemModel.mm; sourceTree = "<group>"; };
+		4FD6A1D72B08E86C00B3511A /* SettingsRegionViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsRegionViewModel.mm; sourceTree = "<group>"; };
+		4FD6A1D82B08E86D00B3511A /* SettingsRegionViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsRegionViewModel.hpp; sourceTree = "<group>"; };
 		4FEF15E52AEBFC800059D1FB /* SurfStone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfStone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FEF15F42AEBFC810059D1FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -128,6 +146,32 @@
 			path = CardBacksOptionsViewController;
 			sourceTree = "<group>";
 		};
+		4FD6A1C62B08DFC900B3511A /* SettingsLocale */ = {
+			isa = PBXGroup;
+			children = (
+				4FD6A1C72B08DFEC00B3511A /* SettingsLocaleViewController.hpp */,
+				4FD6A1C82B08DFEC00B3511A /* SettingsLocaleViewController.mm */,
+				4FD6A1CF2B08E31E00B3511A /* SettingsLocaleViewModel.hpp */,
+				4FD6A1CE2B08E31E00B3511A /* SettingsLocaleViewModel.mm */,
+			);
+			path = SettingsLocale;
+			sourceTree = "<group>";
+		};
+		4FD6A1CA2B08E0CD00B3511A /* SettingsRegion */ = {
+			isa = PBXGroup;
+			children = (
+				4FD6A1CB2B08E0FB00B3511A /* SettingsRegionViewController.hpp */,
+				4FD6A1CC2B08E0FB00B3511A /* SettingsRegionViewController.mm */,
+				4FD6A1D82B08E86D00B3511A /* SettingsRegionViewModel.hpp */,
+				4FD6A1D72B08E86C00B3511A /* SettingsRegionViewModel.mm */,
+				4FD6A1D12B08E37000B3511A /* SettingsRegionSectionModel.hpp */,
+				4FD6A1D22B08E37000B3511A /* SettingsRegionSectionModel.mm */,
+				4FD6A1D42B08E37A00B3511A /* SettingsRegionItemModel.hpp */,
+				4FD6A1D52B08E37A00B3511A /* SettingsRegionItemModel.mm */,
+			);
+			path = SettingsRegion;
+			sourceTree = "<group>";
+		};
 		4FEF15C22AEBFB4A0059D1FB = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +233,8 @@
 			children = (
 				4F276CEF2B051D21009C3E49 /* Root */,
 				4F276CF02B051D27009C3E49 /* Settings */,
+				4FD6A1C62B08DFC900B3511A /* SettingsLocale */,
+				4FD6A1CA2B08E0CD00B3511A /* SettingsRegion */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -278,17 +324,23 @@
 			files = (
 				4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */,
 				4F276CF92B051E80009C3E49 /* SettingsSectionModel.mm in Sources */,
+				4FD6A1D32B08E37000B3511A /* SettingsRegionSectionModel.mm in Sources */,
 				4FEF163D2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */,
+				4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */,
 				4F276CF62B051E43009C3E49 /* SettingsViewModel.mm in Sources */,
 				4FEF16012AEBFD360059D1FB /* AppDelegate.mm in Sources */,
 				4FEF16432AED75150059D1FB /* CardsViewController.mm in Sources */,
 				4F276CFC2B051FAF009C3E49 /* SettingsItemModel.mm in Sources */,
+				4FD6A1D62B08E37A00B3511A /* SettingsRegionItemModel.mm in Sources */,
+				4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */,
 				4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */,
 				4FEF16462AED75FD0059D1FB /* SettingsRootViewController.mm in Sources */,
 				4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */,
 				4F276CF32B051D3C009C3E49 /* SettingsViewController.mm in Sources */,
 				4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */,
+				4FD6A1CD2B08E0FB00B3511A /* SettingsRegionViewController.mm in Sources */,
+				4FD6A1C92B08DFEC00B3511A /* SettingsLocaleViewController.mm in Sources */,
 				4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

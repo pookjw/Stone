@@ -6,12 +6,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SettingsItemModel.hpp"
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-NS_SWIFT_UI_ACTOR
-@interface SettingsViewController : UIViewController
+@class SettingsViewController;
+@protocol SettingsViewControllerDelegate <NSObject>
+@optional - (void)settingsViewController:(SettingsViewController *)viewController didSelectItemModel:(SettingsItemModel *)itemModel;
+@end
 
+@interface SettingsViewController : UIViewController
+@property (weak, nonatomic) id<SettingsViewControllerDelegate> _Nullable delegate;
 @end
 
 NS_HEADER_AUDIT_END(nullability, sendability)

@@ -21,7 +21,9 @@ public:
     SettingsViewModel(const SettingsViewModel&) = delete;
     SettingsViewModel& operator=(const SettingsViewModel&) = delete;
     
-    void load(std::function<void ()> completion);
+    void load(std::function<void ()> completionHandler);
+    SettingsSectionModel * _Nullable unsafe_sectionModelFromIndexPath(NSIndexPath *indexPath);
+    void itemModelFromIndexPath(NSIndexPath *indexPath, std::function<void (SettingsItemModel * _Nullable)> completionHandler);
 private:
     UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> * const _dataSource;
     dispatch_queue_t _queue;

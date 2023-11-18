@@ -14,8 +14,8 @@ typedef NS_ENUM(NSUInteger, SettingsItemModelType) {
     SettingsItemModelTypeLocale
 };
 
-static NSString * const SettingsItemModelSelectedRegionIdentifierKey = @"SettingsItemModelSelectedRegionIdentifierKey";
-static NSString * const SettingsItemModelSelectedLocaleKey = @"SettingsItemModelSelectedLocaleKey";
+extern NSString * const SettingsItemModelSelectedRegionIdentifierKey;
+extern NSString * const SettingsItemModelSelectedLocaleKey;
 
 __attribute__((objc_direct_members))
 @interface SettingsItemModel : NSObject

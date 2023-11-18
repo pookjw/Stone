@@ -7,6 +7,9 @@
 
 #import "SettingsItemModel.hpp"
 
+NSString * const SettingsItemModelSelectedRegionIdentifierKey = @"SettingsItemModelSelectedRegionIdentifierKey";
+NSString * const SettingsItemModelSelectedLocaleKey = @"SettingsItemModelSelectedLocaleKey";
+
 __attribute__((objc_direct_members))
 @interface SettingsItemModel () {
     SettingsItemModelType _type;

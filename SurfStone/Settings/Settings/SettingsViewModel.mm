@@ -14,22 +14,26 @@ SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<Settings
 }
 
 SettingsViewModel::~SettingsViewModel() {
+    dispatch_release(_queue);
     [_regionIdentifierForAPIObserver release];
     [_localeForAPIObserver release];
-    dispatch_release(_queue);
     [_dataSource release];
 }
 
-void SettingsViewModel::load(std::function<void ()> completion) {
+void SettingsViewModel::load(std::function<void ()> completionHandler) {
     auto settingsService = SettingsService.sharedInstance;
     auto dataSource = _dataSource;
     auto queue = _queue;
     auto isLoaded = _isLoaded;
     
-    // TODO: seperate with static methods
-    
     dispatch_async(queue, ^{
         if (*isLoaded.get()) return;
+        
+        __block NSUInteger count = 0;
+        
+        [settingsService setWithRegionIdentifierForAPI:@"021" completionHandler:^{
+            
+        }];
         
         [settingsService regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
             dispatch_async(queue, ^{
@@ -53,6 +57,10 @@ void SettingsViewModel::load(std::function<void ()> completion) {
                 
                 [dataSource applySnapshot:snapshot animatingDifferences:YES];
                 [snapshot release];
+                
+                if (++count == 2) {
+                    completionHandler();
+                }
             });
         }];
         
@@ -78,6 +86,10 @@ void SettingsViewModel::load(std::function<void ()> completion) {
                 
                 [dataSource applySnapshot:snapshot animatingDifferences:YES];
                 [snapshot release];
+                
+                if (++count == 2) {
+                    completionHandler();
+                }
             });
         }];
         
@@ -106,10 +118,40 @@ void SettingsViewModel::load(std::function<void ()> completion) {
         }] retain];
         
         _localeForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
-            // TODO
+            NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
+            auto itemModel = itemFromSnapshotUsingType(SettingsItemModelTypeLocale, snapshot);
+            
+            if (!itemModel) {
+                [snapshot release];
+                return;
+            }
+            
+            id value = notification.userInfo[SettingsService.changedObjectKey];
+            if (!value) {
+                value = [NSNull null];
+            }
+            
+            itemModel.userInfo = @{SettingsItemModelSelectedLocaleKey: value};
+            [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
+            
+            [dataSource applySnapshot:snapshot animatingDifferences:YES];
+            [snapshot release];
         }] retain];
         
         *isLoaded.get() = YES;
+    });
+}
+
+SettingsSectionModel * _Nullable SettingsViewModel::unsafe_sectionModelFromIndexPath(NSIndexPath * _Nonnull indexPath) {
+    return [_dataSource sectionIdentifierForIndex:indexPath.section];
+}
+
+void SettingsViewModel::itemModelFromIndexPath(NSIndexPath * _Nonnull indexPath, std::function<void (SettingsItemModel * _Nullable)> completionHandler) {
+    auto dataSource = _dataSource;
+    
+    dispatch_async(_queue, ^{
+        auto itemModel = [dataSource itemIdentifierForIndexPath:indexPath];
+        completionHandler(itemModel);
     });
 }
 
