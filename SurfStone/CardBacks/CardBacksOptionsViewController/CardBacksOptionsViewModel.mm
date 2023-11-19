@@ -18,6 +18,7 @@ CardBacksOptionsViewModel::~CardBacksOptionsViewModel() {
     [_cardBackCategoriesMetadataProgress cancel];
     [_cardBackCategoriesMetadataProgress release];
     [_apiService release];
+    [_dataSource release];
 }
 
 void CardBacksOptionsViewModel::load(std::function<void ()> completionHandler) {

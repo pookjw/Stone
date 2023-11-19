@@ -24,6 +24,7 @@
 		4FD6A1DF2B0925BB00B3511A /* SettingsLocaleItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1DE2B0925BB00B3511A /* SettingsLocaleItemModel.mm */; };
 		4FD6A1E22B09DC1C00B3511A /* CardBacksSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */; };
 		4FD6A1E52B09DC2400B3511A /* CardBacksItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */; };
+		4FD6A1FB2B0A32C600B3511A /* NewWindowViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1FA2B0A32C600B3511A /* NewWindowViewController.mm */; };
 		4FEF15F02AEBFC810059D1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */; };
 		4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF15F82AEBFCC10059D1FB /* main.mm */; };
 		4FEF15FC2AEBFD0F0059D1FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEF15FB2AEBFD0F0059D1FB /* UIKit.framework */; };
@@ -73,6 +74,8 @@
 		4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksSectionModel.mm; sourceTree = "<group>"; };
 		4FD6A1E32B09DC2400B3511A /* CardBacksItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksItemModel.hpp; sourceTree = "<group>"; };
 		4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksItemModel.mm; sourceTree = "<group>"; };
+		4FD6A1F92B0A32C600B3511A /* NewWindowViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NewWindowViewController.hpp; sourceTree = "<group>"; };
+		4FD6A1FA2B0A32C600B3511A /* NewWindowViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewWindowViewController.mm; sourceTree = "<group>"; };
 		4FEF15E52AEBFC800059D1FB /* SurfStone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfStone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FEF15F42AEBFC810059D1FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -192,6 +195,15 @@
 			path = SettingsRegion;
 			sourceTree = "<group>";
 		};
+		4FD6A21B2B0A69EF00B3511A /* NewWidnow */ = {
+			isa = PBXGroup;
+			children = (
+				4FD6A1F92B0A32C600B3511A /* NewWindowViewController.hpp */,
+				4FD6A1FA2B0A32C600B3511A /* NewWindowViewController.mm */,
+			);
+			path = NewWidnow;
+			sourceTree = "<group>";
+		};
 		4FEF15C22AEBFB4A0059D1FB = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +235,7 @@
 				4FEF16032AEBFDA10059D1FB /* SceneDelegate.mm */,
 				4FEF163B2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.h */,
 				4FEF163C2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm */,
+				4FD6A21B2B0A69EF00B3511A /* NewWidnow */,
 				4FEF163F2AED74D40059D1FB /* Cards */,
 				4FB186D62AF6744200A87403 /* CardBacks */,
 				4FEF16402AED74E80059D1FB /* Settings */,
@@ -360,6 +373,7 @@
 				4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */,
 				4FD6A1DC2B0924C400B3511A /* SettingsLocaleSectionModel.mm in Sources */,
 				4F276CF32B051D3C009C3E49 /* SettingsViewController.mm in Sources */,
+				4FD6A1FB2B0A32C600B3511A /* NewWindowViewController.mm in Sources */,
 				4FD6A1DF2B0925BB00B3511A /* SettingsLocaleItemModel.mm in Sources */,
 				4FD6A1E22B09DC1C00B3511A /* CardBacksSectionModel.mm in Sources */,
 				4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */,

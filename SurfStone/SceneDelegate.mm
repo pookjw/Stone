@@ -9,6 +9,7 @@
 #import "CardsViewController.hpp"
 #import "CardBacksViewController.hpp"
 #import "SettingsRootViewController.hpp"
+#import "NewWindowViewController.hpp"
 #import <objc/message.h>
 
 @implementation SceneDelegate
@@ -34,6 +35,22 @@
     [cardsViewController release];
     [cardBacksViewController release];
     [settingsViewController release];
+    
+    //
+    
+    id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (tabBarController, NSSelectorFromString (@"mrui_ornamentsItem"));
+    NewWindowViewController *newWindowViewController = [NewWindowViewController new];
+    id ornament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), newWindowViewController);
+    [newWindowViewController release];
+    
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(ornament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 400.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.5f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(ornament, NSSelectorFromString(@"_setZOffset:"), 100.f);
+    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[ornament]);
+    [ornament release];
+    
+    //
     
     window.rootViewController = tabBarController;
     [tabBarController release];
