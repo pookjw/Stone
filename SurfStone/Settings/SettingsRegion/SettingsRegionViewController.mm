@@ -70,7 +70,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupViewModel __attribute__((objc_direct)) {
-    self.viewModel = std::make_shared<SettingsRegionViewModel>([self makeDataSource]);
+    _viewModel = std::make_shared<SettingsRegionViewModel>([self makeDataSource]);
 }
 
 - (UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *)makeDataSource __attribute__((objc_direct)) {
@@ -114,7 +114,7 @@ __attribute__((objc_direct_members))
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    _viewModel.get()->handleSelectionForIndexPath(indexPath, ^(){});
+    _viewModel.get()->handleSelectionForIndexPath(indexPath, ^() {});
 }
 
 @end

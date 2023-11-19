@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
-#import <memory>
+#import <mutex>
 #import "SettingsRegionSectionModel.hpp"
 #import "SettingsRegionItemModel.hpp"
 
@@ -26,7 +26,8 @@ private:
     UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
     id<NSObject> _regionIdentifierForAPIObserver;
-    std::shared_ptr<BOOL> const _isLoaded;
+    BOOL _isLoaded;
+    std::mutex _mutex;
     
     static void reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource);
 };

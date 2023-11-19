@@ -39,7 +39,7 @@
          <EnvironmentVariable
             key = "SWT_SELECTED_TAGS"
             value = "test_accessToken"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>

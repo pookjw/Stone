@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
-#import <memory>
+#import <mutex>
 #import "SettingsLocaleSectionModel.hpp"
 #import "SettingsLocaleItemModel.hpp"
 
@@ -26,9 +26,10 @@ private:
     UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
     id<NSObject> _localeForAPIObserver;
-    std::shared_ptr<BOOL> const _isLoaded;
+    BOOL _isLoaded;
+    std::mutex _mutex;
     
-    static void reconfigureWithSelectedLocale(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource);
+    static void reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale, UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource);
 };
 
 NS_ASSUME_NONNULL_END
