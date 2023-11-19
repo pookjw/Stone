@@ -29,7 +29,9 @@ private:
     BOOL _isLoaded;
     std::mutex _mutex;
     
+    static void setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource);
     static void reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale, UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource);
+    void startObserving();
 };
 
 NS_ASSUME_NONNULL_END

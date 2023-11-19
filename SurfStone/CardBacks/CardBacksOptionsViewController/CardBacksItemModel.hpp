@@ -16,12 +16,16 @@ typedef NS_ENUM(NSUInteger, CardBacksItemModelType) {
 };
 
 extern NSString * const CardBacksItemModelTextFilterKey;
-extern NSString * const CardBacksItemModelCardBackCategoryKey;
-extern NSString * const CardBacksItemModelSortKey;
+
+extern NSString * const CardBacksItemModelSelectedCardBackCategoryKey;
+extern NSString * const CardBacksItemModelCardBackCategoriesKey;
+
+extern NSString * const CardBacksItemModelSelectedSortKey;
+extern NSString * const CardBacksItemModelSortsKey;
 
 @interface CardBacksItemModel : NSObject
 @property (readonly, nonatomic) CardBacksItemModelType type;
-@property (copy) NSDictionary *userInfo;
+@property (copy) NSDictionary * _Nullable userInfo;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithType:(CardBacksItemModelType)type;

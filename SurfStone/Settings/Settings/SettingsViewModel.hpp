@@ -33,6 +33,9 @@ private:
     
     static std::pair<SettingsSectionModel *, BOOL> appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type,  NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
     static SettingsItemModel * _Nullable itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
+    
+    static void setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource, dispatch_queue_t queue, std::function<void ()> completionHandler);
+    void startObserving();
 };
 
 NS_ASSUME_NONNULL_END

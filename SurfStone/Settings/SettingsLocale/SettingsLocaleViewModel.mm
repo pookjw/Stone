@@ -27,54 +27,21 @@ void SettingsLocaleViewModel::load(std::function<void ()> completionHandler) {
         return;
     }
     
-    auto settingsService = SettingsService.sharedInstance;
     auto dataSource = _dataSource;
     auto queue = _queue;
     
     dispatch_async(queue, ^{
-        auto snapshot = [NSDiffableDataSourceSnapshot<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> new];
-        
-        SettingsLocaleSectionModel *sectionModel = [[SettingsLocaleSectionModel alloc] initWithType:SettingsLocaleSectionModelTypeLocales];
-        [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
-        
-        auto itemModels = [NSMutableArray<SettingsLocaleItemModel *> new];
-        [settingsService.availableLocalesForAPI enumerateObjectsUsingBlock:^(NSLocale * _Nonnull obj, BOOL * _Nonnull stop) {
-            SettingsLocaleItemModel *itemModel = [[SettingsLocaleItemModel alloc] initWithType:SettingsLocaleItemModelTypeLocale];
-            itemModel.userInfo = @{
-                SettingsLocaleItemModelLocaleKey: obj,
-                SettingsLocaleItemModelIsSelectedKey: @NO
-            };
-            
-            [itemModels addObject:itemModel];
-            [itemModel release];
-        }];
-        
-        [snapshot appendItemsWithIdentifiers:itemModels intoSectionWithIdentifier:sectionModel];
-        [sectionModel release];
-        [itemModels release];
-        
-        [dataSource applySnapshot:snapshot animatingDifferences:YES];
-        [snapshot release];
-        
-        //
-        
-        [settingsService localeForAPIWithCompletionHandler:^(NSLocale * _Nullable result) {
+        [SettingsService.sharedInstance localeForAPIWithCompletionHandler:^(NSLocale * _Nullable result) {
             dispatch_async(queue, ^{
                 reconfigureWithSelectedLocale(result, dataSource);
                 completionHandler();
             });
         }];
+        
+        setupInitialDataSource(dataSource);
     });
     
-    NSOperationQueue *operationQueue = [NSOperationQueue new];
-    operationQueue.underlyingQueue = queue;
-    
-    _localeForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
-        id value = notification.userInfo[SettingsService.changedObjectKey];
-        reconfigureWithSelectedLocale(value, dataSource);
-    }] retain];
-    
-    [operationQueue release];
+    startObserving();
     
     //
     
@@ -94,6 +61,32 @@ void SettingsLocaleViewModel::handleSelectionForIndexPath(NSIndexPath * _Nonnull
             completionHandler();
         }];
     });
+}
+
+void SettingsLocaleViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *,SettingsLocaleItemModel *> * _Nonnull dataSource) {
+    auto snapshot = [NSDiffableDataSourceSnapshot<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> new];
+    
+    SettingsLocaleSectionModel *sectionModel = [[SettingsLocaleSectionModel alloc] initWithType:SettingsLocaleSectionModelTypeLocales];
+    [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
+    
+    auto itemModels = [NSMutableArray<SettingsLocaleItemModel *> new];
+    [SettingsService.sharedInstance.availableLocalesForAPI enumerateObjectsUsingBlock:^(NSLocale * _Nonnull obj, BOOL * _Nonnull stop) {
+        SettingsLocaleItemModel *itemModel = [[SettingsLocaleItemModel alloc] initWithType:SettingsLocaleItemModelTypeLocale];
+        itemModel.userInfo = @{
+            SettingsLocaleItemModelLocaleKey: obj,
+            SettingsLocaleItemModelIsSelectedKey: @NO
+        };
+        
+        [itemModels addObject:itemModel];
+        [itemModel release];
+    }];
+    
+    [snapshot appendItemsWithIdentifiers:itemModels intoSectionWithIdentifier:sectionModel];
+    [sectionModel release];
+    [itemModels release];
+    
+    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [snapshot release];
 }
 
 void SettingsLocaleViewModel::reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale, UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *,SettingsLocaleItemModel *> * _Nonnull dataSource) {
@@ -122,4 +115,23 @@ void SettingsLocaleViewModel::reconfigureWithSelectedLocale(NSLocale * _Nullable
     
     [dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
+}
+
+void SettingsLocaleViewModel::startObserving() {
+    NSOperationQueue *operationQueue = [NSOperationQueue new];
+    operationQueue.underlyingQueue = _queue;
+    
+    auto dataSource = _dataSource;
+    
+    id localeForAPIObserver = [NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification
+                                                                              object:SettingsService.sharedInstance
+                                                                               queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
+        id value = notification.userInfo[SettingsService.changedObjectKey];
+        reconfigureWithSelectedLocale(value, dataSource);
+    }];
+    
+    [_localeForAPIObserver release];
+    _localeForAPIObserver = [localeForAPIObserver retain];
+    
+    [operationQueue release];
 }

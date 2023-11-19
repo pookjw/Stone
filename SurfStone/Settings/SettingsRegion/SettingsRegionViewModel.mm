@@ -27,56 +27,21 @@ void SettingsRegionViewModel::load(std::function<void ()> completionHandler) {
         return;
     }
     
-    auto settingsService = SettingsService.sharedInstance;
     auto dataSource = _dataSource;
     auto queue = _queue;
     
     dispatch_async(queue, ^{
-        auto snapshot = [NSDiffableDataSourceSnapshot<SettingsRegionSectionModel *, SettingsRegionItemModel *> new];
-        
-        SettingsRegionSectionModel *sectionModel = [[SettingsRegionSectionModel alloc] initWithType:SettingsRegionSectionModelTypeRegions];
-        [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
-        
-        auto itemModels = [NSMutableArray<SettingsRegionItemModel *> new];
-        [settingsService.availableRegionIdentifiersForAPI enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, BOOL * _Nonnull stop) {
-            SettingsRegionItemModel *itemModel = [[SettingsRegionItemModel alloc] initWithType:SettingsRegionItemModelTypeRegion];
-            itemModel.userInfo = @{
-                SettingsRegionItemModelRegionIdentifierKey: obj,
-                SettingsRegionItemModelIsSelectedKey: @NO
-            };
-            
-            [itemModels addObject:itemModel];
-            [itemModel release];
-        }];
-        
-        [snapshot appendItemsWithIdentifiers:itemModels intoSectionWithIdentifier:sectionModel];
-        [sectionModel release];
-        [itemModels release];
-        
-        [dataSource applySnapshot:snapshot animatingDifferences:YES];
-        [snapshot release];
-        
-        //
-        
-        [settingsService regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
+        [SettingsService.sharedInstance regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
             dispatch_async(queue, ^{
                 reconfigureWithSelectedRegionIdentifier(result, dataSource);
                 completionHandler();
             });
         }];
+        
+        setupInitialDataSource(dataSource);
     });
     
-    //
-    
-    NSOperationQueue *operationQueue = [NSOperationQueue new];
-    operationQueue.underlyingQueue = queue;
-    
-    _regionIdentifierForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
-        id value = notification.userInfo[SettingsService.changedObjectKey];
-        reconfigureWithSelectedRegionIdentifier(value, dataSource);
-    }] retain];
-    
-    [operationQueue release];
+    startObserving();
     
     //
     
@@ -96,6 +61,32 @@ void SettingsRegionViewModel::handleSelectionForIndexPath(NSIndexPath * _Nonnull
             completionHandler();
         }];
     });
+}
+
+void SettingsRegionViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsRegionSectionModel *,SettingsRegionItemModel *> * _Nonnull dataSource) {
+    auto snapshot = [NSDiffableDataSourceSnapshot<SettingsRegionSectionModel *, SettingsRegionItemModel *> new];
+    
+    SettingsRegionSectionModel *sectionModel = [[SettingsRegionSectionModel alloc] initWithType:SettingsRegionSectionModelTypeRegions];
+    [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
+    
+    auto itemModels = [NSMutableArray<SettingsRegionItemModel *> new];
+    [SettingsService.sharedInstance.availableRegionIdentifiersForAPI enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        SettingsRegionItemModel *itemModel = [[SettingsRegionItemModel alloc] initWithType:SettingsRegionItemModelTypeRegion];
+        itemModel.userInfo = @{
+            SettingsRegionItemModelRegionIdentifierKey: obj,
+            SettingsRegionItemModelIsSelectedKey: @NO
+        };
+        
+        [itemModels addObject:itemModel];
+        [itemModel release];
+    }];
+    
+    [snapshot appendItemsWithIdentifiers:itemModels intoSectionWithIdentifier:sectionModel];
+    [sectionModel release];
+    [itemModels release];
+    
+    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [snapshot release];
 }
 
 void SettingsRegionViewModel::reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource) {
@@ -124,4 +115,23 @@ void SettingsRegionViewModel::reconfigureWithSelectedRegionIdentifier(NSString *
     
     [dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
+}
+
+void SettingsRegionViewModel::startObserving() {
+    NSOperationQueue *operationQueue = [NSOperationQueue new];
+    operationQueue.underlyingQueue = _queue;
+    
+    auto dataSource = _dataSource;
+    
+    id regionIdentifierForAPIObserver = [NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification
+                                                                                        object:SettingsService.sharedInstance
+                                                                                         queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
+        id value = notification.userInfo[SettingsService.changedObjectKey];
+        reconfigureWithSelectedRegionIdentifier(value, dataSource);
+    }];
+    
+    [_regionIdentifierForAPIObserver release];
+    _regionIdentifierForAPIObserver = [regionIdentifierForAPIObserver retain];
+    
+    [operationQueue release];
 }

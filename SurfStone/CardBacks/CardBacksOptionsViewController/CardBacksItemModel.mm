@@ -8,8 +8,10 @@
 #import "CardBacksItemModel.hpp"
 
 NSString * const CardBacksItemModelTextFilterKey = @"CardBacksItemModelTextFilterKey";
-NSString * const CardBacksItemModelCardBackCategoryKey = @"CardBacksItemModelTextFilterKey";
-NSString * const CardBacksItemModelSortKey = @"CardBacksItemModelSortKey";
+NSString * const CardBacksItemModelSelectedCardBackCategoryKey = @"CardBacksItemModelSelectedCardBackCategoryKey";
+NSString * const CardBacksItemModelCardBackCategoriesKey = @"CardBacksItemModelCardBackCategoriesKey";
+NSString * const CardBacksItemModelSelectedSortKey = @"CardBacksItemModelSelectedSortKey";
+NSString * const CardBacksItemModelSortsKey = @"CardBacksItemModelSortsKey";
 
 __attribute__((objc_direct_members))
 @interface CardBacksItemModel () {

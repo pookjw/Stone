@@ -29,7 +29,9 @@ private:
     BOOL _isLoaded;
     std::mutex _mutex;
     
+    static void setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource);
     static void reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource);
+    void startObserving();
 };
 
 NS_ASSUME_NONNULL_END

@@ -6,7 +6,7 @@
       "location" : "https://github.com/pookjw/HandyMacros.git",
       "state" : {
         "branch" : "main",
-        "revision" : "5366b9091ac8208e9d1036b6d91ad6a5a4adfecf"
+        "revision" : "8ae217c99f2c57ef4e251f499e8245f0a4d255c1"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
         "branch" : "main",
-        "revision" : "23d207d0b9057f02fcbdb2813f6ec832514c457c"
+        "revision" : "7c1c56c0aa505c939b210b9f3b6797417107820a"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/apple/swift-testing.git",
       "state" : {
         "branch" : "main",
-        "revision" : "322b12c093ab3d144bbc790de47388c5b44523ef"
+        "revision" : "edbe73b1b6d64cd36bcde4e50db77b2d6955d078"
       }
     }
   ],

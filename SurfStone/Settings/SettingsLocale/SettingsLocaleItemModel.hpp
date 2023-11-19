@@ -19,7 +19,7 @@ extern NSString * const SettingsLocaleItemModelIsSelectedKey;
 __attribute__((objc_direct_members))
 @interface SettingsLocaleItemModel : NSObject
 @property (readonly, nonatomic) SettingsLocaleItemModelType type;
-@property (copy) NSDictionary *userInfo;
+@property (copy) NSDictionary * _Nullable userInfo;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithType:(SettingsLocaleItemModelType)type;
