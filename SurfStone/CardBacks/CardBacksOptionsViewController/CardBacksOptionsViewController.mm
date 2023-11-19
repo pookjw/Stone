@@ -110,19 +110,32 @@ __attribute__((objc_direct_members))
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Text";
                 cell.contentConfiguration = contentConfiguration;
+                
+                UIAction *primaryAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+                    
+                }];
+                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectNull primaryAction:primaryAction];
+                textField.borderStyle = UITextBorderStyleRoundedRect;
+                textField.textColor = UIColor.labelColor;
+                [textField.widthAnchor constraintEqualToConstant:80.f].active = YES;
+                UICellAccessoryCustomView *textFieldAccessory = [[UICellAccessoryCustomView alloc] initWithCustomView:textField placement:UICellAccessoryPlacementTrailing];
+                [textField release];
+//                textFieldAccessory.maintainsFixedSize = YES;
+                cell.accessories = @[textFieldAccessory];
+                [textFieldAccessory release];
                 break;
             }
             case CardBacksItemModelTypeCardBackCategory: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Category";
-                cell.contentConfiguration = contentConfiguration;
+                cell.contentConfiguration = contentConfiguration; // UICellAccessoryPopUpMenu
                 
                 break;
             }
             case CardBacksItemModelTypeSort: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Sort";
-                cell.contentConfiguration = contentConfiguration;
+                cell.contentConfiguration = contentConfiguration; // UICellAccessoryPopUpMenu
                 
                 break;
             }
