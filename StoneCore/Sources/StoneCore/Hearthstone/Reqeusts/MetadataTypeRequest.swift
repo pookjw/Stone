@@ -1,5 +1,6 @@
 extension HearthstoneAPIService {
     @objc(HSMetadataTypeRequest)
+    @available(*, deprecated, message: "Unused")
     public enum MetadataTypeRequest: Int, CaseIterable, Hashable, Sendable {
         case sets
         case setGroups

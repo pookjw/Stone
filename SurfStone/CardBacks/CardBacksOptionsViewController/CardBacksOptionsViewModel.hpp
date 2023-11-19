@@ -6,15 +6,24 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HearthstoneAPIService+Macro.hpp"
+#import <functional>
+#import <mutex>
+#import "CardBacksSectionModel.hpp"
+#import "CardBacksItemModel.hpp"
+@import StoneCore;
 
 NS_ASSUME_NONNULL_BEGIN
 
 class CardBacksOptionsViewModel {
     CardBacksOptionsViewModel();
     ~CardBacksOptionsViewModel();
+    CardBacksOptionsViewModel(const CardBacksOptionsViewModel&) = delete;
+    CardBacksOptionsViewModel& operator=(const CardBacksOptionsViewModel&) = delete;
+    
+    void load(std::function<void ()> completionHandler);
 private:
-    HearthstoneAPIService *apiService;
+    HearthstoneAPIService *_apiService;
+    NSProgress * _Nullable _cardBackCategoriesMetadataProgress;
 };
 
 NS_ASSUME_NONNULL_END

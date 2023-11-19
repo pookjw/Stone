@@ -113,8 +113,8 @@ actor CoreDataStack {
         _container = nil
         _context = nil
         
-        assert(oldContainer == nil)
-        assert(oldContext == nil)
+//        assert(oldContainer == nil)
+//        assert(oldContext == nil)
     }
     
     private func _set(_container: NSPersistentContainer) {

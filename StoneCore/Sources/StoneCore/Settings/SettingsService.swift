@@ -125,7 +125,7 @@ public actor SettingsService: NSObject {
     }
     
     @objc public func regionIdentifierForAPI() async -> String? {
-        regionForAPI?.identifier
+        return regionForAPI?.identifier
     }
     
     @objc public func set(regionIdentifierForAPI: String?) async {
@@ -174,7 +174,7 @@ public actor SettingsService: NSObject {
     }
     
     @objc public func localeForAPI() async -> Locale? {
-        localeForAPI
+        return localeForAPI
     }
     
     @objc(setLocaleForAPI:completionHandler:) public func objc_set(localeForAPI: Locale?) async {

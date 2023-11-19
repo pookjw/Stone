@@ -5,7 +5,7 @@ import Testing
 actor HearthstoneAPIServiceTests {
     private let service: HearthstoneAPIService = .init()
     
-    @Test func metadata() async throws {
+    @Test(.tags(["test_metadata"])) func test_metadata() async throws {
         let response: HearthstoneAPIService.MetadataResponse = try await service.metadata()
         
         try #expect(!#require(response.sets?.isEmpty))
@@ -25,7 +25,12 @@ actor HearthstoneAPIServiceTests {
         try #expect(!#require(response.cardBackCategories?.isEmpty))
     }
     
-    @Test func cardBacks() async throws {
+    @Test(.tags(["test_cardBackCategoriesMetadata"])) func test_cardBackCategoriesMetadata() async throws {
+        let response: [HearthstoneAPIService.CardBackCategoryResponse] = try await service.cardBackCategoriesMetadata()
+        #expect(!response.isEmpty)
+    }
+    
+    @Test(.tags(["test_cardBacks"])) func test_cardBacks() async throws {
         let response: HearthstoneAPIService.CardBacksResponse = try await service
             .cardBacks()
         

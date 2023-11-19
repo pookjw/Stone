@@ -39,6 +39,10 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
+- (void)commonInit_SettingsViewController __attribute__((objc_direct)) {
+    self.title = @"Settings";
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupAttributes];
@@ -48,10 +52,6 @@ __attribute__((objc_direct_members))
     self.viewModel.get()->load(^{
         NSLog(@"Done!");
     });
-}
-
-- (void)commonInit_SettingsViewController __attribute__((objc_direct)) {
-    self.title = @"Settings";
 }
 
 - (void)setupAttributes __attribute__((objc_direct)) {

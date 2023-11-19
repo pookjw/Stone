@@ -35,9 +35,9 @@ public actor HearthstoneAPIService: NSObject {
         try await request(pathComponents: ["hearthstone", "metadata"], queryItems: [])
     }
     
-    // TODO
-    public nonisolated func metadata(metadataType: MetadataTypeRequest) async throws -> MetadataResponse {
-        try await request(pathComponents: ["hearthstone", "metadata", metadataType.name], queryItems: [])
+    @AddObjCCompletionHandler
+    public nonisolated func cardBackCategoriesMetadata() async throws -> [CardBackCategoryResponse] {
+        try await request(pathComponents: ["hearthstone", "metadata", "cardBackCategories"], queryItems: [])
     }
     
     private nonisolated func request<T: Decodable>(pathComponents: [String], queryItems: [URLQueryItem], type: T.Type = T.self) async throws -> T {

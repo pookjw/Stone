@@ -6,9 +6,14 @@
 //
 
 #import "CardBacksOptionsViewModel.hpp"
+#import "HearthstoneAPIService+Macro.hpp"
 
 CardBacksOptionsViewModel::CardBacksOptionsViewModel() {
     
 }
 
-
+CardBacksOptionsViewModel::~CardBacksOptionsViewModel() {
+    [_cardBackCategoriesMetadataProgress cancel];
+    [_cardBackCategoriesMetadataProgress release];
+    [_apiService release];
+}

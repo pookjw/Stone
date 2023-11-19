@@ -117,6 +117,7 @@ __attribute__((objc_direct_members))
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     _viewModel.get()->handleSelectionForIndexPath(indexPath, ^() {});
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
 @end

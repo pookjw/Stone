@@ -22,6 +22,8 @@
 		4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1D72B08E86C00B3511A /* SettingsRegionViewModel.mm */; };
 		4FD6A1DC2B0924C400B3511A /* SettingsLocaleSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1DB2B0924C400B3511A /* SettingsLocaleSectionModel.mm */; };
 		4FD6A1DF2B0925BB00B3511A /* SettingsLocaleItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1DE2B0925BB00B3511A /* SettingsLocaleItemModel.mm */; };
+		4FD6A1E22B09DC1C00B3511A /* CardBacksSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */; };
+		4FD6A1E52B09DC2400B3511A /* CardBacksItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */; };
 		4FEF15F02AEBFC810059D1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */; };
 		4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF15F82AEBFCC10059D1FB /* main.mm */; };
 		4FEF15FC2AEBFD0F0059D1FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEF15FB2AEBFD0F0059D1FB /* UIKit.framework */; };
@@ -67,6 +69,10 @@
 		4FD6A1DB2B0924C400B3511A /* SettingsLocaleSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleSectionModel.mm; sourceTree = "<group>"; };
 		4FD6A1DD2B0925BB00B3511A /* SettingsLocaleItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsLocaleItemModel.hpp; sourceTree = "<group>"; };
 		4FD6A1DE2B0925BB00B3511A /* SettingsLocaleItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleItemModel.mm; sourceTree = "<group>"; };
+		4FD6A1E02B09DC1C00B3511A /* CardBacksSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksSectionModel.hpp; sourceTree = "<group>"; };
+		4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksSectionModel.mm; sourceTree = "<group>"; };
+		4FD6A1E32B09DC2400B3511A /* CardBacksItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksItemModel.hpp; sourceTree = "<group>"; };
+		4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksItemModel.mm; sourceTree = "<group>"; };
 		4FEF15E52AEBFC800059D1FB /* SurfStone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfStone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FEF15F42AEBFC810059D1FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -148,6 +154,10 @@
 				4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */,
 				4FB186DF2AF68C2500A87403 /* CardBacksOptionsViewModel.hpp */,
 				4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */,
+				4FD6A1E02B09DC1C00B3511A /* CardBacksSectionModel.hpp */,
+				4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */,
+				4FD6A1E32B09DC2400B3511A /* CardBacksItemModel.hpp */,
+				4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */,
 			);
 			path = CardBacksOptionsViewController;
 			sourceTree = "<group>";
@@ -345,11 +355,13 @@
 				4FD6A1D62B08E37A00B3511A /* SettingsRegionItemModel.mm in Sources */,
 				4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */,
 				4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */,
+				4FD6A1E52B09DC2400B3511A /* CardBacksItemModel.mm in Sources */,
 				4FEF16462AED75FD0059D1FB /* SettingsRootViewController.mm in Sources */,
 				4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */,
 				4FD6A1DC2B0924C400B3511A /* SettingsLocaleSectionModel.mm in Sources */,
 				4F276CF32B051D3C009C3E49 /* SettingsViewController.mm in Sources */,
 				4FD6A1DF2B0925BB00B3511A /* SettingsLocaleItemModel.mm in Sources */,
+				4FD6A1E22B09DC1C00B3511A /* CardBacksSectionModel.mm in Sources */,
 				4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */,
 				4FD6A1CD2B08E0FB00B3511A /* SettingsRegionViewController.mm in Sources */,
 				4FD6A1C92B08DFEC00B3511A /* SettingsLocaleViewController.mm in Sources */,

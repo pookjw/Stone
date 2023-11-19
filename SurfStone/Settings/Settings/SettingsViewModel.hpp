@@ -7,8 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
-#import <memory>
-#import <utility>
+#import <mutex>
 #import "SettingsSectionModel.hpp"
 #import "SettingsItemModel.hpp"
 
@@ -29,7 +28,8 @@ private:
     dispatch_queue_t _queue;
     id<NSObject> _regionIdentifierForAPIObserver;
     id<NSObject> _localeForAPIObserver;
-    std::shared_ptr<BOOL> const _isLoaded;
+    BOOL _isLoaded;
+    std::mutex _mutex;
     
     static std::pair<SettingsSectionModel *, BOOL> appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type,  NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
     static SettingsItemModel * _Nullable itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);

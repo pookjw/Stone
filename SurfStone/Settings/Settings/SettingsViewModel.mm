@@ -8,7 +8,7 @@
 #import "SettingsViewModel.hpp"
 @import StoneCore;
 
-SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource) : _dataSource([dataSource retain]), _isLoaded(std::make_shared<BOOL>(NO)) {
+SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource) : _dataSource([dataSource retain]), _isLoaded(NO) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, QOS_MIN_RELATIVE_PRIORITY);
     _queue = dispatch_queue_create("SettingsViewModel", attr);
 }
@@ -21,14 +21,18 @@ SettingsViewModel::~SettingsViewModel() {
 }
 
 void SettingsViewModel::load(std::function<void ()> completionHandler) {
+    _mutex.lock();
+    
+    if (_isLoaded) {
+        _mutex.unlock();
+        return;
+    }
+    
     auto settingsService = SettingsService.sharedInstance;
     auto dataSource = _dataSource;
     auto queue = _queue;
-    auto isLoaded = _isLoaded;
     
     dispatch_async(queue, ^{
-        if (*isLoaded.get()) return;
-        
         __block NSUInteger count = 0;
         
         [settingsService setWithRegionIdentifierForAPI:@"021" completionHandler:^{
@@ -92,56 +96,59 @@ void SettingsViewModel::load(std::function<void ()> completionHandler) {
                 }
             });
         }];
-        
-        NSOperationQueue *operationQueue = [NSOperationQueue new];
-        operationQueue.underlyingQueue = queue;
-        
-        _regionIdentifierForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
-            NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
-            auto itemModel = itemFromSnapshotUsingType(SettingsItemModelTypeRegion, snapshot);
-            
-            if (!itemModel) {
-                [snapshot release];
-                return;
-            }
-            
-            id value = notification.userInfo[SettingsService.changedObjectKey];
-            if (!value) {
-                value = [NSNull null];
-            }
-            
-            itemModel.userInfo = @{SettingsItemModelSelectedRegionIdentifierKey: value};
-            [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
-            
-            [dataSource applySnapshot:snapshot animatingDifferences:YES];
-            [snapshot release];
-        }] retain];
-        
-        _localeForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
-            NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
-            auto itemModel = itemFromSnapshotUsingType(SettingsItemModelTypeLocale, snapshot);
-            
-            if (!itemModel) {
-                [snapshot release];
-                return;
-            }
-            
-            id value = notification.userInfo[SettingsService.changedObjectKey];
-            if (!value) {
-                value = [NSNull null];
-            }
-            
-            itemModel.userInfo = @{SettingsItemModelSelectedLocaleKey: value};
-            [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
-            
-            [dataSource applySnapshot:snapshot animatingDifferences:YES];
-            [snapshot release];
-        }] retain];
-        
-        [operationQueue release];
-        
-        *isLoaded.get() = YES;
     });
+    
+    NSOperationQueue *operationQueue = [NSOperationQueue new];
+    operationQueue.underlyingQueue = queue;
+    
+    _regionIdentifierForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
+        NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
+        auto itemModel = itemFromSnapshotUsingType(SettingsItemModelTypeRegion, snapshot);
+        
+        if (!itemModel) {
+            [snapshot release];
+            return;
+        }
+        
+        id value = notification.userInfo[SettingsService.changedObjectKey];
+        if (!value) {
+            value = [NSNull null];
+        }
+        
+        itemModel.userInfo = @{SettingsItemModelSelectedRegionIdentifierKey: value};
+        [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
+        
+        [dataSource applySnapshot:snapshot animatingDifferences:YES];
+        [snapshot release];
+    }] retain];
+    
+    _localeForAPIObserver = [[NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification object:settingsService queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
+        NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
+        auto itemModel = itemFromSnapshotUsingType(SettingsItemModelTypeLocale, snapshot);
+        
+        if (!itemModel) {
+            [snapshot release];
+            return;
+        }
+        
+        id value = notification.userInfo[SettingsService.changedObjectKey];
+        if (!value) {
+            value = [NSNull null];
+        }
+        
+        itemModel.userInfo = @{SettingsItemModelSelectedLocaleKey: value};
+        [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
+        
+        [dataSource applySnapshot:snapshot animatingDifferences:YES];
+        [snapshot release];
+    }] retain];
+    
+    [operationQueue release];
+    
+    //
+    
+    _isLoaded = YES;
+    _mutex.unlock();
 }
 
 SettingsSectionModel * _Nullable SettingsViewModel::unsafe_sectionModelFromIndexPath(NSIndexPath * _Nonnull indexPath) {

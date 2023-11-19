@@ -38,7 +38,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "SWT_SELECTED_TAGS"
-            value = "test_accessToken"
+            value = "test_cardBackCategoriesMetadata"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

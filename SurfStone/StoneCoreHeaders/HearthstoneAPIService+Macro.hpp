@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HearthstoneAPIService (Macro)
-- (NSProgress *)cardBacksWithLocale:(NSLocale *)arg1 cardBackCategory:(NSString * _Nullable)arg2 textFilter:(NSString * _Nullable)arg3 sort:(HSCardBacksSortRequest)arg4 page:(NSNumber * _Nullable)arg5 pageSize:(NSNumber * _Nullable)arg6 completion:(void (^)(HSCardBacksResponse * _Nullable response, NSError * _Nullable error))arg7;
+- (NSProgress *)cardBacksWithCardBackCategory:(NSString * _Nullable)arg1 textFilter:(NSString * _Nullable)arg2 sort:(HSCardBacksSortRequest)arg3 page:(NSNumber * _Nullable)arg4 pageSize:(NSNumber * _Nullable)arg5 completion:(void (^)(HSCardBacksResponse * _Nullable response, NSError * _Nullable error))arg7;
+- (NSProgress *)cardBackCategoriesMetadataWithCompletion:(void (^)(NSArray<HSCardBackCategoryResponse *> * _Nullable response, NSError * _Nullable error))arg7;
 @end
 
 NS_ASSUME_NONNULL_END

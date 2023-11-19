@@ -51,7 +51,7 @@ actor BlizzardAPIAccessTokenService {
             token.regionCode == regionCode
         }
         
-        let fetchRequest: NSFetchRequest<BlizzardAPIAccessToken> = BlizzardAPIAccessToken.fetchRequest() as! NSFetchRequest<BlizzardAPIAccessToken>
+        let fetchRequest: NSFetchRequest<BlizzardAPIAccessToken> = .init(entityName: "BlizzardAPIAccessToken")
         fetchRequest.predicate = .init(predicate)
         
         let context: NSManagedObjectContext = try await coreDataStack.context

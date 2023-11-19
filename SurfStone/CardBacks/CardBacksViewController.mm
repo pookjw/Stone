@@ -80,7 +80,9 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupCardBacksOptionsViewController __attribute__((objc_direct)) {
-    [self.childSplitViewController setViewController:self.cardBacksOptionsViewController forColumn:UISplitViewControllerColumnPrimary];
+    CardBacksOptionsViewController *cardBacksOptionsViewController = self.cardBacksOptionsViewController;
+    [self.childSplitViewController setViewController:cardBacksOptionsViewController forColumn:UISplitViewControllerColumnPrimary];
+    cardBacksOptionsViewController.navigationController.navigationBar.prefersLargeTitles = YES;
 }
 
 - (UISplitViewController *)childSplitViewController {
