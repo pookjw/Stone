@@ -26,6 +26,8 @@
     
     UIButton *button = [[UIButton alloc] initWithFrame:self.view.bounds primaryAction:primaryAction];
     button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.layer.zPosition = 200.f;
+    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(button, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
     
     [self.view addSubview:button];
     [NSLayoutConstraint activateConstraints:@[

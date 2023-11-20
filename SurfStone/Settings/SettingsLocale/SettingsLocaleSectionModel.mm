@@ -15,6 +15,8 @@ __attribute__((objc_direct_members))
 
 @implementation SettingsLocaleSectionModel
 
+@synthesize type = _type;
+
 - (instancetype)initWithType:(SettingsLocaleSectionModelType)type {
     if (self = [super init]) {
         _type = type;

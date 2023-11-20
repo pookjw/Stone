@@ -15,6 +15,8 @@ __attribute__((objc_direct_members))
 
 @implementation CardBacksSectionModel
 
+@synthesize type = _type;
+
 - (instancetype)initWithType:(CardBacksSectionModelType)type {
     if (self = [super init]) {
         _type = type;

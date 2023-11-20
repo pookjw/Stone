@@ -23,3 +23,12 @@ extension HearthstoneAPIService {
         }
     }
 }
+
+
+@_cdecl("allHSCardBacksSortRequests")
+public func allHSCardBacksSortRequests() -> [Int] {
+    HearthstoneAPIService.CardBacksSortRequest
+        .allCases
+        .filter { $0 != .none }
+        .map { $0.rawValue }
+}

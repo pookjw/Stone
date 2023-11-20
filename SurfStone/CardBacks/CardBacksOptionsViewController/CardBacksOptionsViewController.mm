@@ -8,6 +8,7 @@
 #import "CardBacksOptionsViewController.hpp"
 #import "CardBacksOptionsViewModel.hpp"
 #import <memory>
+@import StoneCore;
 
 __attribute__((objc_direct_members))
 @interface CardBacksOptionsViewController () <UICollectionViewDelegate>
@@ -128,14 +129,55 @@ __attribute__((objc_direct_members))
             case CardBacksItemModelTypeCardBackCategory: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Category";
-                cell.contentConfiguration = contentConfiguration; // UICellAccessoryPopUpMenu
+                cell.contentConfiguration = contentConfiguration;
+                
+                id categories = itemModel.userInfo[CardBacksItemModelCardBackCategoriesKey];
+                if ([categories isKindOfClass:NSArray.class]) {
+                    NSArray<HSCardBackCategoryResponse *> *_categories = categories;
+                    auto children = [NSMutableArray<UIAction *> new];
+                    
+                    [_categories enumerateObjectsUsingBlock:^(HSCardBackCategoryResponse * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        UIAction *action = [UIAction actionWithTitle:obj.name image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+                            
+                        }];
+                        action.subtitle = obj.slug;
+                        [children addObject:action];
+                    }];
+                    
+                    UIMenu *menu = [UIMenu menuWithChildren:children];
+                    [children release];
+                    
+                    UICellAccessoryPopUpMenu *popUpMenu = [[UICellAccessoryPopUpMenu alloc] initWithMenu:menu];
+                    cell.accessories = @[popUpMenu];
+                    [popUpMenu release];
+                } else {
+                    cell.accessories = @[];
+                }
                 
                 break;
             }
             case CardBacksItemModelTypeSort: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Sort";
-                cell.contentConfiguration = contentConfiguration; // UICellAccessoryPopUpMenu
+                cell.contentConfiguration = contentConfiguration;
+                
+                NSArray<NSNumber *> *sorts = itemModel.userInfo[CardBacksItemModelSortsKey];
+                auto children = [NSMutableArray<UIAction *> new];
+                
+                [sorts enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    UIAction *action = [UIAction actionWithTitle:obj.stringValue image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+                        
+                    }];
+//                    action.subtitle = obj.slug;
+                    [children addObject:action];
+                }];
+                
+                UIMenu *menu = [UIMenu menuWithChildren:children];
+                [children release];
+                
+                UICellAccessoryPopUpMenu *popUpMenu = [[UICellAccessoryPopUpMenu alloc] initWithMenu:menu];
+                cell.accessories = @[popUpMenu];
+                [popUpMenu release];
                 
                 break;
             }

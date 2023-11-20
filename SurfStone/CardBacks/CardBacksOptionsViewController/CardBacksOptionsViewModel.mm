@@ -55,10 +55,14 @@ void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableD
     
     auto optionsItemModels = [NSMutableArray<CardBacksItemModel *> new];
     
+    //
+    
     CardBacksItemModel *textFilterItemModel = [[CardBacksItemModel alloc] initWithType:CardBacksItemModelTypeTextFilter];
     textFilterItemModel.userInfo = @{CardBacksItemModelTextFilterKey: [NSNull null]};
     [optionsItemModels addObject:textFilterItemModel];
     [textFilterItemModel release];
+    
+    //
     
     CardBacksItemModel *cardBackCategoryItemModel = [[CardBacksItemModel alloc] initWithType:CardBacksItemModelTypeCardBackCategory];
     cardBackCategoryItemModel.userInfo = @{
@@ -68,10 +72,12 @@ void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableD
     [optionsItemModels addObject:cardBackCategoryItemModel];
     [cardBackCategoryItemModel release];
     
+    //
+    
     CardBacksItemModel *sortItemModel = [[CardBacksItemModel alloc] initWithType:CardBacksItemModelTypeSort];
-    cardBackCategoryItemModel.userInfo = @{
+    sortItemModel.userInfo = @{
         CardBacksItemModelSelectedSortKey: [NSNull null],
-        CardBacksItemModelSortsKey: [NSNull null]
+        CardBacksItemModelSortsKey: allHSCardBacksSortRequests()
     };
     [optionsItemModels addObject:sortItemModel];
     [sortItemModel release];

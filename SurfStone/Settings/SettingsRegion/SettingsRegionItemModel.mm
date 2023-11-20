@@ -18,6 +18,8 @@ __attribute__((objc_direct_members))
 
 @implementation SettingsRegionItemModel
 
+@synthesize type = _type;
+
 - (instancetype)initWithType:(SettingsRegionItemModelType)type {
     if (self = [super init]) {
         _type = type;

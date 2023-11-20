@@ -18,6 +18,8 @@ __attribute__((objc_direct_members))
 
 @implementation SettingsLocaleItemModel
 
+@synthesize type = _type;
+
 - (instancetype)initWithType:(SettingsLocaleItemModelType)type {
     if (self = [super init]) {
         _type = type;

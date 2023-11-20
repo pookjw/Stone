@@ -15,6 +15,8 @@ __attribute__((objc_direct_members))
 
 @implementation SettingsRegionSectionModel
 
+@synthesize type = _type;
+
 - (instancetype)initWithType:(SettingsRegionSectionModelType)type {
     if (self = [super init]) {
         _type = type;
