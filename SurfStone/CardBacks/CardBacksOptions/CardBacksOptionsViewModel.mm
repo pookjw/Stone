@@ -8,7 +8,7 @@
 #import "CardBacksOptionsViewModel.hpp"
 #import "HearthstoneAPIService+Macro.hpp"
 
-CardBacksOptionsViewModel::CardBacksOptionsViewModel(UICollectionViewDiffableDataSource<CardBacksSectionModel *, CardBacksItemModel *> *dataSource) : _dataSource([dataSource retain]), _apiService([HearthstoneAPIService new]) {
+CardBacksOptionsViewModel::CardBacksOptionsViewModel(UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *dataSource) : _dataSource([dataSource retain]), _apiService([HearthstoneAPIService new]) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, QOS_MIN_RELATIVE_PRIORITY);
     _queue = dispatch_queue_create("CardBacksOptionsViewModel", attr);
 }
@@ -45,26 +45,26 @@ void CardBacksOptionsViewModel::load(std::function<void ()> completionHandler) {
     _mutex.unlock();
 }
 
-void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<CardBacksSectionModel *,CardBacksItemModel *> * _Nonnull dataSource) {
-    auto snapshot = [NSDiffableDataSourceSnapshot<CardBacksSectionModel *, CardBacksItemModel *> new];
+void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *,CardBacksOptionsItemModel *> * _Nonnull dataSource) {
+    auto snapshot = [NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> new];
     
-    CardBacksSectionModel *sectionModel = [[CardBacksSectionModel alloc] initWithType:CardBacksSectionModelTypeOptions];
+    CardBacksOptionsSectionModel *sectionModel = [[CardBacksOptionsSectionModel alloc] initWithType:CardBacksOptionsSectionModelTypeOptions];
     [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
     
     //
     
-    auto optionsItemModels = [NSMutableArray<CardBacksItemModel *> new];
+    auto optionsItemModels = [NSMutableArray<CardBacksOptionsItemModel *> new];
     
     //
     
-    CardBacksItemModel *textFilterItemModel = [[CardBacksItemModel alloc] initWithType:CardBacksItemModelTypeTextFilter];
+    CardBacksOptionsItemModel *textFilterItemModel = [[CardBacksOptionsItemModel alloc] initWithType:CardBacksOptionsItemModelTypeTextFilter];
     textFilterItemModel.userInfo = @{CardBacksItemModelTextFilterKey: [NSNull null]};
     [optionsItemModels addObject:textFilterItemModel];
     [textFilterItemModel release];
     
     //
     
-    CardBacksItemModel *cardBackCategoryItemModel = [[CardBacksItemModel alloc] initWithType:CardBacksItemModelTypeCardBackCategory];
+    CardBacksOptionsItemModel *cardBackCategoryItemModel = [[CardBacksOptionsItemModel alloc] initWithType:CardBacksOptionsItemModelTypeCardBackCategory];
     cardBackCategoryItemModel.userInfo = @{
         CardBacksItemModelSelectedCardBackCategoryKey: [NSNull null],
         CardBacksItemModelCardBackCategoriesKey: [NSNull null]
@@ -74,7 +74,7 @@ void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableD
     
     //
     
-    CardBacksItemModel *sortItemModel = [[CardBacksItemModel alloc] initWithType:CardBacksItemModelTypeSort];
+    CardBacksOptionsItemModel *sortItemModel = [[CardBacksOptionsItemModel alloc] initWithType:CardBacksOptionsItemModelTypeSort];
     sortItemModel.userInfo = @{
         CardBacksItemModelSelectedSortKey: [NSNull null],
         CardBacksItemModelSortsKey: allHSCardBacksSortRequests()
@@ -103,10 +103,10 @@ void CardBacksOptionsViewModel::requestCardBackCategoryResponses() {
         }
         
         dispatch_async(queue, ^{
-            NSDiffableDataSourceSnapshot<CardBacksSectionModel *,CardBacksItemModel *> *snapshot = [dataSource.snapshot copy];
-            __block CardBacksItemModel * _Nullable itemModel = nil;
-            [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (obj.type == CardBacksItemModelTypeCardBackCategory) {
+            NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *,CardBacksOptionsItemModel *> *snapshot = [dataSource.snapshot copy];
+            __block CardBacksOptionsItemModel * _Nullable itemModel = nil;
+            [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (obj.type == CardBacksOptionsItemModelTypeCardBackCategory) {
                     itemModel = obj;
                     *stop = YES;
                 }

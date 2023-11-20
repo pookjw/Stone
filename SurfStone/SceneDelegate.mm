@@ -7,7 +7,7 @@
 
 #import "SceneDelegate.hpp"
 #import "CardsViewController.hpp"
-#import "CardBacksViewController.hpp"
+#import "CardBacksRootViewController.hpp"
 #import "SettingsRootViewController.hpp"
 #import "NewWindowViewController.hpp"
 #import <objc/message.h>
@@ -29,7 +29,7 @@
     
     UITabBarController *tabBarController = [UITabBarController new];
     CardsViewController *cardsViewController = [CardsViewController new];
-    CardBacksViewController *cardBacksViewController = [CardBacksViewController new];
+    CardBacksRootViewController *cardBacksViewController = [CardBacksRootViewController new];
     SettingsRootViewController *settingsViewController = [SettingsRootViewController new];
     [tabBarController setViewControllers:@[cardsViewController, cardBacksViewController, settingsViewController] animated:NO];
     [cardsViewController release];

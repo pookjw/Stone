@@ -1,5 +1,5 @@
 //
-//  CardBacksItemModel.hpp
+//  CardBacksOptionsItemModel.hpp
 //  SurfStone
 //
 //  Created by Jinwoo Kim on 11/19/23.
@@ -9,10 +9,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, CardBacksItemModelType) {
-    CardBacksItemModelTypeTextFilter,
-    CardBacksItemModelTypeCardBackCategory,
-    CardBacksItemModelTypeSort
+typedef NS_ENUM(NSUInteger, CardBacksOptionsItemModelType) {
+    CardBacksOptionsItemModelTypeTextFilter,
+    CardBacksOptionsItemModelTypeCardBackCategory,
+    CardBacksOptionsItemModelTypeSort
 };
 
 extern NSString * const CardBacksItemModelTextFilterKey;
@@ -23,12 +23,12 @@ extern NSString * const CardBacksItemModelCardBackCategoriesKey;
 extern NSString * const CardBacksItemModelSelectedSortKey;
 extern NSString * const CardBacksItemModelSortsKey;
 
-@interface CardBacksItemModel : NSObject
-@property (readonly, nonatomic) CardBacksItemModelType type;
+@interface CardBacksOptionsItemModel : NSObject
+@property (readonly, nonatomic) CardBacksOptionsItemModelType type;
 @property (copy) NSDictionary * _Nullable userInfo;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithType:(CardBacksItemModelType)type;
+- (instancetype)initWithType:(CardBacksOptionsItemModelType)type;
 @end
 
 NS_ASSUME_NONNULL_END

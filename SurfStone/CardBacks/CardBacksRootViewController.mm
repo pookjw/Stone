@@ -5,23 +5,25 @@
 //  Created by Jinwoo Kim on 11/4/23.
 //
 
-#import "CardBacksViewController.hpp"
+#import "CardBacksRootViewController.hpp"
 #import "CardBacksOptionsViewController.hpp"
+#import "CardBacksViewController.hpp"
 
 __attribute__((objc_direct_members))
-@interface CardBacksViewController () {
+@interface CardBacksRootViewController () {
     UISplitViewController *_childSplitViewController;
     CardBacksOptionsViewController *_cardBacksOptionsViewController;
+    CardBacksViewController *_cardBacksViewController;
 }
 @property (retain, nonatomic) UISplitViewController *childSplitViewController;
 @property (retain, nonatomic) CardBacksOptionsViewController *cardBacksOptionsViewController;
 @end
 
-@implementation CardBacksViewController
+@implementation CardBacksRootViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self commonInit_CardBacksViewController];
+        [self commonInit_CardBacksRootViewController];
     }
     
     return self;
@@ -29,7 +31,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
-        [self commonInit_CardBacksViewController];
+        [self commonInit_CardBacksRootViewController];
     }
     
     return self;
@@ -38,10 +40,11 @@ __attribute__((objc_direct_members))
 - (void)dealloc {
     [_childSplitViewController release];
     [_cardBacksOptionsViewController release];
+    [_cardBacksViewController release];
     [super dealloc];
 }
 
-- (void)commonInit_CardBacksViewController __attribute__((objc_direct)) {
+- (void)commonInit_CardBacksRootViewController __attribute__((objc_direct)) {
     [self setupTabBarItem];
 }
 
@@ -49,6 +52,7 @@ __attribute__((objc_direct_members))
     [super viewDidLoad];
     [self setupChildSplitViewController];
     [self setupCardBacksOptionsViewController];
+    [self setupCardBacksViewController];
 }
 
 - (UIContainerBackgroundStyle)preferredContainerBackgroundStyle {
@@ -85,6 +89,11 @@ __attribute__((objc_direct_members))
     cardBacksOptionsViewController.navigationController.navigationBar.prefersLargeTitles = YES;
 }
 
+- (void)setupCardBacksViewController __attribute__((objc_direct)) {
+    CardBacksViewController *cardBacksViewController = self.cardBacksViewController;
+    [self.childSplitViewController setViewController:cardBacksViewController forColumn:UISplitViewControllerColumnSecondary];
+}
+
 - (UISplitViewController *)childSplitViewController {
     if (_childSplitViewController) return _childSplitViewController;
     
@@ -106,6 +115,16 @@ __attribute__((objc_direct_members))
     [_cardBacksOptionsViewController release];
     _cardBacksOptionsViewController = [cardBacksOptionsViewController retain];
     return [cardBacksOptionsViewController autorelease];
+}
+
+- (CardBacksViewController *)cardBacksViewController {
+    if (_cardBacksViewController) return _cardBacksViewController;
+    
+    CardBacksViewController *cardBacksViewController = [CardBacksViewController new];
+    
+    [_cardBacksViewController release];
+    _cardBacksViewController = [cardBacksViewController retain];
+    return [cardBacksViewController autorelease];
 }
 
 @end

@@ -92,10 +92,10 @@ __attribute__((objc_direct_members))
     self.viewModel = std::make_shared<CardBacksOptionsViewModel>([self makeDataSource]);
 }
 
-- (UICollectionViewDiffableDataSource<CardBacksSectionModel *, CardBacksItemModel *> *)makeDataSource __attribute__((objc_direct)) {
+- (UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *)makeDataSource __attribute__((objc_direct)) {
     auto cellRegistration = [self makeCellRegistration];
     
-    auto dataSource = [[UICollectionViewDiffableDataSource<CardBacksSectionModel *, CardBacksItemModel *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, id  _Nonnull itemIdentifier) {
+    auto dataSource = [[UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, id  _Nonnull itemIdentifier) {
         return [collectionView dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:indexPath item:itemIdentifier];
     }];
     
@@ -104,10 +104,10 @@ __attribute__((objc_direct_members))
 
 - (UICollectionViewCellRegistration *)makeCellRegistration {
     UICollectionViewCellRegistration *cellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull item) {
-        auto itemModel = static_cast<CardBacksItemModel *>(item);
+        auto itemModel = static_cast<CardBacksOptionsItemModel *>(item);
         
         switch (itemModel.type) {
-            case CardBacksItemModelTypeTextFilter: {
+            case CardBacksOptionsItemModelTypeTextFilter: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Text";
                 cell.contentConfiguration = contentConfiguration;
@@ -126,7 +126,7 @@ __attribute__((objc_direct_members))
                 [textFieldAccessory release];
                 break;
             }
-            case CardBacksItemModelTypeCardBackCategory: {
+            case CardBacksOptionsItemModelTypeCardBackCategory: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Category";
                 cell.contentConfiguration = contentConfiguration;
@@ -156,7 +156,7 @@ __attribute__((objc_direct_members))
                 
                 break;
             }
-            case CardBacksItemModelTypeSort: {
+            case CardBacksOptionsItemModelTypeSort: {
                 UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
                 contentConfiguration.text = @"Sort";
                 cell.contentConfiguration = contentConfiguration;

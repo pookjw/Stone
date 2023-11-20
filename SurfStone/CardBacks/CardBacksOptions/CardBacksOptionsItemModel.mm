@@ -1,11 +1,11 @@
 //
-//  CardBacksItemModel.mm
+//  CardBacksOptionsItemModel.mm
 //  SurfStone
 //
 //  Created by Jinwoo Kim on 11/19/23.
 //
 
-#import "CardBacksItemModel.hpp"
+#import "CardBacksOptionsItemModel.hpp"
 
 NSString * const CardBacksItemModelTextFilterKey = @"CardBacksItemModelTextFilterKey";
 NSString * const CardBacksItemModelSelectedCardBackCategoryKey = @"CardBacksItemModelSelectedCardBackCategoryKey";
@@ -14,16 +14,16 @@ NSString * const CardBacksItemModelSelectedSortKey = @"CardBacksItemModelSelecte
 NSString * const CardBacksItemModelSortsKey = @"CardBacksItemModelSortsKey";
 
 __attribute__((objc_direct_members))
-@interface CardBacksItemModel () {
-    CardBacksItemModelType _type;
+@interface CardBacksOptionsItemModel () {
+    CardBacksOptionsItemModelType _type;
 }
 @end
 
-@implementation CardBacksItemModel
+@implementation CardBacksOptionsItemModel
 
 @synthesize type = _type;
 
-- (instancetype)initWithType:(CardBacksItemModelType)type {
+- (instancetype)initWithType:(CardBacksOptionsItemModelType)type {
     if (self = [super init]) {
         _type = type;
     }
@@ -42,7 +42,7 @@ __attribute__((objc_direct_members))
     } else if (![super isEqual:other]) {
         return NO;
     } else {
-        auto toCompare = static_cast<CardBacksItemModel *>(other);
+        auto toCompare = static_cast<CardBacksOptionsItemModel *>(other);
         return toCompare->_type == _type;
     }
 }

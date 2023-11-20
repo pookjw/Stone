@@ -11,9 +11,13 @@
 		4F276CF62B051E43009C3E49 /* SettingsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F276CF42B051E43009C3E49 /* SettingsViewModel.mm */; };
 		4F276CF92B051E80009C3E49 /* SettingsSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F276CF82B051E80009C3E49 /* SettingsSectionModel.mm */; };
 		4F276CFC2B051FAF009C3E49 /* SettingsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F276CFB2B051FAF009C3E49 /* SettingsItemModel.mm */; };
-		4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */; };
+		4FB186D92AF6746E00A87403 /* CardBacksRootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186D82AF6746E00A87403 /* CardBacksRootViewController.mm */; };
 		4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */; };
 		4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */; };
+		4FBF5F402B0BBADA0044C834 /* CardBacksViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF5F3F2B0BBADA0044C834 /* CardBacksViewController.mm */; };
+		4FBF5F432B0BBC080044C834 /* CardBacksViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF5F412B0BBC080044C834 /* CardBacksViewModel.mm */; };
+		4FBF5F4E2B0BBD570044C834 /* CardBacksSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF5F4B2B0BBD570044C834 /* CardBacksSectionModel.mm */; };
+		4FBF5F4F2B0BBD570044C834 /* CardBacksItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF5F4C2B0BBD570044C834 /* CardBacksItemModel.mm */; };
 		4FD6A1C92B08DFEC00B3511A /* SettingsLocaleViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1C82B08DFEC00B3511A /* SettingsLocaleViewController.mm */; };
 		4FD6A1CD2B08E0FB00B3511A /* SettingsRegionViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1CC2B08E0FB00B3511A /* SettingsRegionViewController.mm */; };
 		4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1CE2B08E31E00B3511A /* SettingsLocaleViewModel.mm */; };
@@ -22,8 +26,8 @@
 		4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1D72B08E86C00B3511A /* SettingsRegionViewModel.mm */; };
 		4FD6A1DC2B0924C400B3511A /* SettingsLocaleSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1DB2B0924C400B3511A /* SettingsLocaleSectionModel.mm */; };
 		4FD6A1DF2B0925BB00B3511A /* SettingsLocaleItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1DE2B0925BB00B3511A /* SettingsLocaleItemModel.mm */; };
-		4FD6A1E22B09DC1C00B3511A /* CardBacksSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */; };
-		4FD6A1E52B09DC2400B3511A /* CardBacksItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */; };
+		4FD6A1E22B09DC1C00B3511A /* CardBacksOptionsSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E12B09DC1C00B3511A /* CardBacksOptionsSectionModel.mm */; };
+		4FD6A1E52B09DC2400B3511A /* CardBacksOptionsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1E42B09DC2400B3511A /* CardBacksOptionsItemModel.mm */; };
 		4FD6A1FB2B0A32C600B3511A /* NewWindowViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD6A1FA2B0A32C600B3511A /* NewWindowViewController.mm */; };
 		4FEF15F02AEBFC810059D1FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FEF15EF2AEBFC810059D1FB /* Assets.xcassets */; };
 		4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF15F82AEBFCC10059D1FB /* main.mm */; };
@@ -48,12 +52,20 @@
 		4F276CFA2B051FAF009C3E49 /* SettingsItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsItemModel.hpp; sourceTree = "<group>"; };
 		4F276CFB2B051FAF009C3E49 /* SettingsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsItemModel.mm; sourceTree = "<group>"; };
 		4F93F4802AFA82A800688504 /* HearthstoneAPIService+Macro.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "HearthstoneAPIService+Macro.hpp"; sourceTree = "<group>"; };
-		4FB186D72AF6746E00A87403 /* CardBacksViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksViewController.hpp; sourceTree = "<group>"; };
-		4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksViewController.mm; sourceTree = "<group>"; };
+		4FB186D72AF6746E00A87403 /* CardBacksRootViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksRootViewController.hpp; sourceTree = "<group>"; };
+		4FB186D82AF6746E00A87403 /* CardBacksRootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksRootViewController.mm; sourceTree = "<group>"; };
 		4FB186DB2AF68A8E00A87403 /* CardBacksOptionsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsViewController.hpp; sourceTree = "<group>"; };
 		4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsViewController.mm; sourceTree = "<group>"; };
 		4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsViewModel.mm; sourceTree = "<group>"; };
 		4FB186DF2AF68C2500A87403 /* CardBacksOptionsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsViewModel.hpp; sourceTree = "<group>"; };
+		4FBF5F3E2B0BBADA0044C834 /* CardBacksViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksViewController.hpp; sourceTree = "<group>"; };
+		4FBF5F3F2B0BBADA0044C834 /* CardBacksViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksViewController.mm; sourceTree = "<group>"; };
+		4FBF5F412B0BBC080044C834 /* CardBacksViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksViewModel.mm; sourceTree = "<group>"; };
+		4FBF5F422B0BBC080044C834 /* CardBacksViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksViewModel.hpp; sourceTree = "<group>"; };
+		4FBF5F4A2B0BBD570044C834 /* CardBacksItemModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CardBacksItemModel.hpp; sourceTree = "<group>"; };
+		4FBF5F4B2B0BBD570044C834 /* CardBacksSectionModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksSectionModel.mm; sourceTree = "<group>"; };
+		4FBF5F4C2B0BBD570044C834 /* CardBacksItemModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksItemModel.mm; sourceTree = "<group>"; };
+		4FBF5F4D2B0BBD570044C834 /* CardBacksSectionModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CardBacksSectionModel.hpp; sourceTree = "<group>"; };
 		4FD6A1C72B08DFEC00B3511A /* SettingsLocaleViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsLocaleViewController.hpp; sourceTree = "<group>"; };
 		4FD6A1C82B08DFEC00B3511A /* SettingsLocaleViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleViewController.mm; sourceTree = "<group>"; };
 		4FD6A1CB2B08E0FB00B3511A /* SettingsRegionViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsRegionViewController.hpp; sourceTree = "<group>"; };
@@ -70,10 +82,10 @@
 		4FD6A1DB2B0924C400B3511A /* SettingsLocaleSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleSectionModel.mm; sourceTree = "<group>"; };
 		4FD6A1DD2B0925BB00B3511A /* SettingsLocaleItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsLocaleItemModel.hpp; sourceTree = "<group>"; };
 		4FD6A1DE2B0925BB00B3511A /* SettingsLocaleItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsLocaleItemModel.mm; sourceTree = "<group>"; };
-		4FD6A1E02B09DC1C00B3511A /* CardBacksSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksSectionModel.hpp; sourceTree = "<group>"; };
-		4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksSectionModel.mm; sourceTree = "<group>"; };
-		4FD6A1E32B09DC2400B3511A /* CardBacksItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksItemModel.hpp; sourceTree = "<group>"; };
-		4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksItemModel.mm; sourceTree = "<group>"; };
+		4FD6A1E02B09DC1C00B3511A /* CardBacksOptionsSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsSectionModel.hpp; sourceTree = "<group>"; };
+		4FD6A1E12B09DC1C00B3511A /* CardBacksOptionsSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsSectionModel.mm; sourceTree = "<group>"; };
+		4FD6A1E32B09DC2400B3511A /* CardBacksOptionsItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksOptionsItemModel.hpp; sourceTree = "<group>"; };
+		4FD6A1E42B09DC2400B3511A /* CardBacksOptionsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksOptionsItemModel.mm; sourceTree = "<group>"; };
 		4FD6A1F92B0A32C600B3511A /* NewWindowViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NewWindowViewController.hpp; sourceTree = "<group>"; };
 		4FD6A1FA2B0A32C600B3511A /* NewWindowViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewWindowViewController.mm; sourceTree = "<group>"; };
 		4FEF15E52AEBFC800059D1FB /* SurfStone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfStone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,26 +155,42 @@
 		4FB186D62AF6744200A87403 /* CardBacks */ = {
 			isa = PBXGroup;
 			children = (
-				4FB186D72AF6746E00A87403 /* CardBacksViewController.hpp */,
-				4FB186D82AF6746E00A87403 /* CardBacksViewController.mm */,
-				4FB186DA2AF68A7C00A87403 /* CardBacksOptionsViewController */,
+				4FB186D72AF6746E00A87403 /* CardBacksRootViewController.hpp */,
+				4FB186D82AF6746E00A87403 /* CardBacksRootViewController.mm */,
+				4FB186DA2AF68A7C00A87403 /* CardBacksOptions */,
+				4FBF5F3D2B0BBAC80044C834 /* CardBacks */,
 			);
 			path = CardBacks;
 			sourceTree = "<group>";
 		};
-		4FB186DA2AF68A7C00A87403 /* CardBacksOptionsViewController */ = {
+		4FB186DA2AF68A7C00A87403 /* CardBacksOptions */ = {
 			isa = PBXGroup;
 			children = (
 				4FB186DB2AF68A8E00A87403 /* CardBacksOptionsViewController.hpp */,
 				4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */,
 				4FB186DF2AF68C2500A87403 /* CardBacksOptionsViewModel.hpp */,
 				4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */,
-				4FD6A1E02B09DC1C00B3511A /* CardBacksSectionModel.hpp */,
-				4FD6A1E12B09DC1C00B3511A /* CardBacksSectionModel.mm */,
-				4FD6A1E32B09DC2400B3511A /* CardBacksItemModel.hpp */,
-				4FD6A1E42B09DC2400B3511A /* CardBacksItemModel.mm */,
+				4FD6A1E02B09DC1C00B3511A /* CardBacksOptionsSectionModel.hpp */,
+				4FD6A1E12B09DC1C00B3511A /* CardBacksOptionsSectionModel.mm */,
+				4FD6A1E32B09DC2400B3511A /* CardBacksOptionsItemModel.hpp */,
+				4FD6A1E42B09DC2400B3511A /* CardBacksOptionsItemModel.mm */,
 			);
-			path = CardBacksOptionsViewController;
+			path = CardBacksOptions;
+			sourceTree = "<group>";
+		};
+		4FBF5F3D2B0BBAC80044C834 /* CardBacks */ = {
+			isa = PBXGroup;
+			children = (
+				4FBF5F3E2B0BBADA0044C834 /* CardBacksViewController.hpp */,
+				4FBF5F3F2B0BBADA0044C834 /* CardBacksViewController.mm */,
+				4FBF5F422B0BBC080044C834 /* CardBacksViewModel.hpp */,
+				4FBF5F412B0BBC080044C834 /* CardBacksViewModel.mm */,
+				4FBF5F4D2B0BBD570044C834 /* CardBacksSectionModel.hpp */,
+				4FBF5F4B2B0BBD570044C834 /* CardBacksSectionModel.mm */,
+				4FBF5F4A2B0BBD570044C834 /* CardBacksItemModel.hpp */,
+				4FBF5F4C2B0BBD570044C834 /* CardBacksItemModel.mm */,
+			);
+			path = CardBacks;
 			sourceTree = "<group>";
 		};
 		4FD6A1C62B08DFC900B3511A /* SettingsLocale */ = {
@@ -355,11 +383,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FBF5F4E2B0BBD570044C834 /* CardBacksSectionModel.mm in Sources */,
 				4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */,
+				4FBF5F432B0BBC080044C834 /* CardBacksViewModel.mm in Sources */,
 				4F276CF92B051E80009C3E49 /* SettingsSectionModel.mm in Sources */,
 				4FD6A1D32B08E37000B3511A /* SettingsRegionSectionModel.mm in Sources */,
 				4FEF163D2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm in Sources */,
-				4FB186D92AF6746E00A87403 /* CardBacksViewController.mm in Sources */,
+				4FB186D92AF6746E00A87403 /* CardBacksRootViewController.mm in Sources */,
 				4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */,
 				4F276CF62B051E43009C3E49 /* SettingsViewModel.mm in Sources */,
 				4FEF16012AEBFD360059D1FB /* AppDelegate.mm in Sources */,
@@ -368,18 +398,20 @@
 				4FD6A1D62B08E37A00B3511A /* SettingsRegionItemModel.mm in Sources */,
 				4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */,
 				4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */,
-				4FD6A1E52B09DC2400B3511A /* CardBacksItemModel.mm in Sources */,
+				4FD6A1E52B09DC2400B3511A /* CardBacksOptionsItemModel.mm in Sources */,
 				4FEF16462AED75FD0059D1FB /* SettingsRootViewController.mm in Sources */,
 				4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */,
 				4FD6A1DC2B0924C400B3511A /* SettingsLocaleSectionModel.mm in Sources */,
 				4F276CF32B051D3C009C3E49 /* SettingsViewController.mm in Sources */,
 				4FD6A1FB2B0A32C600B3511A /* NewWindowViewController.mm in Sources */,
 				4FD6A1DF2B0925BB00B3511A /* SettingsLocaleItemModel.mm in Sources */,
-				4FD6A1E22B09DC1C00B3511A /* CardBacksSectionModel.mm in Sources */,
+				4FD6A1E22B09DC1C00B3511A /* CardBacksOptionsSectionModel.mm in Sources */,
 				4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */,
 				4FD6A1CD2B08E0FB00B3511A /* SettingsRegionViewController.mm in Sources */,
+				4FBF5F4F2B0BBD570044C834 /* CardBacksItemModel.mm in Sources */,
 				4FD6A1C92B08DFEC00B3511A /* SettingsLocaleViewController.mm in Sources */,
 				4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */,
+				4FBF5F402B0BBADA0044C834 /* CardBacksViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
