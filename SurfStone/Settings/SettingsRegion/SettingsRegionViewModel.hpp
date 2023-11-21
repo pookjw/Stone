@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
-#import <mutex>
+#import <memory>
 #import "SettingsRegionSectionModel.hpp"
 #import "SettingsRegionItemModel.hpp"
 
@@ -20,18 +20,16 @@ public:
     SettingsRegionViewModel(const SettingsRegionViewModel&) = delete;
     SettingsRegionViewModel& operator=(const SettingsRegionViewModel&) = delete;
     
-    void load(std::function<void ()> completionHandler);
+    void load(std::shared_ptr<SettingsRegionViewModel> ref, std::function<void ()> completionHandler);
     void handleSelectionForIndexPath(NSIndexPath *indexPath, std::function<void ()> completionHandler);
 private:
     UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
     id<NSObject> _regionIdentifierForAPIObserver;
-    BOOL _isLoaded;
-    std::mutex _mutex;
     
-    static void setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource);
-    static void reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource);
-    void startObserving();
+    void setupInitialDataSource();
+    void reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier);
+    void startObserving(std::shared_ptr<SettingsRegionViewModel> ref);
 };
 
 NS_ASSUME_NONNULL_END

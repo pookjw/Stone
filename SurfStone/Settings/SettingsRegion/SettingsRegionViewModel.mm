@@ -8,7 +8,7 @@
 #import "SettingsRegionViewModel.hpp"
 @import StoneCore;
 
-SettingsRegionViewModel::SettingsRegionViewModel(UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource) : _dataSource([dataSource retain]), _isLoaded(NO) {
+SettingsRegionViewModel::SettingsRegionViewModel(UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource) : _dataSource([dataSource retain]) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, QOS_MIN_RELATIVE_PRIORITY);
     _queue = dispatch_queue_create("SettingsRegionViewModel", attr);
 }
@@ -19,34 +19,20 @@ SettingsRegionViewModel::~SettingsRegionViewModel() {
     [_dataSource release];
 }
 
-void SettingsRegionViewModel::load(std::function<void ()> completionHandler) {
-    _mutex.lock();
+void SettingsRegionViewModel::load(std::shared_ptr<SettingsRegionViewModel> ref, std::function<void ()> completionHandler) {
+    assert(this == ref.get());
     
-    if (_isLoaded) {
-        _mutex.unlock();
-        return;
-    }
-    
-    auto dataSource = _dataSource;
-    auto queue = _queue;
-    
-    dispatch_async(queue, ^{
+    dispatch_async(_queue, ^{
         [SettingsService.sharedInstance regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
-            dispatch_async(queue, ^{
-                reconfigureWithSelectedRegionIdentifier(result, dataSource);
+            dispatch_async(ref.get()->_queue, ^{
+                ref.get()->reconfigureWithSelectedRegionIdentifier(result);
                 completionHandler();
             });
         }];
         
-        setupInitialDataSource(dataSource);
+        ref.get()->startObserving(ref);
+        ref.get()->setupInitialDataSource();
     });
-    
-    startObserving();
-    
-    //
-    
-    _isLoaded = YES;
-    _mutex.unlock();
 }
 
 void SettingsRegionViewModel::handleSelectionForIndexPath(NSIndexPath * _Nonnull indexPath, std::function<void ()> completionHandler) {
@@ -63,7 +49,7 @@ void SettingsRegionViewModel::handleSelectionForIndexPath(NSIndexPath * _Nonnull
     });
 }
 
-void SettingsRegionViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsRegionSectionModel *,SettingsRegionItemModel *> * _Nonnull dataSource) {
+void SettingsRegionViewModel::setupInitialDataSource() {
     auto snapshot = [NSDiffableDataSourceSnapshot<SettingsRegionSectionModel *, SettingsRegionItemModel *> new];
     
     SettingsRegionSectionModel *sectionModel = [[SettingsRegionSectionModel alloc] initWithType:SettingsRegionSectionModelTypeRegions];
@@ -85,12 +71,12 @@ void SettingsRegionViewModel::setupInitialDataSource(UICollectionViewDiffableDat
     [sectionModel release];
     [itemModels release];
     
-    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [_dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
 }
 
-void SettingsRegionViewModel::reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier, UICollectionViewDiffableDataSource<SettingsRegionSectionModel *, SettingsRegionItemModel *> *dataSource) {
-    NSDiffableDataSourceSnapshot<SettingsRegionSectionModel *, SettingsRegionItemModel *> *snapshot = [dataSource.snapshot copy];
+void SettingsRegionViewModel::reconfigureWithSelectedRegionIdentifier(NSString * _Nullable selectedRegionIdentifier) {
+    NSDiffableDataSourceSnapshot<SettingsRegionSectionModel *, SettingsRegionItemModel *> *snapshot = [_dataSource.snapshot copy];
     
     auto itemModels = [NSMutableArray<SettingsRegionItemModel *> new];
     [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(SettingsRegionItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -113,11 +99,13 @@ void SettingsRegionViewModel::reconfigureWithSelectedRegionIdentifier(NSString *
     [snapshot reconfigureItemsWithIdentifiers:itemModels];
     [itemModels release];
     
-    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [_dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
 }
 
-void SettingsRegionViewModel::startObserving() {
+void SettingsRegionViewModel::startObserving(std::shared_ptr<SettingsRegionViewModel> ref) {
+    assert(this == ref.get());
+    
     NSOperationQueue *operationQueue = [NSOperationQueue new];
     operationQueue.underlyingQueue = _queue;
     
@@ -127,7 +115,7 @@ void SettingsRegionViewModel::startObserving() {
                                                                                         object:SettingsService.sharedInstance
                                                                                          queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
         id value = notification.userInfo[SettingsService.changedObjectKey];
-        reconfigureWithSelectedRegionIdentifier(value, dataSource);
+        ref.get()->reconfigureWithSelectedRegionIdentifier(value);
     }];
     
     [_regionIdentifierForAPIObserver release];

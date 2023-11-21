@@ -8,7 +8,7 @@
 #import "SettingsLocaleViewModel.hpp"
 @import StoneCore;
 
-SettingsLocaleViewModel::SettingsLocaleViewModel(UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource) : _dataSource([dataSource retain]), _isLoaded(NO) {
+SettingsLocaleViewModel::SettingsLocaleViewModel(UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource) : _dataSource([dataSource retain]) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, QOS_MIN_RELATIVE_PRIORITY);
     _queue = dispatch_queue_create("SettingsLocaleViewModel", attr);
 }
@@ -19,34 +19,18 @@ SettingsLocaleViewModel::~SettingsLocaleViewModel() {
     [_dataSource release];
 }
 
-void SettingsLocaleViewModel::load(std::function<void ()> completionHandler) {
-    _mutex.lock();
-    
-    if (_isLoaded) {
-        _mutex.unlock();
-        return;
-    }
-    
-    auto dataSource = _dataSource;
-    auto queue = _queue;
-    
-    dispatch_async(queue, ^{
+void SettingsLocaleViewModel::load(std::shared_ptr<SettingsLocaleViewModel> ref, std::function<void ()> completionHandler) {
+    dispatch_async(_queue, ^{
         [SettingsService.sharedInstance localeForAPIWithCompletionHandler:^(NSLocale * _Nullable result) {
-            dispatch_async(queue, ^{
-                reconfigureWithSelectedLocale(result, dataSource);
+            dispatch_async(ref.get()->_queue, ^{
+                ref.get()->reconfigureWithSelectedLocale(result);
                 completionHandler();
             });
         }];
         
-        setupInitialDataSource(dataSource);
+        ref.get()->startObserving(ref);
+        ref.get()->setupInitialDataSource();
     });
-    
-    startObserving();
-    
-    //
-    
-    _isLoaded = YES;
-    _mutex.unlock();
 }
 
 void SettingsLocaleViewModel::handleSelectionForIndexPath(NSIndexPath * _Nonnull indexPath, std::function<void ()> completionHandler) {
@@ -63,7 +47,7 @@ void SettingsLocaleViewModel::handleSelectionForIndexPath(NSIndexPath * _Nonnull
     });
 }
 
-void SettingsLocaleViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *,SettingsLocaleItemModel *> * _Nonnull dataSource) {
+void SettingsLocaleViewModel::setupInitialDataSource() {
     auto snapshot = [NSDiffableDataSourceSnapshot<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> new];
     
     SettingsLocaleSectionModel *sectionModel = [[SettingsLocaleSectionModel alloc] initWithType:SettingsLocaleSectionModelTypeLocales];
@@ -85,12 +69,12 @@ void SettingsLocaleViewModel::setupInitialDataSource(UICollectionViewDiffableDat
     [sectionModel release];
     [itemModels release];
     
-    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [_dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
 }
 
-void SettingsLocaleViewModel::reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale, UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *,SettingsLocaleItemModel *> * _Nonnull dataSource) {
-    NSDiffableDataSourceSnapshot<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *snapshot = [dataSource.snapshot copy];
+void SettingsLocaleViewModel::reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale) {
+    NSDiffableDataSourceSnapshot<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *snapshot = [_dataSource.snapshot copy];
     
     auto itemModels = [NSMutableArray<SettingsLocaleItemModel *> new];
     [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(SettingsLocaleItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -113,11 +97,11 @@ void SettingsLocaleViewModel::reconfigureWithSelectedLocale(NSLocale * _Nullable
     [snapshot reconfigureItemsWithIdentifiers:itemModels];
     [itemModels release];
     
-    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [_dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
 }
 
-void SettingsLocaleViewModel::startObserving() {
+void SettingsLocaleViewModel::startObserving(std::shared_ptr<SettingsLocaleViewModel> ref) {
     NSOperationQueue *operationQueue = [NSOperationQueue new];
     operationQueue.underlyingQueue = _queue;
     
@@ -127,7 +111,7 @@ void SettingsLocaleViewModel::startObserving() {
                                                                               object:SettingsService.sharedInstance
                                                                                queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {
         id value = notification.userInfo[SettingsService.changedObjectKey];
-        reconfigureWithSelectedLocale(value, dataSource);
+        ref.get()->reconfigureWithSelectedLocale(value);
     }];
     
     [_localeForAPIObserver release];

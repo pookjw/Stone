@@ -8,9 +8,7 @@
 #import "SettingsSectionModel.hpp"
 
 __attribute__((objc_direct_members))
-@interface SettingsSectionModel () {
-    SettingsSectionModelType _type;
-}
+@interface SettingsSectionModel ()
 @end
 
 @implementation SettingsSectionModel

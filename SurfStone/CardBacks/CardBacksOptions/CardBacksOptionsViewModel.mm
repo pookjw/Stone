@@ -15,37 +15,25 @@ CardBacksOptionsViewModel::CardBacksOptionsViewModel(UICollectionViewDiffableDat
 
 CardBacksOptionsViewModel::~CardBacksOptionsViewModel() {
     dispatch_release(_queue);
-    [_cardBackCategoriesMetadataProgress cancel];
-    [_cardBackCategoriesMetadataProgress release];
     [_apiService release];
     [_dataSource release];
 }
 
-void CardBacksOptionsViewModel::load(std::function<void ()> completionHandler) {
-    _mutex.lock();
-    
-    if (_isLoaded) {
-        _mutex.unlock();
-        return;
-    }
-    
-    //
-    
-    auto dataSource = _dataSource;
+NSProgress * CardBacksOptionsViewModel::load(std::shared_ptr<CardBacksOptionsViewModel> ref) {
+    assert(this == ref.get());
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:2];
     
     dispatch_async(_queue, ^{
-        setupInitialDataSource(dataSource);
+        ref.get()->setupInitialDataSource();
+        NSProgress *requestProgress = ref.get()->requestCardBackCategoryResponses(ref);
+        [progress addChild:requestProgress withPendingUnitCount:1];
+        progress.completedUnitCount += 1;
     });
     
-    requestCardBackCategoryResponses();
-    
-    //
-    
-    _isLoaded = YES;
-    _mutex.unlock();
+    return progress;
 }
 
-void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *,CardBacksOptionsItemModel *> * _Nonnull dataSource) {
+void CardBacksOptionsViewModel::setupInitialDataSource() {
     auto snapshot = [NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> new];
     
     CardBacksOptionsSectionModel *sectionModel = [[CardBacksOptionsSectionModel alloc] initWithType:CardBacksOptionsSectionModelTypeOptions];
@@ -88,22 +76,21 @@ void CardBacksOptionsViewModel::setupInitialDataSource(UICollectionViewDiffableD
     [sectionModel release];
     [optionsItemModels release];
     
-    [dataSource applySnapshot:snapshot animatingDifferences:YES];
+    [_dataSource applySnapshot:snapshot animatingDifferences:YES];
     [snapshot release];
 }
 
-void CardBacksOptionsViewModel::requestCardBackCategoryResponses() {
-    auto queue = _queue;
-    auto dataSource = _dataSource;
+NSProgress * CardBacksOptionsViewModel::requestCardBackCategoryResponses(std::shared_ptr<CardBacksOptionsViewModel> ref) {
+    assert(this == ref.get());
     
-    NSProgress *cardBackCategoriesMetadataProgress = [_apiService cardBackCategoriesMetadataWithCompletion:^(NSArray<HSCardBackCategoryResponse *> * _Nullable responses, NSError * _Nullable error) {
+    NSProgress *progress = [_apiService cardBackCategoriesMetadataWithCompletion:^(NSArray<HSCardBackCategoryResponse *> * _Nullable responses, NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error);
             return;
         }
         
-        dispatch_async(queue, ^{
-            NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *,CardBacksOptionsItemModel *> *snapshot = [dataSource.snapshot copy];
+        dispatch_async(ref.get()->_queue, ^{
+            NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *,CardBacksOptionsItemModel *> *snapshot = [ref.get()->_dataSource.snapshot copy];
             __block CardBacksOptionsItemModel * _Nullable itemModel = nil;
             [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 if (obj.type == CardBacksOptionsItemModelTypeCardBackCategory) {
@@ -126,12 +113,10 @@ void CardBacksOptionsViewModel::requestCardBackCategoryResponses() {
             [mutableUserInfo release];
             
             [snapshot reconfigureItemsWithIdentifiers:@[itemModel]];
-            [dataSource applySnapshot:snapshot animatingDifferences:YES];
+            [ref.get()->_dataSource applySnapshot:snapshot animatingDifferences:YES];
             [snapshot release];
         });
     }];
     
-    [_cardBackCategoriesMetadataProgress cancel];
-    [_cardBackCategoriesMetadataProgress release];
-    _cardBackCategoriesMetadataProgress = [cardBackCategoriesMetadataProgress retain];
+    return progress;
 }

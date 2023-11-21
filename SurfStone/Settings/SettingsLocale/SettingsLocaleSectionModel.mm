@@ -8,9 +8,7 @@
 #import "SettingsLocaleSectionModel.hpp"
 
 __attribute__((objc_direct_members))
-@interface SettingsLocaleSectionModel () {
-    SettingsLocaleSectionModelType _type;
-}
+@interface SettingsLocaleSectionModel ()
 @end
 
 @implementation SettingsLocaleSectionModel

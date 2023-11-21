@@ -23,6 +23,7 @@ extern NSString * const CardBacksItemModelCardBackCategoriesKey;
 extern NSString * const CardBacksItemModelSelectedSortKey;
 extern NSString * const CardBacksItemModelSortsKey;
 
+__attribute__((objc_direct_members))
 @interface CardBacksOptionsItemModel : NSObject
 @property (readonly, nonatomic) CardBacksOptionsItemModelType type;
 @property (copy) NSDictionary * _Nullable userInfo;

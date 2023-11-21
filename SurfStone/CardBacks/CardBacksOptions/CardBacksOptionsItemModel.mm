@@ -14,9 +14,7 @@ NSString * const CardBacksItemModelSelectedSortKey = @"CardBacksItemModelSelecte
 NSString * const CardBacksItemModelSortsKey = @"CardBacksItemModelSortsKey";
 
 __attribute__((objc_direct_members))
-@interface CardBacksOptionsItemModel () {
-    CardBacksOptionsItemModelType _type;
-}
+@interface CardBacksOptionsItemModel ()
 @end
 
 @implementation CardBacksOptionsItemModel

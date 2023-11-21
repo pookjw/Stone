@@ -8,7 +8,7 @@
 #import "SettingsViewModel.hpp"
 @import StoneCore;
 
-SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource) : _dataSource([dataSource retain]), _isLoaded(NO) {
+SettingsViewModel::SettingsViewModel(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource) : _dataSource([dataSource retain]) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, QOS_MIN_RELATIVE_PRIORITY);
     _queue = dispatch_queue_create("SettingsViewModel", attr);
 }
@@ -20,27 +20,13 @@ SettingsViewModel::~SettingsViewModel() {
     [_dataSource release];
 }
 
-void SettingsViewModel::load(std::function<void ()> completionHandler) {
-    _mutex.lock();
+void SettingsViewModel::load(std::shared_ptr<SettingsViewModel> ref, std::function<void ()> completionHandler) {
+    assert(this == ref.get());
     
-    if (_isLoaded) {
-        _mutex.unlock();
-        return;
-    }
-    
-    auto dataSource = _dataSource;
-    auto queue = _queue;
-    
-    dispatch_async(queue, ^{
-        setupInitialDataSource(dataSource, queue, completionHandler);
+    dispatch_async(_queue, ^{
+        ref.get()->startObserving();
+        ref.get()->setupInitialDataSource(completionHandler);
     });
-    
-    startObserving();
-    
-    //
-    
-    _isLoaded = YES;
-    _mutex.unlock();
 }
 
 SettingsSectionModel * _Nullable SettingsViewModel::unsafe_sectionModelFromIndexPath(NSIndexPath * _Nonnull indexPath) {
@@ -56,7 +42,7 @@ void SettingsViewModel::itemModelFromIndexPath(NSIndexPath * _Nonnull indexPath,
     });
 }
 
-std::pair<SettingsSectionModel *, BOOL> SettingsViewModel::appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *,SettingsItemModel *> * _Nonnull snapshot) {
+std::pair<SettingsSectionModel *, BOOL> SettingsViewModel::appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot) {
     __block SettingsSectionModel * _Nullable existing = nil;
     [snapshot.sectionIdentifiers enumerateObjectsUsingBlock:^(SettingsSectionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.type == type) {
@@ -87,11 +73,13 @@ SettingsItemModel * _Nullable SettingsViewModel::itemFromSnapshotUsingType(Setti
     return [[existing retain] autorelease];
 }
 
-void SettingsViewModel::setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsSectionModel *,SettingsItemModel *> * _Nonnull dataSource, dispatch_queue_t  _Nonnull queue, std::function<void ()> completionHandler) {
+void SettingsViewModel::setupInitialDataSource(std::function<void ()> completionHandler) {
+    auto queue = _queue;
+    auto dataSource = _dataSource;
     __block NSUInteger count = 0;
     
     [SettingsService.sharedInstance regionIdentifierForAPIWithCompletionHandler:^(NSString * _Nullable result) {
-        dispatch_async(queue, ^{
+        dispatch_async(_queue, ^{
             NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot = [dataSource.snapshot copy];
             
             SettingsSectionModel *sectionModel = appendSectionIntoSnapshotIfNeeded(SettingsSectionModelTypeAPI, snapshot).first;

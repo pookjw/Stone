@@ -13,6 +13,7 @@ typedef NS_ENUM(NSUInteger, CardBacksSectionModelType) {
     CardBacksSectionModelTypeCardBacks
 };
 
+__attribute__((objc_direct_members))
 @interface CardBacksSectionModel : NSObject
 @property (readonly, nonatomic) CardBacksSectionModelType type;
 + (instancetype)new NS_UNAVAILABLE;

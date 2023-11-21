@@ -49,7 +49,7 @@ __attribute__((objc_direct_members))
     [self setupCollectionView];
     [self setupViewModel];
     
-    self.viewModel.get()->load(^{
+    _viewModel.get()->load(_viewModel, ^{
         NSLog(@"Done!");
     });
 }

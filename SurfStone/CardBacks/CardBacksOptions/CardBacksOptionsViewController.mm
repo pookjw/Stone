@@ -14,6 +14,7 @@ __attribute__((objc_direct_members))
 @interface CardBacksOptionsViewController () <UICollectionViewDelegate>
 @property (retain, nonatomic) UICollectionView *collectionView;
 @property (assign, nonatomic) std::shared_ptr<CardBacksOptionsViewModel> viewModel;
+@property (retain, nonatomic) NSProgress * _Nullable loadProgress;
 @end
 
 @implementation CardBacksOptionsViewController
@@ -36,6 +37,8 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_loadProgress cancel];
+    [_loadProgress release];
     [super dealloc];
 }
 
@@ -66,9 +69,7 @@ __attribute__((objc_direct_members))
     [self setupCollectionView];
     [self setupViewModel];
     
-    self.viewModel.get()->load(^{
-        NSLog(@"Done!");
-    });
+    self.loadProgress = _viewModel.get()->load(_viewModel);
 }
 
 - (void)setupCollectionView __attribute__((objc_direct)) {

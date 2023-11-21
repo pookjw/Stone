@@ -11,9 +11,7 @@ NSString * const SettingsLocaleItemModelLocaleKey = @"SettingsLocaleItemModelLoc
 NSString * const SettingsLocaleItemModelIsSelectedKey = @"SettingsLocaleItemModelIsSelectedKey";
 
 __attribute__((objc_direct_members))
-@interface SettingsLocaleItemModel () {
-    SettingsLocaleItemModelType _type;
-}
+@interface SettingsLocaleItemModel ()
 @end
 
 @implementation SettingsLocaleItemModel

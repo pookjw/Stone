@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
-#import <mutex>
+#import <memory>
 #import "SettingsLocaleSectionModel.hpp"
 #import "SettingsLocaleItemModel.hpp"
 
@@ -20,18 +20,16 @@ public:
     SettingsLocaleViewModel(const SettingsLocaleViewModel&) = delete;
     SettingsLocaleViewModel& operator=(const SettingsLocaleViewModel&) = delete;
     
-    void load(std::function<void ()> completionHandler);
+    void load(std::shared_ptr<SettingsLocaleViewModel> ref, std::function<void ()> completionHandler);
     void handleSelectionForIndexPath(NSIndexPath *indexPath, std::function<void ()> completionHandler);
 private:
     UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
     id<NSObject> _localeForAPIObserver;
-    BOOL _isLoaded;
-    std::mutex _mutex;
     
-    static void setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource);
-    static void reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale, UICollectionViewDiffableDataSource<SettingsLocaleSectionModel *, SettingsLocaleItemModel *> *dataSource);
-    void startObserving();
+    void setupInitialDataSource();
+    void reconfigureWithSelectedLocale(NSLocale * _Nullable selectedLocale);
+    void startObserving(std::shared_ptr<SettingsLocaleViewModel> ref);
 };
 
 NS_ASSUME_NONNULL_END

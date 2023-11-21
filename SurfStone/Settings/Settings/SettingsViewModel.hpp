@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <functional>
-#import <mutex>
+#import <memory>
 #import "SettingsSectionModel.hpp"
 #import "SettingsItemModel.hpp"
 
@@ -20,7 +20,7 @@ public:
     SettingsViewModel(const SettingsViewModel&) = delete;
     SettingsViewModel& operator=(const SettingsViewModel&) = delete;
     
-    void load(std::function<void ()> completionHandler);
+    void load(std::shared_ptr<SettingsViewModel> ref, std::function<void ()> completionHandler);
     SettingsSectionModel * _Nullable unsafe_sectionModelFromIndexPath(NSIndexPath *indexPath);
     void itemModelFromIndexPath(NSIndexPath *indexPath, std::function<void (SettingsItemModel * _Nullable)> completionHandler);
 private:
@@ -28,13 +28,11 @@ private:
     dispatch_queue_t _queue;
     id<NSObject> _regionIdentifierForAPIObserver;
     id<NSObject> _localeForAPIObserver;
-    BOOL _isLoaded;
-    std::mutex _mutex;
     
-    static std::pair<SettingsSectionModel *, BOOL> appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type,  NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
-    static SettingsItemModel * _Nullable itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
+    std::pair<SettingsSectionModel *, BOOL> appendSectionIntoSnapshotIfNeeded(SettingsSectionModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
+    SettingsItemModel * _Nullable itemFromSnapshotUsingType(SettingsItemModelType type, NSDiffableDataSourceSnapshot<SettingsSectionModel *, SettingsItemModel *> *snapshot);
     
-    static void setupInitialDataSource(UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *dataSource, dispatch_queue_t queue, std::function<void ()> completionHandler);
+    void setupInitialDataSource(std::function<void ()> completionHandler);
     void startObserving();
 };
 

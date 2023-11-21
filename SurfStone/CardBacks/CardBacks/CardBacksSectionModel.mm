@@ -8,9 +8,7 @@
 #import "CardBacksSectionModel.hpp"
 
 __attribute__((objc_direct_members))
-@interface CardBacksSectionModel () {
-    CardBacksSectionModelType _type;
-}
+@interface CardBacksSectionModel ()
 @end
 
 @implementation CardBacksSectionModel

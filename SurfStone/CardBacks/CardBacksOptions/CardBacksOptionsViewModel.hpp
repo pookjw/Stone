@@ -6,8 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <functional>
-#import <mutex>
+#import <memory>
 #import "CardBacksOptionsSectionModel.hpp"
 #import "CardBacksOptionsItemModel.hpp"
 @import StoneCore;
@@ -21,17 +20,14 @@ public:
     CardBacksOptionsViewModel(const CardBacksOptionsViewModel&) = delete;
     CardBacksOptionsViewModel& operator=(const CardBacksOptionsViewModel&) = delete;
     
-    void load(std::function<void ()> completionHandler);
+    NSProgress * load(std::shared_ptr<CardBacksOptionsViewModel> ref);
 private:
     HearthstoneAPIService * const _apiService;
-    NSProgress * _Nullable _cardBackCategoriesMetadataProgress;
     UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
-    BOOL _isLoaded;
-    std::mutex _mutex;
     
-    static void setupInitialDataSource(UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *dataSource);
-    void requestCardBackCategoryResponses();
+    void setupInitialDataSource();
+    NSProgress * requestCardBackCategoryResponses(std::shared_ptr<CardBacksOptionsViewModel> ref);
 };
 
 NS_ASSUME_NONNULL_END

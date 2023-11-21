@@ -11,9 +11,7 @@ NSString * const SettingsRegionItemModelRegionIdentifierKey = @"SettingsRegionIt
 NSString * const SettingsRegionItemModelIsSelectedKey = @"SettingsRegionItemModelIsSelectedKey";
 
 __attribute__((objc_direct_members))
-@interface SettingsRegionItemModel () {
-    SettingsRegionItemModelType _type;
-}
+@interface SettingsRegionItemModel ()
 @end
 
 @implementation SettingsRegionItemModel
