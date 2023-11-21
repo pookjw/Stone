@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <functional>
+#import <memory>
 #import "CardBacksSectionModel.hpp"
 #import "CardBacksItemModel.hpp"
 @import StoneCore;
@@ -20,7 +20,7 @@ public:
     CardBacksViewModel(const CardBacksViewModel&) = delete;
     CardBacksViewModel& operator=(const CardBacksViewModel&) = delete;
     
-    void load(std::function<void ()> completionHandler);
+    NSProgress * load();
 private:
     HearthstoneAPIService * const _apiService;
     UICollectionViewDiffableDataSource<CardBacksSectionModel *, CardBacksItemModel *> * const _dataSource;

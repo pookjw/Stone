@@ -16,14 +16,3 @@ CardBacksViewModel::~CardBacksViewModel() {
     [_dataSource release];
     [_apiService release];
 }
-
-//void CardBacksViewModel::load(std::function<void ()> completionHandler) -> NSProgress * {
-//    auto currentRequestProgress = _requestProgress;
-//    auto dataSource = _dataSource;
-//    auto queue = _queue;
-//    
-//    dispatch_async(queue, ^{
-//        [_requestProgress cancel];
-//        [_]
-//    });
-//}
