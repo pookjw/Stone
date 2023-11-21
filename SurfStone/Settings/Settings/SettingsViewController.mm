@@ -77,7 +77,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupViewModel __attribute__((objc_direct)) {
-    self.viewModel = std::make_shared<SettingsViewModel>([self makeDataSource]);
+    _viewModel = std::make_shared<SettingsViewModel>([self makeDataSource]);
 }
 
 - (UICollectionViewDiffableDataSource<SettingsSectionModel *, SettingsItemModel *> *)makeDataSource __attribute__((objc_direct)) {

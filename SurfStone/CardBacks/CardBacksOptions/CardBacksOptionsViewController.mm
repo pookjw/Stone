@@ -36,9 +36,9 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    [_collectionView release];
     [_loadProgress cancel];
     [_loadProgress release];
+    [_collectionView release];
     [super dealloc];
 }
 
@@ -66,7 +66,6 @@ __attribute__((objc_direct_members))
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupCollectionView];
-    [self setupCollectionView];
     [self setupViewModel];
     
     self.loadProgress = _viewModel.get()->load(_viewModel);
@@ -90,7 +89,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupViewModel __attribute__((objc_direct)) {
-    self.viewModel = std::make_shared<CardBacksOptionsViewModel>([self makeDataSource]);
+    _viewModel = std::make_shared<CardBacksOptionsViewModel>([self makeDataSource]);
 }
 
 - (UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *)makeDataSource __attribute__((objc_direct)) {
@@ -152,7 +151,12 @@ __attribute__((objc_direct_members))
                     cell.accessories = @[popUpMenu];
                     [popUpMenu release];
                 } else {
-                    cell.accessories = @[];
+                    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+                    [indicator startAnimating];
+                    UICellAccessoryCustomView *accessory = [[UICellAccessoryCustomView alloc] initWithCustomView:indicator placement:UICellAccessoryPlacementTrailing];
+                    [indicator release];
+                    cell.accessories = @[accessory];
+                    [accessory release];
                 }
                 
                 break;

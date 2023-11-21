@@ -11,6 +11,9 @@
 		4F276CF62B051E43009C3E49 /* SettingsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F276CF42B051E43009C3E49 /* SettingsViewModel.mm */; };
 		4F276CF92B051E80009C3E49 /* SettingsSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F276CF82B051E80009C3E49 /* SettingsSectionModel.mm */; };
 		4F276CFC2B051FAF009C3E49 /* SettingsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F276CFB2B051FAF009C3E49 /* SettingsItemModel.mm */; };
+		4F52609B2B0CEC38002DD28D /* CardBacksCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F52609A2B0CEC38002DD28D /* CardBacksCollectionViewLayout.mm */; };
+		4F52609E2B0CF277002DD28D /* CardBacksCellContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F52609D2B0CF277002DD28D /* CardBacksCellContentView.mm */; };
+		4F5260A22B0CF8C1002DD28D /* AsyncImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5260A12B0CF8C1002DD28D /* AsyncImageView.mm */; };
 		4FB186D92AF6746E00A87403 /* CardBacksRootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186D82AF6746E00A87403 /* CardBacksRootViewController.mm */; };
 		4FB186DD2AF68A8E00A87403 /* CardBacksOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DC2AF68A8E00A87403 /* CardBacksOptionsViewController.mm */; };
 		4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB186DE2AF68C2500A87403 /* CardBacksOptionsViewModel.mm */; };
@@ -51,6 +54,12 @@
 		4F276CF82B051E80009C3E49 /* SettingsSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsSectionModel.mm; sourceTree = "<group>"; };
 		4F276CFA2B051FAF009C3E49 /* SettingsItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsItemModel.hpp; sourceTree = "<group>"; };
 		4F276CFB2B051FAF009C3E49 /* SettingsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsItemModel.mm; sourceTree = "<group>"; };
+		4F5260992B0CEC38002DD28D /* CardBacksCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksCollectionViewLayout.hpp; sourceTree = "<group>"; };
+		4F52609A2B0CEC38002DD28D /* CardBacksCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksCollectionViewLayout.mm; sourceTree = "<group>"; };
+		4F52609C2B0CF277002DD28D /* CardBacksCellContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksCellContentView.hpp; sourceTree = "<group>"; };
+		4F52609D2B0CF277002DD28D /* CardBacksCellContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksCellContentView.mm; sourceTree = "<group>"; };
+		4F5260A02B0CF8C1002DD28D /* AsyncImageView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AsyncImageView.hpp; sourceTree = "<group>"; };
+		4F5260A12B0CF8C1002DD28D /* AsyncImageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AsyncImageView.mm; sourceTree = "<group>"; };
 		4F93F4802AFA82A800688504 /* HearthstoneAPIService+Macro.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "HearthstoneAPIService+Macro.hpp"; sourceTree = "<group>"; };
 		4FB186D72AF6746E00A87403 /* CardBacksRootViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardBacksRootViewController.hpp; sourceTree = "<group>"; };
 		4FB186D82AF6746E00A87403 /* CardBacksRootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardBacksRootViewController.mm; sourceTree = "<group>"; };
@@ -144,6 +153,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		4F52609F2B0CF85F002DD28D /* AsyncImage */ = {
+			isa = PBXGroup;
+			children = (
+				4F5260A02B0CF8C1002DD28D /* AsyncImageView.hpp */,
+				4F5260A12B0CF8C1002DD28D /* AsyncImageView.mm */,
+			);
+			path = AsyncImage;
+			sourceTree = "<group>";
+		};
 		4F93F47F2AFA829100688504 /* StoneCoreHeaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +207,10 @@
 				4FBF5F4B2B0BBD570044C834 /* CardBacksSectionModel.mm */,
 				4FBF5F4A2B0BBD570044C834 /* CardBacksItemModel.hpp */,
 				4FBF5F4C2B0BBD570044C834 /* CardBacksItemModel.mm */,
+				4F5260992B0CEC38002DD28D /* CardBacksCollectionViewLayout.hpp */,
+				4F52609A2B0CEC38002DD28D /* CardBacksCollectionViewLayout.mm */,
+				4F52609C2B0CF277002DD28D /* CardBacksCellContentView.hpp */,
+				4F52609D2B0CF277002DD28D /* CardBacksCellContentView.mm */,
 			);
 			path = CardBacks;
 			sourceTree = "<group>";
@@ -263,6 +285,7 @@
 				4FEF16032AEBFDA10059D1FB /* SceneDelegate.mm */,
 				4FEF163B2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.h */,
 				4FEF163C2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm */,
+				4F52609F2B0CF85F002DD28D /* AsyncImage */,
 				4FD6A21B2B0A69EF00B3511A /* NewWidnow */,
 				4FEF163F2AED74D40059D1FB /* Cards */,
 				4FB186D62AF6744200A87403 /* CardBacks */,
@@ -388,13 +411,16 @@
 				4FBF5F432B0BBC080044C834 /* CardBacksViewModel.mm in Sources */,
 				4F276CF92B051E80009C3E49 /* SettingsSectionModel.mm in Sources */,
 				4FD6A1D32B08E37000B3511A /* SettingsRegionSectionModel.mm in Sources */,
+				4F52609B2B0CEC38002DD28D /* CardBacksCollectionViewLayout.mm in Sources */,
 				4FEF163D2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm in Sources */,
+				4F5260A22B0CF8C1002DD28D /* AsyncImageView.mm in Sources */,
 				4FB186D92AF6746E00A87403 /* CardBacksRootViewController.mm in Sources */,
 				4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */,
 				4F276CF62B051E43009C3E49 /* SettingsViewModel.mm in Sources */,
 				4FEF16012AEBFD360059D1FB /* AppDelegate.mm in Sources */,
 				4FEF16432AED75150059D1FB /* CardsViewController.mm in Sources */,
 				4F276CFC2B051FAF009C3E49 /* SettingsItemModel.mm in Sources */,
+				4F52609E2B0CF277002DD28D /* CardBacksCellContentView.mm in Sources */,
 				4FD6A1D62B08E37A00B3511A /* SettingsRegionItemModel.mm in Sources */,
 				4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */,
 				4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */,

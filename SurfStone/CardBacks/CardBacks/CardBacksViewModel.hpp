@@ -20,11 +20,13 @@ public:
     CardBacksViewModel(const CardBacksViewModel&) = delete;
     CardBacksViewModel& operator=(const CardBacksViewModel&) = delete;
     
-    NSProgress * load();
+    NSProgress * load(std::shared_ptr<CardBacksViewModel> ref);
 private:
     HearthstoneAPIService * const _apiService;
     UICollectionViewDiffableDataSource<CardBacksSectionModel *, CardBacksItemModel *> * const _dataSource;
     dispatch_queue_t _queue;
+    
+    void appendHSCardBacksResponse(HSCardBacksResponse *response);
 };
 
 NS_ASSUME_NONNULL_END

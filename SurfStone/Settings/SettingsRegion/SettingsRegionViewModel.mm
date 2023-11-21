@@ -109,8 +109,6 @@ void SettingsRegionViewModel::startObserving(std::shared_ptr<SettingsRegionViewM
     NSOperationQueue *operationQueue = [NSOperationQueue new];
     operationQueue.underlyingQueue = _queue;
     
-    auto dataSource = _dataSource;
-    
     id regionIdentifierForAPIObserver = [NSNotificationCenter.defaultCenter addObserverForName:SettingsService.regionIdentifierForAPIDidChangeNotification
                                                                                         object:SettingsService.sharedInstance
                                                                                          queue:operationQueue usingBlock:^(NSNotification * _Nonnull notification) {

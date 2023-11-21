@@ -23,6 +23,7 @@ actor BlizzardAPIAccessTokenService {
         {
             return cachedAccessToken
         }
+        
         //
         
         let (accessToken, expirationDate): (String, Date) = try await requestAccessToken(region: region)
@@ -32,6 +33,9 @@ actor BlizzardAPIAccessTokenService {
             for fetchedObject in fetchedObjects {
                 context.delete(fetchedObject)
             }
+            
+            // to prevent constraint error
+            try context.save()
             
             let accessTokenObject: BlizzardAPIAccessToken = .init(context: context)
             accessTokenObject.regionCode = region.identifier

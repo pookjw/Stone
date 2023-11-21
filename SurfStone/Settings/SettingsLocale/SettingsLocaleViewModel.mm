@@ -102,10 +102,10 @@ void SettingsLocaleViewModel::reconfigureWithSelectedLocale(NSLocale * _Nullable
 }
 
 void SettingsLocaleViewModel::startObserving(std::shared_ptr<SettingsLocaleViewModel> ref) {
+    assert(this == ref.get());
+    
     NSOperationQueue *operationQueue = [NSOperationQueue new];
     operationQueue.underlyingQueue = _queue;
-    
-    auto dataSource = _dataSource;
     
     id localeForAPIObserver = [NSNotificationCenter.defaultCenter addObserverForName:SettingsService.localeForAPIForAPIDidChangeNotification
                                                                               object:SettingsService.sharedInstance
