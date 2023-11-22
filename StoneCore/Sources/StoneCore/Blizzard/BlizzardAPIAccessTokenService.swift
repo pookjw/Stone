@@ -13,14 +13,29 @@ actor BlizzardAPIAccessTokenService {
         return coreDataStack
     }()
     
+    private let mutexSubject: CurrentValueAsyncSubject<Bool> = .init(value: false)
+    
     func accessToken(region: Locale.Region) async throws -> String {
+        mutexLoop: while await mutexSubject.value {
+            for await value in await mutexSubject() {
+                if !value {
+                    break mutexLoop
+                }
+            }
+        }
+        
+        //
+        
+        await mutexSubject.yield(with: .success(true))
+        
         let (cachedAccessToken, cachedExpirationDate, fetchedObjects): (String?, Date?, [BlizzardAPIAccessToken]) = try await fetchAccessTokenCache(region: region)
         
         if
             let cachedAccessToken: String,
             let cachedExpirationDate: Date,
-            cachedExpirationDate > .now
+            Date.now < cachedExpirationDate
         {
+            await mutexSubject.yield(with: .success(false))
             return cachedAccessToken
         }
         
@@ -34,8 +49,7 @@ actor BlizzardAPIAccessTokenService {
                 context.delete(fetchedObject)
             }
             
-            // to prevent constraint error
-            try context.save()
+            //
             
             let accessTokenObject: BlizzardAPIAccessToken = .init(context: context)
             accessTokenObject.regionCode = region.identifier
@@ -45,6 +59,7 @@ actor BlizzardAPIAccessTokenService {
             try context.save()
         }
         
+        await mutexSubject.yield(with: .success(false))
         return accessToken
     }
     

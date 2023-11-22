@@ -183,6 +183,10 @@ __attribute__((objc_direct_members))
         auto loaded = static_cast<SettingsViewController * _Nullable>(objc_loadWeak(&location));
         if (!loaded) return;
         
+        auto delegate = loaded.delegate;
+        if (!delegate) return;
+        if (![delegate respondsToSelector:@selector(settingsViewController:didSelectItemModel:)]) return;
+        
         [loaded.delegate settingsViewController:location didSelectItemModel:itemModel];
     });
 }

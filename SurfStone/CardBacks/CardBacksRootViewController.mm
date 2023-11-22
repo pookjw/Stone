@@ -10,7 +10,7 @@
 #import "CardBacksViewController.hpp"
 
 __attribute__((objc_direct_members))
-@interface CardBacksRootViewController () {
+@interface CardBacksRootViewController () <CardBacksOptionsViewControllerDelegate> {
     UISplitViewController *_childSplitViewController;
     CardBacksOptionsViewController *_cardBacksOptionsViewController;
     CardBacksViewController *_cardBacksViewController;
@@ -125,6 +125,12 @@ __attribute__((objc_direct_members))
     [_cardBacksViewController release];
     _cardBacksViewController = [cardBacksViewController retain];
     return [cardBacksViewController autorelease];
+}
+
+#pragma mark - CardBacksOptionsViewControllerDelegate
+
+- (void)cardBacksOptionsViewController:(CardBacksOptionsViewController *)viewController doneWithText:(NSString *)text cardBackCategorySlug:(NSString *)slug sort:(HSCardBacksSortRequest)sort {
+    
 }
 
 @end

@@ -6,11 +6,17 @@
 //
 
 #import <UIKit/UIKit.h>
+@import StoneCore;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CardBacksOptionsViewController : UIViewController
+@class CardBacksOptionsViewController;
+@protocol CardBacksOptionsViewControllerDelegate <NSObject>
+@optional - (void)cardBacksOptionsViewController:(CardBacksOptionsViewController *)viewController doneWithText:(NSString * _Nullable)text cardBackCategorySlug:(NSString * _Nullable)slug sort:(HSCardBacksSortRequest)sort;
+@end
 
+@interface CardBacksOptionsViewController : UIViewController
+@property (weak, nonatomic) id<CardBacksOptionsViewControllerDelegate> delegate;
 @end
 
 NS_ASSUME_NONNULL_END

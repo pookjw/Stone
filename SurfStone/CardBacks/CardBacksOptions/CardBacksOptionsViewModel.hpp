@@ -21,6 +21,7 @@ public:
     CardBacksOptionsViewModel& operator=(const CardBacksOptionsViewModel&) = delete;
     
     NSProgress * load(std::shared_ptr<CardBacksOptionsViewModel> ref);
+    void inputDataWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^)(NSString * _Nullable text, NSString * _Nullable categorySlug, HSCardBacksSortRequest sort));
 private:
     HearthstoneAPIService * const _apiService;
     UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> * const _dataSource;

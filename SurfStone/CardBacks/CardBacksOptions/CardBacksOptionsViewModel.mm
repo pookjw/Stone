@@ -33,6 +33,65 @@ NSProgress * CardBacksOptionsViewModel::load(std::shared_ptr<CardBacksOptionsVie
     return progress;
 }
 
+void CardBacksOptionsViewModel::inputDataWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^completionHandler)(NSString * _Nullable text, NSString * _Nullable categorySlug, HSCardBacksSortRequest sort)) {
+    dispatch_async(_queue, ^{
+        auto snapshot = ref.get()->_dataSource.snapshot;
+        
+        __block CardBacksOptionsItemModel * _Nullable textFilterItemModel = nil;
+        __block CardBacksOptionsItemModel * _Nullable cardBackCategoryItemModel = nil;
+        __block CardBacksOptionsItemModel * _Nullable sortItemModel = nil;
+        
+        [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            void (^stopIfNeeded)(BOOL *) = ^(BOOL *stop) {
+                if (textFilterItemModel && cardBackCategoryItemModel && sortItemModel) {
+                    *stop = YES;
+                }
+            };
+            
+            if (obj.type == CardBacksOptionsItemModelTypeTextFilter) {
+                textFilterItemModel = [[obj retain] autorelease];
+                stopIfNeeded(stop);
+            } else if (obj.type == CardBacksOptionsItemModelTypeCardBackCategory) {
+                cardBackCategoryItemModel = [[obj retain] autorelease];
+                stopIfNeeded(stop);
+            } else if (obj.type == CardBacksOptionsItemModelTypeSort) {
+                sortItemModel = [[obj retain] autorelease];
+                stopIfNeeded(stop);
+            }
+        }];
+        
+        //
+        
+        NSString * _Nullable text;
+        id _Nullable textFilter = textFilterItemModel.userInfo[CardBacksItemModelTextFilterKey];
+        if ([textFilter isKindOfClass:NSString.class]) {
+            text = textFilter;
+        } else {
+            text = nil;
+        }
+        
+        NSString * _Nullable categorySlug;
+        id _Nullable selectedCardBackCategory = cardBackCategoryItemModel.userInfo[CardBacksItemModelSelectedCardBackCategoryKey];
+        if ([selectedCardBackCategory isKindOfClass:NSString.class]) {
+            categorySlug = selectedCardBackCategory;
+        } else {
+            categorySlug = nil;
+        }
+        
+        HSCardBacksSortRequest sort;
+        id _Nullable selectedSort = cardBackCategoryItemModel.userInfo[CardBacksItemModelSelectedSortKey];
+        if ([selectedSort isKindOfClass:NSNumber.class]) {
+            sort = static_cast<HSCardBacksSortRequest>(static_cast<NSNumber *>(selectedSort).unsignedIntegerValue);
+        } else {
+            sort = HSCardBacksSortRequestNone;
+        }
+        
+        //
+        
+        completionHandler(text, categorySlug, sort);
+    });
+}
+
 void CardBacksOptionsViewModel::setupInitialDataSource() {
     auto snapshot = [NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> new];
     
