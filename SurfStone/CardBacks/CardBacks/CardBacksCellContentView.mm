@@ -6,6 +6,7 @@
 //
 
 #import "CardBacksCellContentView.hpp"
+#import "AsyncImageView.hpp"
 
 @implementation CardBacksCellContentConfiguration
 
@@ -52,14 +53,14 @@
 __attribute__((objc_direct_members))
 @interface CardBacksCellContentView ()
 @property (copy, nonatomic, setter=_setConfiguration:) CardBacksCellContentConfiguration *_configuration;
-@property (retain, nonatomic) UILabel *label;
+@property (retain, nonatomic) AsyncImageView *imageView;
 @end
 
 @implementation CardBacksCellContentView
 
 - (instancetype)initWithConfiguration:(CardBacksCellContentConfiguration *)configuration {
     if (self = [super initWithFrame:configuration.frame]) {
-        [self setupLabel];
+        [self setupImageView];
         self._configuration = configuration;
     }
     
@@ -67,8 +68,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    [__configuration release];
-    [_label release];
+    [_imageView release];
     [super dealloc];
 }
 
@@ -85,23 +85,16 @@ __attribute__((objc_direct_members))
 }
 
 - (void)_setConfiguration:(CardBacksCellContentConfiguration *)_configuration {
-    self.label.text = _configuration.cardBackResponse.name;
+    [self.imageView setImageWithURL:_configuration.cardBackResponse.imageURL];
 }
 
-- (void)setupLabel __attribute__((objc_direct)) {
-    UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
-    label.numberOfLines = 0;
-    label.backgroundColor = UIColor.systemGrayColor;
-    label.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:label];
-    [NSLayoutConstraint activateConstraints:@[
-        [label.topAnchor constraintEqualToAnchor:self.topAnchor],
-        [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-        [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-    ]];
-    self.label = label;
-    [label release];
+- (void)setupImageView __attribute__((objc_direct)) {
+    AsyncImageView *imageView = [[AsyncImageView alloc] initWithFrame:self.bounds];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:imageView];
+    self.imageView = imageView;
+    [imageView release];
 }
 
 @end
