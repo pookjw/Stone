@@ -13,20 +13,10 @@ actor BlizzardAPIAccessTokenService {
         return coreDataStack
     }()
     
-    private let mutexSubject: CurrentValueAsyncSubject<Bool> = .init(value: false)
+    private let asyncMutex: AsyncMutex = .init()
     
     func accessToken(region: Locale.Region) async throws -> String {
-        mutexLoop: while await mutexSubject.value {
-            for await value in await mutexSubject() {
-                if !value {
-                    break mutexLoop
-                }
-            }
-        }
-        
-        //
-        
-        await mutexSubject.yield(with: .success(true))
+        await asyncMutex.lock()
         
         let (cachedAccessToken, cachedExpirationDate, fetchedObjects): (String?, Date?, [BlizzardAPIAccessToken]) = try await fetchAccessTokenCache(region: region)
         
@@ -35,13 +25,14 @@ actor BlizzardAPIAccessTokenService {
             let cachedExpirationDate: Date,
             Date.now < cachedExpirationDate
         {
-            await mutexSubject.yield(with: .success(false))
+            await asyncMutex.unlock()
             return cachedAccessToken
         }
         
         //
         
         let (accessToken, expirationDate): (String, Date) = try await requestAccessToken(region: region)
+        let oAuthHost: String = region.oAuthBaseURL.host()!
         let context: NSManagedObjectContext = try await coreDataStack.context
         
         try await context.perform {
@@ -52,22 +43,22 @@ actor BlizzardAPIAccessTokenService {
             //
             
             let accessTokenObject: BlizzardAPIAccessToken = .init(context: context)
-            accessTokenObject.regionCode = region.identifier
+            accessTokenObject.oAuthHost = oAuthHost
             accessTokenObject.expirationDate = expirationDate
             accessTokenObject.accessToken = accessToken
             
             try context.save()
         }
         
-        await mutexSubject.yield(with: .success(false))
+        await asyncMutex.unlock()
         return accessToken
     }
     
     private func fetchAccessTokenCache(region: Locale.Region) async throws -> (accessToken: String?, expirationDate: Date?, fetchedObjects: [BlizzardAPIAccessToken]) {
-        let regionCode: String = region.identifier
+        let oAuthHost: String = region.oAuthBaseURL.host()!
         
         let predicate: Predicate<BlizzardAPIAccessToken> = #Predicate<BlizzardAPIAccessToken> { token in
-            token.regionCode == regionCode
+            token.oAuthHost == oAuthHost
         }
         
         let fetchRequest: NSFetchRequest<BlizzardAPIAccessToken> = .init(entityName: "BlizzardAPIAccessToken")
@@ -144,10 +135,10 @@ fileprivate final class BlizzardAPIAccessToken: NSManagedObject, @unchecked Send
         
         //
         
-        let regionCodeAttributeDescription: NSAttributeDescription = .init()
-        regionCodeAttributeDescription.name = #keyPath(BlizzardAPIAccessToken.regionCode)
-        regionCodeAttributeDescription.type = .string
-        regionCodeAttributeDescription.isOptional = false
+        let oAuthHostAttributeDescription: NSAttributeDescription = .init()
+        oAuthHostAttributeDescription.name = #keyPath(BlizzardAPIAccessToken.oAuthHost)
+        oAuthHostAttributeDescription.type = .string
+        oAuthHostAttributeDescription.isOptional = false
         
         let expirationDateAttributeDescription: NSAttributeDescription = .init()
         expirationDateAttributeDescription.name = #keyPath(BlizzardAPIAccessToken.expirationDate)
@@ -162,17 +153,17 @@ fileprivate final class BlizzardAPIAccessToken: NSManagedObject, @unchecked Send
         //
         
         entity.properties = [
-            regionCodeAttributeDescription,
+            oAuthHostAttributeDescription,
             expirationDateAttributeDescription,
             accessTokenAttributeDescription
         ]
         
-        entity.uniquenessConstraints = [[regionCodeAttributeDescription]]
+        entity.uniquenessConstraints = [[oAuthHostAttributeDescription]]
         
         return entity
     }
     
-    @NSManaged var regionCode: String
+    @NSManaged var oAuthHost: String
     @NSManaged var expirationDate: Date?
     @NSManaged var accessToken: String
 }

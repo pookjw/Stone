@@ -7,6 +7,7 @@
 
 #import "CardBacksOptionsViewController.hpp"
 #import "CardBacksOptionsViewModel.hpp"
+#import <objc/message.h>
 #import <memory>
 @import StoneCore;
 
@@ -115,18 +116,17 @@ __attribute__((objc_direct_members))
                 contentConfiguration.text = @"Text";
                 cell.contentConfiguration = contentConfiguration;
                 
-                UIAction *primaryAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
-                    
-                }];
-                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectNull primaryAction:primaryAction];
-                textField.borderStyle = UITextBorderStyleRoundedRect;
-                textField.textColor = UIColor.labelColor;
-                [textField.widthAnchor constraintEqualToConstant:80.f].active = YES;
-                UICellAccessoryCustomView *textFieldAccessory = [[UICellAccessoryCustomView alloc] initWithCustomView:textField placement:UICellAccessoryPlacementTrailing];
-                [textField release];
-//                textFieldAccessory.maintainsFixedSize = YES;
-                cell.accessories = @[textFieldAccessory];
-                [textFieldAccessory release];
+                id _Nullable textFilter = itemModel.userInfo[CardBacksItemModelTextFilterKey];
+                NSString *text;
+                if ([textFilter isKindOfClass:NSString.class]) {
+                    text = static_cast<NSString *>(textFilter);
+                } else {
+                    text = @"";
+                }
+                
+                UICellAccessoryLabel *label = [[UICellAccessoryLabel alloc] initWithText:text];
+                cell.accessories = @[label];
+                [label release];
                 break;
             }
             case CardBacksOptionsItemModelTypeCardBackCategory: {
@@ -134,14 +134,22 @@ __attribute__((objc_direct_members))
                 contentConfiguration.text = @"Category";
                 cell.contentConfiguration = contentConfiguration;
                 
+                id selectedCardBackCategory = itemModel.userInfo[CardBacksItemModelSelectedCardBackCategoryKey];
                 id categories = itemModel.userInfo[CardBacksItemModelCardBackCategoriesKey];
                 if ([categories isKindOfClass:NSArray.class]) {
+                    NSString *text;
+                    if ([selectedCardBackCategory isKindOfClass:NSString.class]) {
+                        text = selectedCardBackCategory;
+                    } else {
+                        text = @"(none)";
+                    }
+                    
                     NSArray<HSCardBackCategoryResponse *> *_categories = categories;
                     auto children = [NSMutableArray<UIAction *> new];
                     
                     [_categories enumerateObjectsUsingBlock:^(HSCardBackCategoryResponse * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         UIAction *action = [UIAction actionWithTitle:obj.name image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-                            
+                            NSLog(@"Test");
                         }];
                         action.subtitle = obj.slug;
                         [children addObject:action];
@@ -151,8 +159,10 @@ __attribute__((objc_direct_members))
                     [children release];
                     
                     UICellAccessoryPopUpMenu *popUpMenu = [[UICellAccessoryPopUpMenu alloc] initWithMenu:menu];
-                    cell.accessories = @[popUpMenu];
+                    UICellAccessoryLabel *label = [[UICellAccessoryLabel alloc] initWithText:text];
+                    cell.accessories = @[popUpMenu, label];
                     [popUpMenu release];
+                    [label release];
                 } else {
                     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
                     [indicator startAnimating];
@@ -200,8 +210,54 @@ __attribute__((objc_direct_members))
 
 #pragma mark - UICollectionViewDelegate
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    CardBacksOptionsItemModel * _Nullable itemModel = _viewModel.get()->unsafe_iteModelFromIndexPath(indexPath);
+    
+    if (!itemModel) return NO;
+    
+    switch (itemModel.type) {
+        case CardBacksOptionsItemModelTypeTextFilter:
+            return YES;
+        default:
+            return NO;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    __weak auto weakSelf = self;
+    _viewModel.get()->textFilterWithCompletionHandler(_viewModel, ^(NSString * _Nullable text) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            auto loaded = weakSelf;
+            if (!loaded) return;
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Text Filter" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.text = text;
+            }];
+            
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            
+            UIAlertAction *doneAction = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                auto loaded = weakSelf;
+                if (!loaded) return;
+                
+                auto viewModel = loaded->_viewModel;
+                auto alertController = reinterpret_cast<UIAlertController * (*)(id, SEL)>(objc_msgSend)(action, NSSelectorFromString(@"_alertController"));
+                auto text = alertController.textFields.firstObject.text;
+                viewModel.get()->updateTextFilter(viewModel, text, []() {});
+            }];
+            
+            [alertController addAction:cancelAction];
+            [alertController addAction:doneAction];
+            
+            [loaded presentViewController:alertController animated:YES completion:^{
+                
+            }];
+        });
+    });
 }
 
 @end

@@ -33,6 +33,10 @@ NSProgress * CardBacksOptionsViewModel::load(std::shared_ptr<CardBacksOptionsVie
     return progress;
 }
 
+CardBacksOptionsItemModel * _Nullable CardBacksOptionsViewModel::unsafe_iteModelFromIndexPath(NSIndexPath * _Nonnull indexPath) {
+    return [_dataSource itemIdentifierForIndexPath:indexPath];
+}
+
 void CardBacksOptionsViewModel::inputDataWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^completionHandler)(NSString * _Nullable text, NSString * _Nullable categorySlug, HSCardBacksSortRequest sort)) {
     dispatch_async(_queue, ^{
         auto snapshot = ref.get()->_dataSource.snapshot;
@@ -89,6 +93,114 @@ void CardBacksOptionsViewModel::inputDataWithCompletionHandler(std::shared_ptr<C
         //
         
         completionHandler(text, categorySlug, sort);
+    });
+}
+
+void CardBacksOptionsViewModel::textFilterWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^completionHandler)(NSString * _Nullable text)) {
+    
+    dispatch_async(_queue, ^{
+        auto snapshot = ref.get()->_dataSource.snapshot;
+        
+        __block CardBacksOptionsItemModel * _Nullable textFilterItemModel = nil;
+        
+        [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.type == CardBacksOptionsItemModelTypeTextFilter) {
+                textFilterItemModel = [[obj retain] autorelease];
+                *stop = YES;
+            }
+        }];
+        
+        //
+        
+        NSString * _Nullable text;
+        id _Nullable textFilter = textFilterItemModel.userInfo[CardBacksItemModelTextFilterKey];
+        if ([textFilter isKindOfClass:NSString.class]) {
+            text = textFilter;
+        } else {
+            text = nil;
+        }
+        
+        //
+        
+        completionHandler(text);
+    });
+}
+
+void CardBacksOptionsViewModel::updateTextFilter(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable text, std::function<void ()> completionHandler) {
+    dispatch_async(_queue, ^{
+        auto snapshot = static_cast<NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *>([ref.get()->_dataSource.snapshot copy]);
+        
+        __block CardBacksOptionsItemModel * _Nullable textFilterItemModel = nil;
+        
+        [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.type == CardBacksOptionsItemModelTypeTextFilter) {
+                textFilterItemModel = [[obj retain] autorelease];
+                *stop = YES;
+            }
+        }];
+        
+        if (!textFilterItemModel) {
+            NSLog(@"Not loaded yet");
+            [snapshot release];
+            completionHandler();
+        }
+        
+        id textFilter;
+        if (text) {
+            textFilter = text;
+        } else {
+            textFilter = [NSNull null];
+        }
+        
+        auto mutableUserInfo = static_cast<NSMutableDictionary *>([textFilterItemModel.userInfo mutableCopy]);
+        mutableUserInfo[CardBacksItemModelTextFilterKey] = textFilter;
+        textFilterItemModel.userInfo = mutableUserInfo;
+        [mutableUserInfo release];
+        
+        [snapshot reconfigureItemsWithIdentifiers:@[textFilterItemModel]];
+        [ref.get()->_dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
+            completionHandler();
+        }];
+        [snapshot release];
+    });
+}
+
+void CardBacksOptionsViewModel::updateSelectedCardBackCategory(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable categorySlug, std::function<void ()> completionHandler) {
+    dispatch_async(_queue, ^{
+        auto snapshot = static_cast<NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *>([ref.get()->_dataSource.snapshot copy]);
+        
+        __block CardBacksOptionsItemModel * _Nullable cardBackCategoryItemModel = nil;
+        
+        [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.type == CardBacksOptionsItemModelTypeCardBackCategory) {
+                cardBackCategoryItemModel = [[obj retain] autorelease];
+                *stop = YES;
+            }
+        }];
+        
+        if (!cardBackCategoryItemModel) {
+            NSLog(@"Not loaded yet");
+            [snapshot release];
+            completionHandler();
+        }
+        
+        id selectedCardBackCategory;
+        if (categorySlug) {
+            selectedCardBackCategory = categorySlug;
+        } else {
+            selectedCardBackCategory = [NSNull null];
+        }
+        
+        auto mutableUserInfo = static_cast<NSMutableDictionary *>([cardBackCategoryItemModel.userInfo mutableCopy]);
+        mutableUserInfo[CardBacksItemModelSelectedCardBackCategoryKey] = selectedCardBackCategory;
+        cardBackCategoryItemModel.userInfo = mutableUserInfo;
+        [mutableUserInfo release];
+        
+        [snapshot reconfigureItemsWithIdentifiers:@[cardBackCategoryItemModel]];
+        [ref.get()->_dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
+            completionHandler();
+        }];
+        [snapshot release];
     });
 }
 

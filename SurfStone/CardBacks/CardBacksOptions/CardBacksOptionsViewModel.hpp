@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <memory>
+#import <functional>
 #import "CardBacksOptionsSectionModel.hpp"
 #import "CardBacksOptionsItemModel.hpp"
 @import StoneCore;
@@ -21,7 +22,12 @@ public:
     CardBacksOptionsViewModel& operator=(const CardBacksOptionsViewModel&) = delete;
     
     NSProgress * load(std::shared_ptr<CardBacksOptionsViewModel> ref);
+    CardBacksOptionsItemModel * _Nullable unsafe_iteModelFromIndexPath(NSIndexPath *indexPath);
     void inputDataWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^)(NSString * _Nullable text, NSString * _Nullable categorySlug, HSCardBacksSortRequest sort));
+    void textFilterWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^)(NSString * _Nullable text));
+    
+    void updateTextFilter(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable text, std::function<void ()> completionHandler);
+    void updateSelectedCardBackCategory(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable categorySlug, std::function<void ()> completionHandler);
 private:
     HearthstoneAPIService * const _apiService;
     UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> * const _dataSource;
