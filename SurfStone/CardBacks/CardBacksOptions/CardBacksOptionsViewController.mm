@@ -107,6 +107,8 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewCellRegistration *)makeCellRegistration {
+    __weak auto weakSelf = self;
+    
     UICollectionViewCellRegistration *cellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull item) {
         auto itemModel = static_cast<CardBacksOptionsItemModel *>(item);
         
@@ -136,10 +138,11 @@ __attribute__((objc_direct_members))
                 
                 id selectedCardBackCategory = itemModel.userInfo[CardBacksItemModelSelectedCardBackCategoryKey];
                 id categories = itemModel.userInfo[CardBacksItemModelCardBackCategoriesKey];
+                
                 if ([categories isKindOfClass:NSArray.class]) {
                     NSString *text;
-                    if ([selectedCardBackCategory isKindOfClass:NSString.class]) {
-                        text = selectedCardBackCategory;
+                    if ([selectedCardBackCategory isKindOfClass:HSCardBackCategoryResponse.class]) {
+                        text = static_cast<HSCardBackCategoryResponse *>(selectedCardBackCategory).name;
                     } else {
                         text = @"(none)";
                     }
@@ -149,9 +152,24 @@ __attribute__((objc_direct_members))
                     
                     [_categories enumerateObjectsUsingBlock:^(HSCardBackCategoryResponse * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         UIAction *action = [UIAction actionWithTitle:obj.name image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-                            NSLog(@"Test");
+                            auto loaded = weakSelf;
+                            if (!loaded) return;
+                            auto viewModel = loaded->_viewModel;
+                            
+                            viewModel.get()->updateSelectedCardBackCategory(viewModel, obj, []() {});
                         }];
+                        
                         action.subtitle = obj.slug;
+                        
+                        UIMenuElementState state;
+                        if ([obj isEqual:selectedCardBackCategory]) {
+                            state = UIMenuElementStateOn;
+                        } else {
+                            state = UIMenuElementStateOff;
+                        }
+                        
+                        action.state = state;
+                        
                         [children addObject:action];
                     }];
                     
@@ -179,14 +197,34 @@ __attribute__((objc_direct_members))
                 contentConfiguration.text = @"Sort";
                 cell.contentConfiguration = contentConfiguration;
                 
+                auto selectedSort = static_cast<HSCardBacksSortRequest>(static_cast<NSNumber *>(itemModel.userInfo[CardBacksItemModelSelectedSortKey]).unsignedIntegerValue);
                 NSArray<NSNumber *> *sorts = itemModel.userInfo[CardBacksItemModelSortsKey];
                 auto children = [NSMutableArray<UIAction *> new];
                 
                 [sorts enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    UIAction *action = [UIAction actionWithTitle:obj.stringValue image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+                    auto title = NSStringFromHSCardBacksSortRequest(static_cast<HSCardBacksSortRequest>(obj.unsignedIntegerValue));
+                    if (!title) {
+                        title = @"(none)";
+                    }
+                    
+                    auto sort = static_cast<HSCardBacksSortRequest>(obj.unsignedIntegerValue);
+                    UIAction *action = [UIAction actionWithTitle:title image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+                        auto loaded = weakSelf;
+                        if (!loaded) return;
+                        auto viewModel = loaded->_viewModel;
                         
+                        viewModel.get()->updateSelectedSortKey(viewModel, sort, []() {});
                     }];
-//                    action.subtitle = obj.slug;
+                    
+                    UIMenuElementState state;
+                    if (sort == selectedSort) {
+                        state = UIMenuElementStateOn;
+                    } else {
+                        state = UIMenuElementStateOff;
+                    }
+                    
+                    action.state = state;
+                    
                     [children addObject:action];
                 }];
                 
@@ -194,8 +232,15 @@ __attribute__((objc_direct_members))
                 [children release];
                 
                 UICellAccessoryPopUpMenu *popUpMenu = [[UICellAccessoryPopUpMenu alloc] initWithMenu:menu];
-                cell.accessories = @[popUpMenu];
+                
+                auto text = NSStringFromHSCardBacksSortRequest(selectedSort);
+                if (!text) {
+                    text = @"(none)";
+                }
+                UICellAccessoryLabel *label = [[UICellAccessoryLabel alloc] initWithText:text];
+                cell.accessories = @[popUpMenu, label];
                 [popUpMenu release];
+                [label release];
                 
                 break;
             }

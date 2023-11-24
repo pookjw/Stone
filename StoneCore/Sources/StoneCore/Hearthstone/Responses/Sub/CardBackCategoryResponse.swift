@@ -10,5 +10,13 @@ extension HearthstoneAPIService {
         public nonisolated let id: Int
         
         public nonisolated let name: String
+        
+        public override nonisolated func isEqual(_ object: Any?) -> Bool {
+            guard let other: CardBackCategoryResponse = object as? CardBackCategoryResponse else {
+                return super.isEqual(object)
+            }
+            
+            return slug == other.slug
+        }
     }
 }

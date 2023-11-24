@@ -29,6 +29,10 @@ extension HearthstoneAPIService {
 public func allHSCardBacksSortRequests() -> [Int] {
     HearthstoneAPIService.CardBacksSortRequest
         .allCases
-        .filter { $0 != .none }
         .map { $0.rawValue }
+}
+
+@_cdecl("NSStringFromHSCardBacksSortRequest")
+public func NSStringFromHSCardBacksSortRequest(_ value: HearthstoneAPIService.CardBacksSortRequest) -> String? {
+    value.name
 }

@@ -165,7 +165,7 @@ void CardBacksOptionsViewModel::updateTextFilter(std::shared_ptr<CardBacksOption
     });
 }
 
-void CardBacksOptionsViewModel::updateSelectedCardBackCategory(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable categorySlug, std::function<void ()> completionHandler) {
+void CardBacksOptionsViewModel::updateSelectedCardBackCategory(std::shared_ptr<CardBacksOptionsViewModel> ref, HSCardBackCategoryResponse * _Nullable response, std::function<void ()> completionHandler) {
     dispatch_async(_queue, ^{
         auto snapshot = static_cast<NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *>([ref.get()->_dataSource.snapshot copy]);
         
@@ -185,8 +185,8 @@ void CardBacksOptionsViewModel::updateSelectedCardBackCategory(std::shared_ptr<C
         }
         
         id selectedCardBackCategory;
-        if (categorySlug) {
-            selectedCardBackCategory = categorySlug;
+        if (response) {
+            selectedCardBackCategory = response;
         } else {
             selectedCardBackCategory = [NSNull null];
         }
@@ -197,6 +197,38 @@ void CardBacksOptionsViewModel::updateSelectedCardBackCategory(std::shared_ptr<C
         [mutableUserInfo release];
         
         [snapshot reconfigureItemsWithIdentifiers:@[cardBackCategoryItemModel]];
+        [ref.get()->_dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
+            completionHandler();
+        }];
+        [snapshot release];
+    });
+}
+
+void CardBacksOptionsViewModel::updateSelectedSortKey(std::shared_ptr<CardBacksOptionsViewModel> ref, HSCardBacksSortRequest sort, std::function<void ()> completionHandler) {
+    dispatch_async(_queue, ^{
+        auto snapshot = static_cast<NSDiffableDataSourceSnapshot<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> *>([ref.get()->_dataSource.snapshot copy]);
+        
+        __block CardBacksOptionsItemModel * _Nullable sortItemModel = nil;
+        
+        [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(CardBacksOptionsItemModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.type == CardBacksOptionsItemModelTypeSort) {
+                sortItemModel = [[obj retain] autorelease];
+                *stop = YES;
+            }
+        }];
+        
+        if (!sortItemModel) {
+            NSLog(@"Not loaded yet");
+            [snapshot release];
+            completionHandler();
+        }
+        
+        auto mutableUserInfo = static_cast<NSMutableDictionary *>([sortItemModel.userInfo mutableCopy]);
+        mutableUserInfo[CardBacksItemModelSelectedSortKey] = @(sort);
+        sortItemModel.userInfo = mutableUserInfo;
+        [mutableUserInfo release];
+        
+        [snapshot reconfigureItemsWithIdentifiers:@[sortItemModel]];
         [ref.get()->_dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
             completionHandler();
         }];
@@ -235,7 +267,7 @@ void CardBacksOptionsViewModel::setupInitialDataSource() {
     
     CardBacksOptionsItemModel *sortItemModel = [[CardBacksOptionsItemModel alloc] initWithType:CardBacksOptionsItemModelTypeSort];
     sortItemModel.userInfo = @{
-        CardBacksItemModelSelectedSortKey: [NSNull null],
+        CardBacksItemModelSelectedSortKey: @(HSCardBacksSortRequestNone),
         CardBacksItemModelSortsKey: allHSCardBacksSortRequests()
     };
     [optionsItemModels addObject:sortItemModel];

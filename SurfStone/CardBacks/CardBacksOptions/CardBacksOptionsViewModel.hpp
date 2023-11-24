@@ -27,7 +27,8 @@ public:
     void textFilterWithCompletionHandler(std::shared_ptr<CardBacksOptionsViewModel> ref, void (^)(NSString * _Nullable text));
     
     void updateTextFilter(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable text, std::function<void ()> completionHandler);
-    void updateSelectedCardBackCategory(std::shared_ptr<CardBacksOptionsViewModel> ref, NSString * _Nullable categorySlug, std::function<void ()> completionHandler);
+    void updateSelectedCardBackCategory(std::shared_ptr<CardBacksOptionsViewModel> ref, HSCardBackCategoryResponse * _Nullable response, std::function<void ()> completionHandler);
+    void updateSelectedSortKey(std::shared_ptr<CardBacksOptionsViewModel> ref, HSCardBacksSortRequest sort, std::function<void ()> completionHandler);
 private:
     HearthstoneAPIService * const _apiService;
     UICollectionViewDiffableDataSource<CardBacksOptionsSectionModel *, CardBacksOptionsItemModel *> * const _dataSource;
