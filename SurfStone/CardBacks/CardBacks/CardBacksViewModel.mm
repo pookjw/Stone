@@ -19,7 +19,7 @@ CardBacksViewModel::~CardBacksViewModel() {
     [_apiService release];
 }
 
-NSProgress * CardBacksViewModel::load(std::shared_ptr<CardBacksViewModel> ref) {
+NSProgress * CardBacksViewModel::load(std::shared_ptr<CardBacksViewModel> ref, NSString * _Nullable textFilter, NSString * _Nullable cardBackCategorySlug, HSCardBacksSortRequest sort) {
     assert(this == ref.get());
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:2];
     
@@ -30,12 +30,19 @@ NSProgress * CardBacksViewModel::load(std::shared_ptr<CardBacksViewModel> ref) {
         
         //
         
-        NSProgress *requestProgress = [ref.get()->_apiService cardBacksWithCardBackCategory:nil
-                                                   textFilter:nil
-                                                         sort:HSCardBacksSortRequestNone
+        NSProgress *requestProgress = [ref.get()->_apiService cardBacksWithCardBackCategory:cardBackCategorySlug
+                                                   textFilter:textFilter
+                                                         sort:sort
                                                          page:nil
                                                      pageSize:nil completion:^(HSCardBacksResponse * _Nullable response, NSError * _Nullable error) {
-            assert(!error);
+            if (error) {
+                if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                    NSLog(@"Cancelled");
+                } else {
+                    [NSException exceptionWithName:NSInternalInconsistencyException reason:error.localizedDescription userInfo:error.userInfo];
+                }
+            }
+            
             ref.get()->appendHSCardBacksResponse(response);
         }];
         

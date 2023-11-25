@@ -48,13 +48,22 @@ __attribute__((objc_direct_members))
     
     NSMutableArray<UIBarButtonItemGroup *> *trailingItemGroups = [self.navigationItem.trailingItemGroups mutableCopy];
     
-    __block auto unretained = self;
+    __weak auto weakSelf = self;
     
     UIAction *fetchAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"arrowshape.right.fill"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-//        unretained->_viewModel.get()->inputDataWithCompletionHandler(<#std::shared_ptr<CardBacksOptionsViewModel> ref#>, <#^(NSString * _Nullable text, NSString * _Nullable categorySlug, HSCardBacksSortRequest sort)#>)
-        auto delegate = unretained.delegate;
-        if (![delegate respondsToSelector:@selector(cardBacksOptionsViewController:doneWithText:cardBackCategorySlug:sort:)]) return;
-//        [delegate cardBacksOptionsViewController:unretained doneWithText:<#(NSString * _Nullable)#> cardBackCategorySlug:<#(NSString * _Nullable)#> sort:<#(HSCardBacksSortRequest)#>]
+        auto loaded = weakSelf;
+        if (!loaded) return;
+        
+        auto viewModel = loaded->_viewModel;
+        viewModel.get()->inputDataWithCompletionHandler(viewModel, ^(NSString * _Nullable text, NSString * _Nullable categorySlug, HSCardBacksSortRequest sort) {
+            auto loaded = weakSelf;
+            if (!loaded) return;
+            auto delegate = loaded.delegate;
+            
+            if ([delegate respondsToSelector:@selector(cardBacksOptionsViewController:doneWithText:cardBackCategorySlug:sort:)]) {
+                [delegate cardBacksOptionsViewController:loaded doneWithText:text cardBackCategorySlug:categorySlug sort:sort];
+            }
+        });
     }];
     UIBarButtonItem *fetchItem = [[UIBarButtonItem alloc] initWithPrimaryAction:fetchAction];
     UIBarButtonItemGroup *trailingGroup = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:@[fetchItem] representativeItem:nil];

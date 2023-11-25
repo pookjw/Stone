@@ -53,7 +53,16 @@ __attribute__((objc_direct_members))
     [self setupCollectionView];
     [self setupViewModel];
     
-    self.loadProgress = _viewModel.get()->load(_viewModel);
+    @synchronized (self) {
+        self.loadProgress = _viewModel.get()->load(_viewModel, nil, nil, HSCardBacksSortRequestNone);
+    }
+}
+
+- (void)loadWithTextFilter:(NSString *)textFilter cardBackCategorySlug:(NSString *)slug sort:(HSCardBacksSortRequest)sort {
+    @synchronized (self) {
+        [self.loadProgress cancel];
+        self.loadProgress = _viewModel.get()->load(_viewModel, textFilter, slug, sort);
+    }
 }
 
 - (void)setupCollectionView __attribute__((objc_direct)) {

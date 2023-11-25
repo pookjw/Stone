@@ -76,14 +76,14 @@ void CardBacksOptionsViewModel::inputDataWithCompletionHandler(std::shared_ptr<C
         
         NSString * _Nullable categorySlug;
         id _Nullable selectedCardBackCategory = cardBackCategoryItemModel.userInfo[CardBacksItemModelSelectedCardBackCategoryKey];
-        if ([selectedCardBackCategory isKindOfClass:NSString.class]) {
-            categorySlug = selectedCardBackCategory;
+        if ([selectedCardBackCategory isKindOfClass:HSCardBackCategoryResponse.class]) {
+            categorySlug = static_cast<HSCardBackCategoryResponse *>(selectedCardBackCategory).slug;
         } else {
             categorySlug = nil;
         }
         
         HSCardBacksSortRequest sort;
-        id _Nullable selectedSort = cardBackCategoryItemModel.userInfo[CardBacksItemModelSelectedSortKey];
+        id _Nullable selectedSort = sortItemModel.userInfo[CardBacksItemModelSelectedSortKey];
         if ([selectedSort isKindOfClass:NSNumber.class]) {
             sort = static_cast<HSCardBacksSortRequest>(static_cast<NSNumber *>(selectedSort).unsignedIntegerValue);
         } else {

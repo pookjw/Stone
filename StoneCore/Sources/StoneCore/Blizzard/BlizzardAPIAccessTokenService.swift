@@ -16,42 +16,47 @@ actor BlizzardAPIAccessTokenService {
     private let asyncMutex: AsyncMutex = .init()
     
     func accessToken(region: Locale.Region) async throws -> String {
-        await asyncMutex.lock()
-        
-        let (cachedAccessToken, cachedExpirationDate, fetchedObjects): (String?, Date?, [BlizzardAPIAccessToken]) = try await fetchAccessTokenCache(region: region)
-        
-        if
-            let cachedAccessToken: String,
-            let cachedExpirationDate: Date,
-            Date.now < cachedExpirationDate
-        {
-            await asyncMutex.unlock()
-            return cachedAccessToken
-        }
-        
-        //
-        
-        let (accessToken, expirationDate): (String, Date) = try await requestAccessToken(region: region)
-        let oAuthHost: String = region.oAuthBaseURL.host()!
-        let context: NSManagedObjectContext = try await coreDataStack.context
-        
-        try await context.perform {
-            for fetchedObject in fetchedObjects {
-                context.delete(fetchedObject)
+        do {
+            await asyncMutex.lock()
+            
+            let (cachedAccessToken, cachedExpirationDate, fetchedObjects): (String?, Date?, [BlizzardAPIAccessToken]) = try await fetchAccessTokenCache(region: region)
+            
+            if
+                let cachedAccessToken: String,
+                let cachedExpirationDate: Date,
+                Date.now < cachedExpirationDate
+            {
+                await asyncMutex.unlock()
+                return cachedAccessToken
             }
             
             //
             
-            let accessTokenObject: BlizzardAPIAccessToken = .init(context: context)
-            accessTokenObject.oAuthHost = oAuthHost
-            accessTokenObject.expirationDate = expirationDate
-            accessTokenObject.accessToken = accessToken
+            let (accessToken, expirationDate): (String, Date) = try await requestAccessToken(region: region)
+            let oAuthHost: String = region.oAuthBaseURL.host()!
+            let context: NSManagedObjectContext = try await coreDataStack.context
             
-            try context.save()
+            try await context.perform {
+                for fetchedObject in fetchedObjects {
+                    context.delete(fetchedObject)
+                }
+                
+                //
+                
+                let accessTokenObject: BlizzardAPIAccessToken = .init(context: context)
+                accessTokenObject.oAuthHost = oAuthHost
+                accessTokenObject.expirationDate = expirationDate
+                accessTokenObject.accessToken = accessToken
+                
+                try context.save()
+            }
+            
+            await asyncMutex.unlock()
+            return accessToken
+        } catch {
+            await asyncMutex.unlock()
+            throw error
         }
-        
-        await asyncMutex.unlock()
-        return accessToken
     }
     
     private func fetchAccessTokenCache(region: Locale.Region) async throws -> (accessToken: String?, expirationDate: Date?, fetchedObjects: [BlizzardAPIAccessToken]) {

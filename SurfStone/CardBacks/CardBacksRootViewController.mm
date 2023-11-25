@@ -111,6 +111,7 @@ __attribute__((objc_direct_members))
     if (_cardBacksOptionsViewController) return _cardBacksOptionsViewController;
     
     CardBacksOptionsViewController *cardBacksOptionsViewController = [CardBacksOptionsViewController new];
+    cardBacksOptionsViewController.delegate = self;
     
     [_cardBacksOptionsViewController release];
     _cardBacksOptionsViewController = [cardBacksOptionsViewController retain];
@@ -130,7 +131,7 @@ __attribute__((objc_direct_members))
 #pragma mark - CardBacksOptionsViewControllerDelegate
 
 - (void)cardBacksOptionsViewController:(CardBacksOptionsViewController *)viewController doneWithText:(NSString *)text cardBackCategorySlug:(NSString *)slug sort:(HSCardBacksSortRequest)sort {
-    
+    [_cardBacksViewController loadWithTextFilter:text cardBackCategorySlug:slug sort:sort];
 }
 
 @end
