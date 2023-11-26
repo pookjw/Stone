@@ -9,6 +9,7 @@
 #import "CardBacksViewModel.hpp"
 #import "CardBacksCollectionViewLayout.hpp"
 #import "CardBacksCellContentView.hpp"
+#import "UIApplication+mrui_requestSceneWrapper.hpp"
 #import <objc/message.h>
 #import <memory>
 @import StoneCore;
@@ -126,27 +127,24 @@ __attribute__((objc_direct_members))
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    
     _viewModel.get()->itemModelFromIndexPath(_viewModel, indexPath, ^(CardBacksItemModel * _Nullable itemModel) {
+        auto cardBackResponse = static_cast<HSCardBackResponse *>(itemModel.userInfo[CardBacksItemModelHSCardBackResponseKey]);
+        NSError * _Nullable error = nil;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cardBackResponse requiringSecureCoding:YES error:&error];
+        assert(!error);
+        
+        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:@"com.pookjw.SurfStone.CardDetail"];
+        userActivity.userInfo = @{
+            @"HSCardBackResponse": data
+        };
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:@"com.pookjw.SurfStone.CardDetail"];
-            
-            id options = [NSClassFromString(@"MRUISceneRequestOptions") new];
-            reinterpret_cast<void (*)(id, SEL, BOOL)>(objc_msgSend)(options, NSSelectorFromString(@"setDisableDefocusBehavior:"), NO);
-            reinterpret_cast<void (*)(id, SEL, BOOL)>(objc_msgSend)(options, NSSelectorFromString(@"setPreferredImmersionStyle:"), 0);
-            reinterpret_cast<void (*)(id, SEL, BOOL)>(objc_msgSend)(options, NSSelectorFromString(@"setAllowedImmersionStyles:"), 0);
-            
-            reinterpret_cast<void (*)(id, SEL, id, id, id)>(objc_msgSend)(UIApplication.sharedApplication,
-                                                                          NSSelectorFromString(@"mrui_requestSceneWithUserActivity:requestOptions:completionHandler:"),
-                                                                          userActivity,
-                                                                          options,
-                                                                          ^void (NSError * _Nullable error) {
-                NSLog(@"%@", error);
-            });
-            
-            [userActivity release];
-            [options release];
+            [UIApplication.sharedApplication mruiw_requestVolumetricSceneWithUserActivity:userActivity completionHandler:^(NSError * _Nullable error) {
+                assert(!error);
+            }];
         });
+        
+        [userActivity release];
     });
 }
 

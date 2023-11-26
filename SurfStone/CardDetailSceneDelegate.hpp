@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CardDetailSceneDelegate : UIResponder
+@interface CardDetailSceneDelegate : UIResponder <UISceneDelegate>
 @property (retain, nonatomic) UIWindow *window;
 @end
 

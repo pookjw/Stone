@@ -43,7 +43,6 @@
                                                                   options,
                                                                   completionHandler);
     
-    [userActivity release];
     [options release];
 }
 
