@@ -28,6 +28,7 @@
     configuration.scrollDirection = UICollectionViewScrollDirectionVertical;
     
     id result = [super initWithSectionProvider:^NSCollectionLayoutSection * _Nullable(NSInteger sectionIndex, id<NSCollectionLayoutEnvironment>  _Nonnull layoutEnvironment) {
+        NSLog(@"%@", layoutEnvironment);
         auto quotient = static_cast<std::uint8_t>(std::floorf(layoutEnvironment.container.effectiveContentSize.width / 200.f));
         auto count = std::less<std::uint8_t>()(quotient, 2) ? 2 : quotient;
         auto count_f = static_cast<CGFloat>(count);

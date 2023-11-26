@@ -53,6 +53,13 @@ NSProgress * CardBacksViewModel::load(std::shared_ptr<CardBacksViewModel> ref, N
     return progress;
 }
 
+void CardBacksViewModel::itemModelFromIndexPath(std::shared_ptr<CardBacksViewModel> ref, NSIndexPath * _Nonnull indexPath, void (^completionHandler)(CardBacksItemModel * _Nullable itemModel)) {
+    dispatch_async(_queue, ^{
+        auto itemModel = [ref.get()->_dataSource itemIdentifierForIndexPath:indexPath];
+        completionHandler(itemModel);
+    });
+}
+
 void CardBacksViewModel::appendHSCardBacksResponse(HSCardBacksResponse * _Nonnull response) {
     auto snapshot = static_cast<NSDiffableDataSourceSnapshot<CardBacksSectionModel *, CardBacksItemModel *> *>([_dataSource.snapshot copy]);
     

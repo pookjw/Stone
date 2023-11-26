@@ -42,6 +42,8 @@
 		4FEF16462AED75FD0059D1FB /* SettingsRootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF16452AED75FD0059D1FB /* SettingsRootViewController.mm */; };
 		4FEF168F2AEDFF4A0059D1FB /* CardOptionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF168E2AEDFF4A0059D1FB /* CardOptionsViewController.mm */; };
 		4FF6B22F2B0277CA008E911E /* StoneCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FF6B22E2B0277CA008E911E /* StoneCore */; };
+		4FFB53FF2B12396700D41349 /* CardDetailSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB53FE2B12396700D41349 /* CardDetailSceneDelegate.mm */; };
+		4FFB54252B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB54242B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +116,10 @@
 		4FEF16452AED75FD0059D1FB /* SettingsRootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsRootViewController.mm; sourceTree = "<group>"; };
 		4FEF168D2AEDFF4A0059D1FB /* CardOptionsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardOptionsViewController.hpp; sourceTree = "<group>"; };
 		4FEF168E2AEDFF4A0059D1FB /* CardOptionsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardOptionsViewController.mm; sourceTree = "<group>"; };
+		4FFB53FD2B12396700D41349 /* CardDetailSceneDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardDetailSceneDelegate.hpp; sourceTree = "<group>"; };
+		4FFB53FE2B12396700D41349 /* CardDetailSceneDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardDetailSceneDelegate.mm; sourceTree = "<group>"; };
+		4FFB54232B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIApplication+mrui_requestSceneWrapper.hpp"; sourceTree = "<group>"; };
+		4FFB54242B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIApplication+mrui_requestSceneWrapper.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,8 +289,12 @@
 				4FEF16002AEBFD360059D1FB /* AppDelegate.mm */,
 				4FEF16022AEBFDA10059D1FB /* SceneDelegate.hpp */,
 				4FEF16032AEBFDA10059D1FB /* SceneDelegate.mm */,
+				4FFB53FD2B12396700D41349 /* CardDetailSceneDelegate.hpp */,
+				4FFB53FE2B12396700D41349 /* CardDetailSceneDelegate.mm */,
 				4FEF163B2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.h */,
 				4FEF163C2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm */,
+				4FFB54232B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.hpp */,
+				4FFB54242B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm */,
 				4F52609F2B0CF85F002DD28D /* AsyncImage */,
 				4FD6A21B2B0A69EF00B3511A /* NewWidnow */,
 				4FEF163F2AED74D40059D1FB /* Cards */,
@@ -406,6 +416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FFB54252B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4FBF5F4E2B0BBD570044C834 /* CardBacksSectionModel.mm in Sources */,
 				4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */,
 				4FBF5F432B0BBC080044C834 /* CardBacksViewModel.mm in Sources */,
@@ -420,6 +431,7 @@
 				4FEF16012AEBFD360059D1FB /* AppDelegate.mm in Sources */,
 				4FEF16432AED75150059D1FB /* CardsViewController.mm in Sources */,
 				4F276CFC2B051FAF009C3E49 /* SettingsItemModel.mm in Sources */,
+				4FFB53FF2B12396700D41349 /* CardDetailSceneDelegate.mm in Sources */,
 				4F52609E2B0CF277002DD28D /* CardBacksCellContentView.mm in Sources */,
 				4FD6A1D62B08E37A00B3511A /* SettingsRegionItemModel.mm in Sources */,
 				4FD6A1D02B08E31E00B3511A /* SettingsLocaleViewModel.mm in Sources */,
