@@ -22,7 +22,7 @@ __attribute__((objc_direct_members))
 @property (copy) NSDictionary * _Nullable userInfo;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithType:(SettingsRegionItemModelType)type;
+- (instancetype)initWithType:(SettingsRegionItemModelType)type NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -44,6 +44,10 @@
 		4FF6B22F2B0277CA008E911E /* StoneCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FF6B22E2B0277CA008E911E /* StoneCore */; };
 		4FFB53FF2B12396700D41349 /* CardDetailSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB53FE2B12396700D41349 /* CardDetailSceneDelegate.mm */; };
 		4FFB54252B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB54242B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm */; };
+		4FFB544B2B136D5900D41349 /* CardDetailsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB544A2B136D5900D41349 /* CardDetailsViewController.mm */; };
+		4FFB544E2B13732700D41349 /* CardDetailsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB544C2B13732700D41349 /* CardDetailsViewModel.mm */; };
+		4FFB54512B13ABE600D41349 /* CardDetailsSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB54502B13ABE600D41349 /* CardDetailsSectionModel.mm */; };
+		4FFB54542B13ABF000D41349 /* CardDetailsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFB54532B13ABF000D41349 /* CardDetailsItemModel.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +124,14 @@
 		4FFB53FE2B12396700D41349 /* CardDetailSceneDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardDetailSceneDelegate.mm; sourceTree = "<group>"; };
 		4FFB54232B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIApplication+mrui_requestSceneWrapper.hpp"; sourceTree = "<group>"; };
 		4FFB54242B13429500D41349 /* UIApplication+mrui_requestSceneWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIApplication+mrui_requestSceneWrapper.mm"; sourceTree = "<group>"; };
+		4FFB54492B136D5900D41349 /* CardDetailsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardDetailsViewController.hpp; sourceTree = "<group>"; };
+		4FFB544A2B136D5900D41349 /* CardDetailsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardDetailsViewController.mm; sourceTree = "<group>"; };
+		4FFB544C2B13732700D41349 /* CardDetailsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardDetailsViewModel.mm; sourceTree = "<group>"; };
+		4FFB544D2B13732700D41349 /* CardDetailsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardDetailsViewModel.hpp; sourceTree = "<group>"; };
+		4FFB544F2B13ABE600D41349 /* CardDetailsSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardDetailsSectionModel.hpp; sourceTree = "<group>"; };
+		4FFB54502B13ABE600D41349 /* CardDetailsSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardDetailsSectionModel.mm; sourceTree = "<group>"; };
+		4FFB54522B13ABF000D41349 /* CardDetailsItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CardDetailsItemModel.hpp; sourceTree = "<group>"; };
+		4FFB54532B13ABF000D41349 /* CardDetailsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CardDetailsItemModel.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +311,7 @@
 				4FD6A21B2B0A69EF00B3511A /* NewWidnow */,
 				4FEF163F2AED74D40059D1FB /* Cards */,
 				4FB186D62AF6744200A87403 /* CardBacks */,
+				4FFB54482B136D1F00D41349 /* CardDetails */,
 				4FEF16402AED74E80059D1FB /* Settings */,
 			);
 			path = SurfStone;
@@ -340,6 +353,21 @@
 				4FEF168E2AEDFF4A0059D1FB /* CardOptionsViewController.mm */,
 			);
 			path = CardOptions;
+			sourceTree = "<group>";
+		};
+		4FFB54482B136D1F00D41349 /* CardDetails */ = {
+			isa = PBXGroup;
+			children = (
+				4FFB54492B136D5900D41349 /* CardDetailsViewController.hpp */,
+				4FFB544A2B136D5900D41349 /* CardDetailsViewController.mm */,
+				4FFB544D2B13732700D41349 /* CardDetailsViewModel.hpp */,
+				4FFB544C2B13732700D41349 /* CardDetailsViewModel.mm */,
+				4FFB544F2B13ABE600D41349 /* CardDetailsSectionModel.hpp */,
+				4FFB54502B13ABE600D41349 /* CardDetailsSectionModel.mm */,
+				4FFB54522B13ABF000D41349 /* CardDetailsItemModel.hpp */,
+				4FFB54532B13ABF000D41349 /* CardDetailsItemModel.mm */,
+			);
+			path = CardDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -421,10 +449,13 @@
 				4FB186E02AF68C2500A87403 /* CardBacksOptionsViewModel.mm in Sources */,
 				4FBF5F432B0BBC080044C834 /* CardBacksViewModel.mm in Sources */,
 				4F276CF92B051E80009C3E49 /* SettingsSectionModel.mm in Sources */,
+				4FFB54542B13ABF000D41349 /* CardDetailsItemModel.mm in Sources */,
+				4FFB544E2B13732700D41349 /* CardDetailsViewModel.mm in Sources */,
 				4FD6A1D32B08E37000B3511A /* SettingsRegionSectionModel.mm in Sources */,
 				4F52609B2B0CEC38002DD28D /* CardBacksCollectionViewLayout.mm in Sources */,
 				4FEF163D2AED5A6E0059D1FB /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4F5260A22B0CF8C1002DD28D /* AsyncImageView.mm in Sources */,
+				4FFB54512B13ABE600D41349 /* CardDetailsSectionModel.mm in Sources */,
 				4FB186D92AF6746E00A87403 /* CardBacksRootViewController.mm in Sources */,
 				4FD6A1D92B08E86D00B3511A /* SettingsRegionViewModel.mm in Sources */,
 				4F276CF62B051E43009C3E49 /* SettingsViewModel.mm in Sources */,
@@ -438,6 +469,7 @@
 				4FEF16042AEBFDA10059D1FB /* SceneDelegate.mm in Sources */,
 				4FD6A1E52B09DC2400B3511A /* CardBacksOptionsItemModel.mm in Sources */,
 				4FEF16462AED75FD0059D1FB /* SettingsRootViewController.mm in Sources */,
+				4FFB544B2B136D5900D41349 /* CardDetailsViewController.mm in Sources */,
 				4FEF15F92AEBFCC10059D1FB /* main.mm in Sources */,
 				4FD6A1DC2B0924C400B3511A /* SettingsLocaleSectionModel.mm in Sources */,
 				4F276CF32B051D3C009C3E49 /* SettingsViewController.mm in Sources */,

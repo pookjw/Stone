@@ -26,7 +26,6 @@
     }];
     
     if (cardDetailUserActivity) {
-        NSLog(@"%@", cardDetailUserActivity);
         UISceneConfiguration *configuration = connectingSceneSession.configuration;
         configuration.delegateClass = CardDetailSceneDelegate.class;
         return configuration;
