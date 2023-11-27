@@ -14,13 +14,15 @@ typedef NS_ENUM(NSUInteger, CardDetailsItemModelType) {
 };
 
 extern NSString * const CardDetailsItemModelTextKey;
+extern NSString * const CardDetailsItemModelNameKey;
 
 __attribute__((objc_direct_members))
 @interface CardDetailsItemModel : NSObject
+@property (readonly, nonatomic) CardDetailsItemModelType type;
 @property (copy) NSDictionary * _Nullable userInfo;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-// TODO
+- (instancetype)initWithType:(CardDetailsItemModelType)type NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END
