@@ -27,7 +27,7 @@
     [self mruiw_requestSceneWithUserActivity:userActivity preferredImmersionStyle:8 sceneRequestIntent:1002 completionHandler:completionHandler];
 }
 
-- (void)mruiw_requestSceneWithUserActivity:(NSUserActivity *)userActivity preferredImmersionStyle:(NSUInteger)preferredImmersionStyle sceneRequestIntent:(NSUInteger)sceneRequestIntent completionHandler:(void (^)(NSError * _Nullable))completionHandler {
+- (void)mruiw_requestSceneWithUserActivity:(NSUserActivity *)userActivity preferredImmersionStyle:(NSUInteger)preferredImmersionStyle sceneRequestIntent:(NSUInteger)sceneRequestIntent completionHandler:(void (^)(NSError * _Nullable))completionHandler __attribute__((objc_direct)) {
     id options = [NSClassFromString(@"MRUISceneRequestOptions") new];
     id specification = [NSClassFromString(@"MRUISharedApplicationFullscreenSceneSpecification_SwiftUI") new];
     reinterpret_cast<void (*)(id, SEL, BOOL)>(objc_msgSend)(options, NSSelectorFromString(@"setDisableDefocusBehavior:"), YES);

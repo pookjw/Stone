@@ -62,7 +62,7 @@
     //
     
     auto cardImageView = self.cardImageView;
-    _viewModel.get()->load(_viewModel, ^(NSURL * _Nonnull cardImageURL) {
+    _viewModel.get()->load(_viewModel, nil, ^(NSURL * _Nonnull cardImageURL) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [cardImageView setImageWithURL:cardImageURL];
         });

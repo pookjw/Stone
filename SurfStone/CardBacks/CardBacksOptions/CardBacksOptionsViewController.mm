@@ -115,7 +115,7 @@ __attribute__((objc_direct_members))
     return [dataSource autorelease];
 }
 
-- (UICollectionViewCellRegistration *)makeCellRegistration {
+- (UICollectionViewCellRegistration *)makeCellRegistration __attribute__((objc_direct)) {
     __weak auto weakSelf = self;
     
     UICollectionViewCellRegistration *cellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull item) {

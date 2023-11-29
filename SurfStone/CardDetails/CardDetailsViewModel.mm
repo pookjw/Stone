@@ -16,7 +16,9 @@ CardDetailsViewModel::~CardDetailsViewModel() {
     [_userActivites release];
 }
 
-void CardDetailsViewModel::load(std::shared_ptr<CardDetailsViewModel> ref, void (^completionHandler)(NSURL *cardImageURL)) {
+void CardDetailsViewModel::load(std::shared_ptr<CardDetailsViewModel> ref,
+                                UICollectionViewDiffableDataSource<CardDetailsSectionModel *, CardDetailsItemModel *> *dataSource,
+                                void (^completionHandler)(NSURL *cardImageURL)) {
     dispatch_async(_queue, ^{
         __block NSUserActivity * _Nullable userActivity = nil;
         [ref.get()->_userActivites enumerateObjectsUsingBlock:^(NSUserActivity * _Nonnull obj, BOOL * _Nonnull stop) {
